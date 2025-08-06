@@ -31,7 +31,7 @@ export function MobileFastingPhases({
   const togglePhase = (index: number) => {
     const isExpanding = expandedPhase !== index;
     setExpandedPhase(expandedPhase === index ? null : index);
-    
+
     // Track analytics only when expanding (not collapsing)
     if (isExpanding) {
       trackMobilePhaseExpand(phases[index].title);
@@ -98,20 +98,23 @@ export function MobileFastingPhases({
                 className='w-full p-3 h-auto justify-between hover:bg-transparent'
                 onClick={() => togglePhase(index)}
               >
-                <div className='flex items-start gap-2 text-left flex-1 min-w-0'>
+                <div className='flex items-start gap-3 text-left flex-1 min-w-0'>
                   <span className='text-base flex-shrink-0'>
                     {getStatusIcon(status)}
                   </span>
                   <div className='flex-1 min-w-0'>
                     <div className='flex items-center gap-2 mb-1'>
-                      <Clock className='h-3 w-3 opacity-60 flex-shrink-0' />
-                      <span className='font-medium text-xs text-muted-foreground'>
+                      <Clock className='h-4 w-4 opacity-60 flex-shrink-0' />
+                      <span className='font-medium text-sm text-muted-foreground'>
                         {phase.durationHours}h
                       </span>
                     </div>
-                    <h3 className='font-semibold text-xs leading-tight text-left break-words'>
-                      {phase.title}
-                    </h3>
+                    {/* Show title only when NOT expanded */}
+                    {!isExpanded && (
+                      <h3 className='font-semibold text-xs leading-tight text-left truncate'>
+                        {phase.title}
+                      </h3>
+                    )}
                   </div>
                 </div>
                 <div className='flex-shrink-0 ml-2'>
@@ -126,6 +129,10 @@ export function MobileFastingPhases({
               {isExpanded && (
                 <div className='px-3 pb-3'>
                   <div className='mt-2 pt-2 border-t border-gray-200 dark:border-gray-600'>
+                    {/* Full title when expanded */}
+                    <h4 className='font-semibold text-sm text-gray-900 dark:text-gray-100 mb-3 pl-2'>
+                      {phase.title}
+                    </h4>
                     <div className='text-xs text-gray-700 dark:text-gray-300 space-y-1.5 pl-4'>
                       {phase.description.split('\n').map((line, lineIndex) => (
                         <p key={lineIndex} className='leading-relaxed'>
