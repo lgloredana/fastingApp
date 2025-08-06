@@ -66,19 +66,22 @@ export function StopFastingDialog({
             Are you sure you want to stop this fasting period?
           </DialogDescription>
           <div className='text-sm text-muted-foreground mt-2'>
-            This action cannot be undone and your current session will be saved to history.
+            This action cannot be undone and your current session will be saved
+            to history.
           </div>
         </DialogHeader>
 
         <div className='grid gap-4 py-4'>
           <div className='space-y-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
             <div className='text-center'>
-              <p className='text-sm text-muted-foreground mb-1'>Current Session</p>
+              <p className='text-sm text-muted-foreground mb-1'>
+                Current Session
+              </p>
               <p className='text-2xl font-bold text-primary'>
                 {formatTime(elapsedTime)}
               </p>
             </div>
-            
+
             <div className='space-y-1 text-sm'>
               <div className='flex justify-between'>
                 <span>Started:</span>
@@ -100,7 +103,11 @@ export function StopFastingDialog({
           <Button variant='outline' onClick={handleCancel}>
             Continue Fasting
           </Button>
-          <Button variant='destructive' onClick={handleConfirm} className='gap-2'>
+          <Button
+            variant='destructive'
+            onClick={handleConfirm}
+            className='gap-2'
+          >
             <StopCircle className='h-4 w-4' />
             Stop & Save Session
           </Button>
