@@ -54,7 +54,7 @@ const FASTING_PHASES: FastingPhase[] = [
     durationHours: 0,
     title: '0–4 ore după ultima masă',
     description:
-      '➡️ Corpul digeră glucoza din mâncare si e folosită pentru energie.\n➡️ Rezervele rapide de glucoză din ficat și mușchi se reîncarcă.\n🧠 Te simți bine, fără foame. E liniște metabolică.',
+      '- Corpul digeră glucoza din mâncare si e folosită pentru energie.\n- Rezervele rapide de glucoză din ficat și mușchi se reîncarcă.\n- Te simți bine, fără foame. E liniște metabolică.',
   },
   {
     durationHours: 4,
@@ -76,7 +76,7 @@ const FASTING_PHASES: FastingPhase[] = [
   },
   {
     durationHours: 12,
-    title: 'După 12 ore: Grăsimea, principala sursă de energie',
+    title: 'După 12 ore: Grăsimea ca sursă principală',
     description:
       'Grăsimea devine principala sursă de energie, creierul începe să meargă pe mod eco: cetone.',
   },
@@ -88,13 +88,13 @@ const FASTING_PHASES: FastingPhase[] = [
   },
   {
     durationHours: 18,
-    title: 'După 18-20 ore: Autofagia se intensifică',
+    title: 'După 18-20 ore: Autofagie intensă',
     description:
       'Autofagia se intensifică, grăsimile sunt arse la intensitate maximă, se simte o claritate mentală sau ușoară euforie, reparații interioare serioase, corpul face curat.',
   },
   {
     durationHours: 24,
-    title: 'După 24 ore: Echilibru metabolic profund',
+    title: 'După 24 ore: Echilibru profund',
     description:
       'Stare de echilibru metabolic profund, inflamația sistematică scade, se curăță structuri implicate în îmbătrânire și boli cronice, nivel maxim de autofagie.',
   },

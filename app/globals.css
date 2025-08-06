@@ -127,3 +127,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom utilities for better text wrapping on mobile */
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+
+.word-break-all {
+  word-break: break-all;
+}

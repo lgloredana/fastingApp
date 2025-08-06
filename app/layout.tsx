@@ -7,13 +7,7 @@ export const metadata: Metadata = {
   title: 'Monitorul de Post - Urmărește-ți Călătoria de Post Intermitent',
   description:
     'Un monitor cuprinzător de post pentru a urmări fazele și progresul postului intermitent',
-  keywords: [
-    'post',
-    'post intermitent',
-    'sănătate',
-    'wellness',
-    'monitor',
-  ],
+  keywords: ['post', 'post intermitent', 'sănătate', 'wellness', 'monitor'],
 };
 
 export default function RootLayout({

@@ -66,8 +66,8 @@ export function StopFastingDialog({
             Ești sigur că vrei să oprești această perioadă de post?
           </DialogDescription>
           <div className='text-sm text-muted-foreground mt-2'>
-            Această acțiune nu poate fi anulată și sesiunea ta curentă va fi salvată
-            în istoric.
+            Această acțiune nu poate fi anulată și sesiunea ta curentă va fi
+            salvată în istoric.
           </div>
         </DialogHeader>
 

@@ -175,14 +175,13 @@ export default function HistoryPage() {
 
                     <div className='text-right'>
                       <div className='text-2xl font-bold text-primary'>
-                                                          {session.duration
-                                    ? formatTime(session.duration)
-                                    : 'În Desfășurare'}
+                        {session.duration
+                          ? formatTime(session.duration)
+                          : 'În Desfășurare'}
                       </div>
                       {session.duration && (
                         <div className='text-sm text-muted-foreground'>
-                          {(session.duration / (1000 * 60 * 60)).toFixed(1)}{' '}
-                                                              ore
+                          {(session.duration / (1000 * 60 * 60)).toFixed(1)} ore
                         </div>
                       )}
                     </div>
