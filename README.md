@@ -14,12 +14,14 @@ A comprehensive intermittent fasting tracking application with detailed phase mo
 - 🇷🇴 **Romanian Language** - Localized content and date formatting
 
 ## Screenshots
-*Add screenshots here when making the repository public*
+
+_Add screenshots here when making the repository public_
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - pnpm (recommended) or npm
 
 ### Installation
@@ -54,6 +56,7 @@ pnpm start
 - **Date Handling**: date-fns with Romanian locale
 
 ## Project Structure
+
 ```
 fastingApp/
 ├── app/                 # Next.js app directory
