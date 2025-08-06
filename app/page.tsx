@@ -12,6 +12,11 @@ import {
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { safeFormatDate } from '@/lib/date-utils';
+import {
+  trackFastingStart,
+  trackFastingStop,
+  trackUpdateStartTime,
+} from '@/lib/analytics';
 import Link from 'next/link';
 import {
   readFastingData,
@@ -212,6 +217,9 @@ export default function FastingTracker() {
     setCurrentSession(session);
     setFastingStartTime(session.startTime);
 
+    // Track analytics event
+    trackFastingStart();
+
     // Update stats
     const stats = getFastingStats();
     setFastingStats(stats);
@@ -220,6 +228,12 @@ export default function FastingTracker() {
   const stopFasting = useCallback(() => {
     if (currentSession) {
       const completedSession = endFastingSession();
+
+      // Track analytics event with duration
+      if (completedSession && completedSession.duration) {
+        trackFastingStop(completedSession.duration);
+      }
+
       setCurrentSession(null);
       setFastingStartTime(null);
 
@@ -236,6 +250,9 @@ export default function FastingTracker() {
     if (updatedSession) {
       setCurrentSession(updatedSession);
       setFastingStartTime(updatedSession.startTime);
+
+      // Track analytics event
+      trackUpdateStartTime();
     }
   }, []);
 

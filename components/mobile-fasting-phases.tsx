@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Clock, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { trackMobilePhaseExpand } from '@/lib/analytics';
 
 interface FastingPhase {
   title: string;
@@ -28,7 +29,13 @@ export function MobileFastingPhases({
   );
 
   const togglePhase = (index: number) => {
+    const isExpanding = expandedPhase !== index;
     setExpandedPhase(expandedPhase === index ? null : index);
+    
+    // Track analytics only when expanding (not collapsing)
+    if (isExpanding) {
+      trackMobilePhaseExpand(phases[index].title);
+    }
   };
 
   const getPhaseStatus = (index: number, phase: FastingPhase) => {

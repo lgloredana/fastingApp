@@ -13,6 +13,7 @@ import {
   clearAllData,
   type FastingSession,
 } from '@/lib/client-storage';
+import { trackHistoryView, trackDataExport, trackDataClear } from '@/lib/analytics';
 
 const formatTime = (milliseconds: number): string => {
   const totalSeconds = Math.floor(milliseconds / 1000);
@@ -42,10 +43,18 @@ export default function HistoryPage() {
 
       setHistory(fastingHistory);
       setStats(fastingStats);
+      
+      // Track page view
+      trackHistoryView();
     };
 
     loadData();
   }, []);
+
+  const handleExportData = () => {
+    exportFastingDataAsFile();
+    trackDataExport();
+  };
 
   const handleClearData = () => {
     if (
@@ -61,6 +70,9 @@ export default function HistoryPage() {
         averageFastingTime: 0,
         longestFast: 0,
       });
+      
+      // Track analytics event
+      trackDataClear();
     }
   };
 
@@ -121,7 +133,7 @@ export default function HistoryPage() {
 
         {/* Action Buttons */}
         <div className='flex gap-2 mb-6'>
-          <Button onClick={exportFastingDataAsFile} variant='outline'>
+          <Button onClick={handleExportData} variant='outline'>
             Exportă Datele
           </Button>
           <Button onClick={handleClearData} variant='destructive'>
