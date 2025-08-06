@@ -129,21 +129,23 @@ export const getCurrentSession = async (): Promise<FastingSession | null> => {
 };
 
 // Update current session start time
-export const updateSessionStartTime = async (newStartTime: number): Promise<FastingSession | null> => {
+export const updateSessionStartTime = async (
+  newStartTime: number
+): Promise<FastingSession | null> => {
   const data = await readFastingData();
-  
+
   if (!data.currentSession) {
     return null;
   }
-  
+
   const updatedSession: FastingSession = {
     ...data.currentSession,
     startTime: newStartTime,
   };
-  
+
   data.currentSession = updatedSession;
   await saveFastingData(data);
-  
+
   return updatedSession;
 };
 

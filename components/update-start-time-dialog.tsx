@@ -37,22 +37,24 @@ export function UpdateStartTimeDialog({
   const handleSubmit = () => {
     try {
       // Combine date and time into a timestamp
-      const newStartTime = new Date(`${selectedDate}T${selectedTime}`).getTime();
-      
+      const newStartTime = new Date(
+        `${selectedDate}T${selectedTime}`
+      ).getTime();
+
       // Validate that the new start time is not in the future
       if (newStartTime > Date.now()) {
         alert('Start time cannot be in the future!');
         return;
       }
-      
+
       // Validate that the new start time is reasonable (not more than 7 days ago)
-      const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+      const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
       if (newStartTime < sevenDaysAgo) {
         if (!confirm('The start time is more than 7 days ago. Are you sure?')) {
           return;
         }
       }
-      
+
       onUpdateStartTime(newStartTime);
       setIsOpen(false);
     } catch (error) {
@@ -70,55 +72,58 @@ export function UpdateStartTimeDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          <Edit3 className="h-4 w-4" />
+        <Button variant='outline' size='sm' className='gap-2'>
+          <Edit3 className='h-4 w-4' />
           Update Start Time
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+          <DialogTitle className='flex items-center gap-2'>
+            <Clock className='h-5 w-5' />
             Update Fasting Start Time
           </DialogTitle>
           <DialogDescription>
-            Adjust when you actually started fasting. This will recalculate your current progress.
+            Adjust when you actually started fasting. This will recalculate your
+            current progress.
           </DialogDescription>
         </DialogHeader>
-        
-        <div className="grid gap-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="current-time">Current Start Time</Label>
-            <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
-              {format(currentStartTime, 'EEEE, dd MMMM yyyy, HH:mm', { locale: ro })}
+
+        <div className='grid gap-4 py-4'>
+          <div className='space-y-2'>
+            <Label htmlFor='current-time'>Current Start Time</Label>
+            <div className='p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+              {format(currentStartTime, 'EEEE, dd MMMM yyyy, HH:mm', {
+                locale: ro,
+              })}
             </div>
           </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="date">Date</Label>
+
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='space-y-2'>
+              <Label htmlFor='date'>Date</Label>
               <Input
-                id="date"
-                type="date"
+                id='date'
+                type='date'
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 max={format(new Date(), 'yyyy-MM-dd')}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="time">Time</Label>
+            <div className='space-y-2'>
+              <Label htmlFor='time'>Time</Label>
               <Input
-                id="time"
-                type="time"
+                id='time'
+                type='time'
                 value={selectedTime}
                 onChange={(e) => setSelectedTime(e.target.value)}
               />
             </div>
           </div>
-          
-          <div className="space-y-2">
+
+          <div className='space-y-2'>
             <Label>New Start Time Preview</Label>
-            <div className="p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-sm">
+            <div className='p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-sm'>
               {format(
                 new Date(`${selectedDate}T${selectedTime}`),
                 'EEEE, dd MMMM yyyy, HH:mm',
@@ -127,14 +132,12 @@ export function UpdateStartTimeDialog({
             </div>
           </div>
         </div>
-        
+
         <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant='outline' onClick={handleCancel}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>
-            Update Start Time
-          </Button>
+          <Button onClick={handleSubmit}>Update Start Time</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

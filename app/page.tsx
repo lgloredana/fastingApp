@@ -24,6 +24,7 @@ import {
   type FastingSession,
 } from '@/lib/client-storage';
 import { UpdateStartTimeDialog } from '@/components/update-start-time-dialog';
+import { StopFastingDialog } from '@/components/stop-fasting-dialog';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -330,14 +331,11 @@ export default function FastingTracker() {
                       Începe Fastingul
                     </Button>
                   ) : (
-                    <Button
-                      onClick={stopFasting}
-                      variant='destructive'
-                      size='lg'
-                      className='px-8 py-3 text-lg'
-                    >
-                      Oprește Fastingul
-                    </Button>
+                    <StopFastingDialog
+                      onConfirmStop={stopFasting}
+                      fastingStartTime={fastingStartTime}
+                      elapsedTime={elapsedTime}
+                    />
                   )}
                 </div>
               </CardContent>

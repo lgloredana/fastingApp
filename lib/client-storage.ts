@@ -110,21 +110,23 @@ export const getCurrentSession = (): FastingSession | null => {
 };
 
 // Update current session start time
-export const updateSessionStartTime = (newStartTime: number): FastingSession | null => {
+export const updateSessionStartTime = (
+  newStartTime: number
+): FastingSession | null => {
   const data = readFastingData();
-  
+
   if (!data.currentSession) {
     return null;
   }
-  
+
   const updatedSession: FastingSession = {
     ...data.currentSession,
     startTime: newStartTime,
   };
-  
+
   data.currentSession = updatedSession;
   saveFastingData(data);
-  
+
   return updatedSession;
 };
 
