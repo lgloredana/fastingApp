@@ -31,7 +31,7 @@ export const readFastingData = (): FastingData => {
   if (typeof window === 'undefined') {
     return getDefaultData();
   }
-  
+
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
@@ -49,7 +49,7 @@ export const saveFastingData = (data: FastingData): void => {
   if (typeof window === 'undefined') {
     return;
   }
-  
+
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (error) {
@@ -61,45 +61,45 @@ export const saveFastingData = (data: FastingData): void => {
 // Start a new fasting session
 export const startFastingSession = (): FastingSession => {
   const data = readFastingData();
-  
+
   const newSession: FastingSession = {
     id: `session-${Date.now()}`,
     startTime: Date.now(),
     createdAt: Date.now(),
   };
-  
+
   data.currentSession = newSession;
   saveFastingData(data);
-  
+
   return newSession;
 };
 
 // End the current fasting session
 export const endFastingSession = (notes?: string): FastingSession | null => {
   const data = readFastingData();
-  
+
   if (!data.currentSession) {
     return null;
   }
-  
+
   const endTime = Date.now();
   const duration = endTime - data.currentSession.startTime;
-  
+
   const completedSession: FastingSession = {
     ...data.currentSession,
     endTime,
     duration,
     notes,
   };
-  
+
   // Add to sessions history
   data.sessions.unshift(completedSession); // Add to beginning for recent-first order
   data.totalSessions += 1;
   data.totalFastingTime += duration;
   data.currentSession = null;
-  
+
   saveFastingData(data);
-  
+
   return completedSession;
 };
 
@@ -107,6 +107,25 @@ export const endFastingSession = (notes?: string): FastingSession | null => {
 export const getCurrentSession = (): FastingSession | null => {
   const data = readFastingData();
   return data.currentSession;
+};
+
+// Update current session start time
+export const updateSessionStartTime = (newStartTime: number): FastingSession | null => {
+  const data = readFastingData();
+  
+  if (!data.currentSession) {
+    return null;
+  }
+  
+  const updatedSession: FastingSession = {
+    ...data.currentSession,
+    startTime: newStartTime,
+  };
+  
+  data.currentSession = updatedSession;
+  saveFastingData(data);
+  
+  return updatedSession;
 };
 
 // Get fasting history
@@ -118,12 +137,13 @@ export const getFastingHistory = (): FastingSession[] => {
 // Get fasting statistics
 export const getFastingStats = () => {
   const data = readFastingData();
-  
-  const avgFastingTime = data.totalSessions > 0 ? data.totalFastingTime / data.totalSessions : 0;
+
+  const avgFastingTime =
+    data.totalSessions > 0 ? data.totalFastingTime / data.totalSessions : 0;
   const longestFast = data.sessions.reduce((longest, session) => {
-    return (session.duration || 0) > longest ? (session.duration || 0) : longest;
+    return (session.duration || 0) > longest ? session.duration || 0 : longest;
   }, 0);
-  
+
   return {
     totalSessions: data.totalSessions,
     totalFastingTime: data.totalFastingTime,
@@ -136,17 +156,19 @@ export const getFastingStats = () => {
 export const exportFastingDataAsFile = () => {
   const data = readFastingData();
   const jsonString = JSON.stringify(data, null, 2);
-  
+
   const blob = new Blob([jsonString], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  
+
   const a = document.createElement('a');
   a.href = url;
-  a.download = `fasting-data-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `fasting-data-backup-${
+    new Date().toISOString().split('T')[0]
+  }.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  
+
   URL.revokeObjectURL(url);
 };
 
@@ -154,7 +176,7 @@ export const exportFastingDataAsFile = () => {
 export const importFastingDataFromFile = (file: File): Promise<void> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    
+
     reader.onload = (e) => {
       try {
         const jsonString = e.target?.result as string;
@@ -165,11 +187,11 @@ export const importFastingDataFromFile = (file: File): Promise<void> => {
         reject(new Error('Invalid file format'));
       }
     };
-    
+
     reader.onerror = () => {
       reject(new Error('Error reading file'));
     };
-    
+
     reader.readAsText(file);
   });
 };

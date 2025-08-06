@@ -39,7 +39,7 @@ export default function HistoryPage() {
     const loadData = () => {
       const fastingHistory = getFastingHistory();
       const fastingStats = getFastingStats();
-      
+
       setHistory(fastingHistory);
       setStats(fastingStats);
     };
@@ -48,7 +48,11 @@ export default function HistoryPage() {
   }, []);
 
   const handleClearData = () => {
-    if (confirm('Are you sure you want to clear all fasting data? This cannot be undone.')) {
+    if (
+      confirm(
+        'Are you sure you want to clear all fasting data? This cannot be undone.'
+      )
+    ) {
       clearAllData();
       setHistory([]);
       setStats({
@@ -86,7 +90,9 @@ export default function HistoryPage() {
           <CardContent>
             <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
               <div className='text-center'>
-                <p className='text-3xl font-bold text-primary'>{stats.totalSessions}</p>
+                <p className='text-3xl font-bold text-primary'>
+                  {stats.totalSessions}
+                </p>
                 <p className='text-sm text-muted-foreground'>Total Sessions</p>
               </div>
               <div className='text-center'>
@@ -143,12 +149,19 @@ export default function HistoryPage() {
                   >
                     <div className='space-y-1'>
                       <div className='font-medium'>
-                        {format(session.startTime, 'EEEE, dd MMMM yyyy', { locale: ro })}
+                        {format(session.startTime, 'EEEE, dd MMMM yyyy', {
+                          locale: ro,
+                        })}
                       </div>
                       <div className='text-sm text-muted-foreground'>
-                        Started: {format(session.startTime, 'HH:mm', { locale: ro })}
+                        Started:{' '}
+                        {format(session.startTime, 'HH:mm', { locale: ro })}
                         {session.endTime && (
-                          <span> • Ended: {format(session.endTime, 'HH:mm', { locale: ro })}</span>
+                          <span>
+                            {' '}
+                            • Ended:{' '}
+                            {format(session.endTime, 'HH:mm', { locale: ro })}
+                          </span>
                         )}
                       </div>
                       {session.notes && (
@@ -157,14 +170,17 @@ export default function HistoryPage() {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className='text-right'>
                       <div className='text-2xl font-bold text-primary'>
-                        {session.duration ? formatTime(session.duration) : 'In Progress'}
+                        {session.duration
+                          ? formatTime(session.duration)
+                          : 'In Progress'}
                       </div>
                       {session.duration && (
                         <div className='text-sm text-muted-foreground'>
-                          {(session.duration / (1000 * 60 * 60)).toFixed(1)} hours
+                          {(session.duration / (1000 * 60 * 60)).toFixed(1)}{' '}
+                          hours
                         </div>
                       )}
                     </div>

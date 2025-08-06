@@ -48,7 +48,7 @@ const getDefaultData = (): FastingData => ({
 // Read fasting data from file
 export const readFastingData = async (): Promise<FastingData> => {
   const { dataFile } = getDataFilePath();
-  
+
   try {
     await ensureDataDir();
     const data = await fs.readFile(dataFile, 'utf-8');
@@ -65,7 +65,7 @@ export const readFastingData = async (): Promise<FastingData> => {
 // Save fasting data to file
 export const saveFastingData = async (data: FastingData): Promise<void> => {
   const { dataFile } = getDataFilePath();
-  
+
   try {
     await ensureDataDir();
     await fs.writeFile(dataFile, JSON.stringify(data, null, 2), 'utf-8');
@@ -78,45 +78,47 @@ export const saveFastingData = async (data: FastingData): Promise<void> => {
 // Start a new fasting session
 export const startFastingSession = async (): Promise<FastingSession> => {
   const data = await readFastingData();
-  
+
   const newSession: FastingSession = {
     id: `session-${Date.now()}`,
     startTime: Date.now(),
     createdAt: Date.now(),
   };
-  
+
   data.currentSession = newSession;
   await saveFastingData(data);
-  
+
   return newSession;
 };
 
 // End the current fasting session
-export const endFastingSession = async (notes?: string): Promise<FastingSession | null> => {
+export const endFastingSession = async (
+  notes?: string
+): Promise<FastingSession | null> => {
   const data = await readFastingData();
-  
+
   if (!data.currentSession) {
     return null;
   }
-  
+
   const endTime = Date.now();
   const duration = endTime - data.currentSession.startTime;
-  
+
   const completedSession: FastingSession = {
     ...data.currentSession,
     endTime,
     duration,
     notes,
   };
-  
+
   // Add to sessions history
   data.sessions.unshift(completedSession); // Add to beginning for recent-first order
   data.totalSessions += 1;
   data.totalFastingTime += duration;
   data.currentSession = null;
-  
+
   await saveFastingData(data);
-  
+
   return completedSession;
 };
 
@@ -124,6 +126,25 @@ export const endFastingSession = async (notes?: string): Promise<FastingSession 
 export const getCurrentSession = async (): Promise<FastingSession | null> => {
   const data = await readFastingData();
   return data.currentSession;
+};
+
+// Update current session start time
+export const updateSessionStartTime = async (newStartTime: number): Promise<FastingSession | null> => {
+  const data = await readFastingData();
+  
+  if (!data.currentSession) {
+    return null;
+  }
+  
+  const updatedSession: FastingSession = {
+    ...data.currentSession,
+    startTime: newStartTime,
+  };
+  
+  data.currentSession = updatedSession;
+  await saveFastingData(data);
+  
+  return updatedSession;
 };
 
 // Get fasting history
@@ -135,12 +156,13 @@ export const getFastingHistory = async (): Promise<FastingSession[]> => {
 // Get fasting statistics
 export const getFastingStats = async () => {
   const data = await readFastingData();
-  
-  const avgFastingTime = data.totalSessions > 0 ? data.totalFastingTime / data.totalSessions : 0;
+
+  const avgFastingTime =
+    data.totalSessions > 0 ? data.totalFastingTime / data.totalSessions : 0;
   const longestFast = data.sessions.reduce((longest, session) => {
-    return (session.duration || 0) > longest ? (session.duration || 0) : longest;
+    return (session.duration || 0) > longest ? session.duration || 0 : longest;
   }, 0);
-  
+
   return {
     totalSessions: data.totalSessions,
     totalFastingTime: data.totalFastingTime,

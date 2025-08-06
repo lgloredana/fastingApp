@@ -56,6 +56,7 @@ font-weight: 100 900;
     --color-blue-900: oklch(37.9% 0.146 265.522);
     --color-indigo-100: oklch(93% 0.034 272.788);
     --color-gray-50: oklch(98.5% 0.002 247.839);
+    --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-gray-600: oklch(44.6% 0.03 256.802);
@@ -996,6 +997,9 @@ font-weight: 100 900;
   .overflow-y-auto {
     overflow-y: auto;
   }
+  .rounded {
+    border-radius: 0.25rem;
+  }
   .rounded-\[2px\] {
     border-radius: 2px;
   }
@@ -1072,6 +1076,9 @@ font-weight: 100 900;
   .border-\(--color-border\) {
     border-color: var(--color-border);
   }
+  .border-blue-200 {
+    border-color: var(--color-blue-200);
+  }
   .border-blue-300 {
     border-color: var(--color-blue-300);
   }
@@ -1120,6 +1127,9 @@ font-weight: 100 900;
       background-color: color-mix(in oklab, var(--color-black) 50%, transparent);
     }
   }
+  .bg-blue-50 {
+    background-color: var(--color-blue-50);
+  }
   .bg-blue-100 {
     background-color: var(--color-blue-100);
   }
@@ -1137,6 +1147,9 @@ font-weight: 100 900;
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
+  }
+  .bg-gray-100 {
+    background-color: var(--color-gray-100);
   }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
@@ -1272,9 +1285,6 @@ font-weight: 100 900;
   }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);
-  }
-  .pt-1 {
-    padding-top: calc(var(--spacing) * 1);
   }
   .pt-2 {
     padding-top: calc(var(--spacing) * 2);
@@ -3549,6 +3559,11 @@ font-weight: 100 900;
       display: flex;
     }
   }
+  .sm\:max-w-\[425px\] {
+    @media (width >= 40rem) {
+      max-width: 425px;
+    }
+  }
   .sm\:max-w-lg {
     @media (width >= 40rem) {
       max-width: var(--container-lg);
@@ -3755,6 +3770,11 @@ font-weight: 100 900;
       border-color: var(--color-blue-700);
     }
   }
+  .dark\:border-blue-800 {
+    &:is(.dark *) {
+      border-color: var(--color-blue-800);
+    }
+  }
   .dark\:border-green-700 {
     &:is(.dark *) {
       border-color: var(--color-green-700);
@@ -3763,6 +3783,14 @@ font-weight: 100 900;
   .dark\:border-input {
     &:is(.dark *) {
       border-color: var(--input);
+    }
+  }
+  .dark\:bg-blue-900\/20 {
+    &:is(.dark *) {
+      background-color: color-mix(in srgb, oklch(37.9% 0.146 265.522) 20%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-blue-900) 20%, transparent);
+      }
     }
   }
   .dark\:bg-blue-900\/30 {
