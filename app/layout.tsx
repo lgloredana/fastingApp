@@ -1,21 +1,28 @@
-import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-import './globals.css'
+import type { Metadata } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Fasting Tracker - Track Your Intermittent Fasting Journey',
-  description: 'A comprehensive fasting tracker to monitor your intermittent fasting phases and progress',
-  keywords: ['fasting', 'intermittent fasting', 'health', 'wellness', 'tracker'],
-}
+  description:
+    'A comprehensive fasting tracker to monitor your intermittent fasting phases and progress',
+  keywords: [
+    'fasting',
+    'intermittent fasting',
+    'health',
+    'wellness',
+    'tracker',
+  ],
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <head>
         <style>{`
 html {
@@ -27,5 +34,5 @@ html {
       </head>
       <body>{children}</body>
     </html>
-  )
+  );
 }
