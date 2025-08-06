@@ -8,9 +8,20 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'; // Import Tooltip components
+} from '@/components/ui/tooltip';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
+import Link from 'next/link';
+import {
+  readFastingData,
+  startFastingSession,
+  endFastingSession,
+  getCurrentSession,
+  getFastingHistory,
+  getFastingStats,
+  exportFastingDataAsFile,
+  type FastingSession,
+} from '@/lib/client-storage';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -95,7 +106,7 @@ const getFastingPhase = (hours: number): FastingPhase => {
   if (hours < 4) {
     return FASTING_PHASES[0]; // 0-4 hours phase
   }
-  
+
   for (let i = FASTING_PHASES.length - 1; i >= 0; i--) {
     if (hours >= FASTING_PHASES[i].durationHours) {
       return FASTING_PHASES[i];
@@ -133,12 +144,32 @@ export default function FastingTracker() {
   const [currentPhase, setCurrentPhase] = useState<FastingPhase>(
     getFastingPhase(0)
   );
+  const [currentSession, setCurrentSession] = useState<FastingSession | null>(null);
+  const [fastingHistory, setFastingHistory] = useState<FastingSession[]>([]);
+  const [fastingStats, setFastingStats] = useState({
+    totalSessions: 0,
+    totalFastingTime: 0,
+    averageFastingTime: 0,
+    longestFast: 0,
+  });
 
+  // Load data from storage on component mount
   useEffect(() => {
-    const storedStartTime = localStorage.getItem('fastingStartTime');
-    if (storedStartTime) {
-      setFastingStartTime(parseInt(storedStartTime, 10));
-    }
+    const loadData = () => {
+      const session = getCurrentSession();
+      const history = getFastingHistory();
+      const stats = getFastingStats();
+      
+      setCurrentSession(session);
+      setFastingHistory(history);
+      setFastingStats(stats);
+      
+      if (session) {
+        setFastingStartTime(session.startTime);
+      }
+    };
+
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -164,24 +195,45 @@ export default function FastingTracker() {
   }, [fastingStartTime]);
 
   const startFasting = useCallback(() => {
-    const now = Date.now();
-    localStorage.setItem('fastingStartTime', now.toString());
-    setFastingStartTime(now);
+    const session = startFastingSession();
+    setCurrentSession(session);
+    setFastingStartTime(session.startTime);
+    
+    // Update stats
+    const stats = getFastingStats();
+    setFastingStats(stats);
   }, []);
 
   const stopFasting = useCallback(() => {
-    localStorage.removeItem('fastingStartTime');
-    setFastingStartTime(null);
-  }, []);
+    if (currentSession) {
+      const completedSession = endFastingSession();
+      setCurrentSession(null);
+      setFastingStartTime(null);
+      
+      // Update history and stats
+      const history = getFastingHistory();
+      const stats = getFastingStats();
+      setFastingHistory(history);
+      setFastingStats(stats);
+    }
+  }, [currentSession]);
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-6'>
       <div className='max-w-7xl mx-auto'>
         {/* Header */}
         <div className='text-center mb-8'>
-          <h1 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2'>
-            Fasting Tracker
-          </h1>
+          <div className='flex items-center justify-between mb-4'>
+            <div className='flex-1'></div>
+            <h1 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'>
+              Fasting Tracker
+            </h1>
+            <div className='flex-1 flex justify-end'>
+              <Link href='/history'>
+                <Button variant='outline'>View History</Button>
+              </Link>
+            </div>
+          </div>
           <p className='text-lg text-gray-600 dark:text-gray-300'>
             Track your intermittent fasting journey and phases
           </p>
@@ -227,21 +279,25 @@ export default function FastingTracker() {
                       </TooltipTrigger>
                       <TooltipContent className='max-w-md text-center'>
                         <div>
-                          {currentPhase.description.split('\n').map((line, index) => (
-                            <p key={index} className="mb-1 last:mb-0">
-                              {line}
-                            </p>
-                          ))}
+                          {currentPhase.description
+                            .split('\n')
+                            .map((line, index) => (
+                              <p key={index} className='mb-1 last:mb-0'>
+                                {line}
+                              </p>
+                            ))}
                         </div>
                       </TooltipContent>
                     </Tooltip>
-                                         <div className='text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
-                       {currentPhase.description.split('\n').map((line, index) => (
-                         <p key={index} className="mb-2 last:mb-0">
-                           {line}
-                         </p>
-                       ))}
-                     </div>
+                    <div className='text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                      {currentPhase.description
+                        .split('\n')
+                        .map((line, index) => (
+                          <p key={index} className='mb-2 last:mb-0'>
+                            {line}
+                          </p>
+                        ))}
+                    </div>
                   </div>
                 </TooltipProvider>
 
@@ -331,15 +387,20 @@ export default function FastingTracker() {
                                 </span>
                               </div>
                             </TooltipTrigger>
-                                                         <TooltipContent className='max-w-xs text-center'>
-                               <div>
-                                 {prediction.phase.description.split('\n').map((line, index) => (
-                                   <p key={index} className="mb-1 last:mb-0 text-sm">
-                                     {line}
-                                   </p>
-                                 ))}
-                               </div>
-                             </TooltipContent>
+                            <TooltipContent className='max-w-xs text-center'>
+                              <div>
+                                {prediction.phase.description
+                                  .split('\n')
+                                  .map((line, index) => (
+                                    <p
+                                      key={index}
+                                      className='mb-1 last:mb-0 text-sm'
+                                    >
+                                      {line}
+                                    </p>
+                                  ))}
+                              </div>
+                            </TooltipContent>
                           </Tooltip>
                         );
                       })}
@@ -401,7 +462,7 @@ export default function FastingTracker() {
             {fastingStartTime && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-xl'>Quick Stats</CardTitle>
+                  <CardTitle className='text-xl'>Current Session</CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-3'>
                   <div className='grid grid-cols-2 gap-4 text-center'>
@@ -418,6 +479,88 @@ export default function FastingTracker() {
                       <p className='text-xs text-muted-foreground'>Minutes</p>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Overall Statistics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className='text-xl'>Statistics</CardTitle>
+              </CardHeader>
+              <CardContent className='space-y-3'>
+                <div className='space-y-2'>
+                  <div className='flex justify-between text-sm'>
+                    <span>Total Sessions:</span>
+                    <span className='font-medium'>{fastingStats.totalSessions}</span>
+                  </div>
+                  <div className='flex justify-between text-sm'>
+                    <span>Total Time:</span>
+                    <span className='font-medium'>
+                      {formatTime(fastingStats.totalFastingTime)}
+                    </span>
+                  </div>
+                  <div className='flex justify-between text-sm'>
+                    <span>Average Fast:</span>
+                    <span className='font-medium'>
+                      {formatTime(fastingStats.averageFastingTime)}
+                    </span>
+                  </div>
+                  <div className='flex justify-between text-sm'>
+                    <span>Longest Fast:</span>
+                    <span className='font-medium'>
+                      {formatTime(fastingStats.longestFast)}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className='pt-2 border-t'>
+                  <Button 
+                    onClick={exportFastingDataAsFile} 
+                    variant="outline" 
+                    size="sm" 
+                    className='w-full'
+                  >
+                    Export Data
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent History */}
+            {fastingHistory.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className='text-xl'>Recent Sessions</CardTitle>
+                </CardHeader>
+                <CardContent className='space-y-2'>
+                  {fastingHistory.slice(0, 3).map((session) => (
+                    <div key={session.id} className='p-2 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+                      <div className='flex justify-between text-sm'>
+                        <span>
+                          {format(session.startTime, 'dd MMM', { locale: ro })}
+                        </span>
+                        <span className='font-medium'>
+                          {session.duration ? formatTime(session.duration) : 'In Progress'}
+                        </span>
+                      </div>
+                      {session.duration && (
+                        <div className='text-xs text-muted-foreground'>
+                          {(session.duration / (1000 * 60 * 60)).toFixed(1)}h fast
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  
+                  {fastingHistory.length > 3 && (
+                    <div className='text-center pt-2'>
+                      <Link href='/history'>
+                        <Button variant='ghost' size='sm' className='text-xs'>
+                          View All {fastingHistory.length} Sessions
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}
