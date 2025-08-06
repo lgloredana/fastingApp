@@ -25,6 +25,7 @@ import {
 } from '@/lib/client-storage';
 import { UpdateStartTimeDialog } from '@/components/update-start-time-dialog';
 import { StopFastingDialog } from '@/components/stop-fasting-dialog';
+import { MobileFastingPhases } from '@/components/mobile-fasting-phases';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -341,6 +342,15 @@ export default function FastingTracker() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Mobile Phases Section - Only visible on mobile */}
+          <MobileFastingPhases
+            phases={FASTING_PHASES}
+            currentPhaseIndex={FASTING_PHASES.findIndex(
+              (phase) => phase.durationHours === currentPhase.durationHours
+            )}
+            elapsedHours={elapsedTime / (1000 * 60 * 60)}
+          />
 
           {/* Sidebar - Phase Timeline */}
           <div className='space-y-6'>
