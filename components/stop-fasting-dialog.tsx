@@ -62,12 +62,12 @@ export function StopFastingDialog({
             <AlertTriangle className='h-5 w-5' />
             Stop Fasting Session?
           </DialogTitle>
-          <DialogDescription className='space-y-2'>
-            <p>Are you sure you want to stop this fasting period?</p>
-            <p className='text-sm text-muted-foreground'>
-              This action cannot be undone and your current session will be saved to history.
-            </p>
+          <DialogDescription>
+            Are you sure you want to stop this fasting period?
           </DialogDescription>
+          <div className='text-sm text-muted-foreground mt-2'>
+            This action cannot be undone and your current session will be saved to history.
+          </div>
         </DialogHeader>
 
         <div className='grid gap-4 py-4'>
