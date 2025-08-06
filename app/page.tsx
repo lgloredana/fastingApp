@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
+import { safeFormatDate } from '@/lib/date-utils';
 import Link from 'next/link';
 import {
   readFastingData,
@@ -133,9 +134,7 @@ const getPredictedPhaseTimes = (
         startTime + phase.durationHours * 60 * 60 * 1000;
       predictions.push({
         phase: phase,
-        predictedTime: format(predictedTimestamp, 'HH:mm, dd MMM', {
-          locale: ro,
-        }),
+        predictedTime: safeFormatDate(predictedTimestamp, 'HH:mm, dd MMM'),
       });
     }
   });
@@ -143,6 +142,7 @@ const getPredictedPhaseTimes = (
 };
 
 export default function FastingTracker() {
+  const [mounted, setMounted] = useState(false);
   const [fastingStartTime, setFastingStartTime] = useState<number | null>(null);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [currentPhase, setCurrentPhase] = useState<FastingPhase>(
@@ -159,8 +159,15 @@ export default function FastingTracker() {
     longestFast: 0,
   });
 
+  // Handle hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Load data from storage on component mount
   useEffect(() => {
+    if (!mounted) return;
+
     const loadData = () => {
       const session = getCurrentSession();
       const history = getFastingHistory();
@@ -176,7 +183,7 @@ export default function FastingTracker() {
     };
 
     loadData();
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -232,6 +239,24 @@ export default function FastingTracker() {
     }
   }, []);
 
+  // Prevent hydration mismatch by not rendering time-sensitive content until mounted
+  if (!mounted) {
+    return (
+      <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-6'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='text-center mb-8'>
+            <h1 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'>
+              Fasting Tracker
+            </h1>
+            <p className='text-lg text-gray-600 dark:text-gray-300'>
+              Loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-6'>
       <div className='max-w-7xl mx-auto'>
@@ -276,9 +301,7 @@ export default function FastingTracker() {
                     <div className='text-center'>
                       <p className='text-sm text-muted-foreground mb-2'>
                         Started:{' '}
-                        {format(fastingStartTime, 'HH:mm, dd MMM', {
-                          locale: ro,
-                        })}
+                        {safeFormatDate(fastingStartTime, 'HH:mm, dd MMM')}
                       </p>
                       <UpdateStartTimeDialog
                         currentStartTime={fastingStartTime}
@@ -569,7 +592,7 @@ export default function FastingTracker() {
                     >
                       <div className='flex justify-between text-sm'>
                         <span>
-                          {format(session.startTime, 'dd MMM', { locale: ro })}
+                          {safeFormatDate(session.startTime, 'dd MMM')}
                         </span>
                         <span className='font-medium'>
                           {session.duration
