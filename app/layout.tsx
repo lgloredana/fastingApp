@@ -4,15 +4,15 @@ import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Fasting Tracker - Track Your Intermittent Fasting Journey',
+  title: 'Monitorul de Post - Urmărește-ți Călătoria de Post Intermitent',
   description:
-    'A comprehensive fasting tracker to monitor your intermittent fasting phases and progress',
+    'Un monitor cuprinzător de post pentru a urmări fazele și progresul postului intermitent',
   keywords: [
-    'fasting',
-    'intermittent fasting',
-    'health',
+    'post',
+    'post intermitent',
+    'sănătate',
     'wellness',
-    'tracker',
+    'monitor',
   ],
 };
 

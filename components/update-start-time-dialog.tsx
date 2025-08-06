@@ -58,7 +58,7 @@ export function UpdateStartTimeDialog({
       onUpdateStartTime(newStartTime);
       setIsOpen(false);
     } catch (error) {
-      alert('Invalid date/time format');
+      alert('Format de dată/oră invalid');
     }
   };
 
@@ -74,24 +74,24 @@ export function UpdateStartTimeDialog({
       <DialogTrigger asChild>
         <Button variant='outline' size='sm' className='gap-2'>
           <Edit3 className='h-4 w-4' />
-          Update Start Time
+          Actualizează Ora de Start
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle className='flex items-center gap-2'>
             <Clock className='h-5 w-5' />
-            Update Fasting Start Time
+            Actualizează Ora de Început a Postului
           </DialogTitle>
           <DialogDescription>
-            Adjust when you actually started fasting. This will recalculate your
-            current progress.
+            Ajustează când ai început de fapt postul. Aceasta va recalcula
+            progresul tău curent.
           </DialogDescription>
         </DialogHeader>
 
         <div className='grid gap-4 py-4'>
           <div className='space-y-2'>
-            <Label htmlFor='current-time'>Current Start Time</Label>
+            <Label htmlFor='current-time'>Ora Curentă de Start</Label>
             <div className='p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
               {format(currentStartTime, 'EEEE, dd MMMM yyyy, HH:mm', {
                 locale: ro,
@@ -101,7 +101,7 @@ export function UpdateStartTimeDialog({
 
           <div className='grid grid-cols-2 gap-4'>
             <div className='space-y-2'>
-              <Label htmlFor='date'>Date</Label>
+              <Label htmlFor='date'>Data</Label>
               <Input
                 id='date'
                 type='date'
@@ -111,7 +111,7 @@ export function UpdateStartTimeDialog({
               />
             </div>
             <div className='space-y-2'>
-              <Label htmlFor='time'>Time</Label>
+              <Label htmlFor='time'>Ora</Label>
               <Input
                 id='time'
                 type='time'
@@ -122,7 +122,7 @@ export function UpdateStartTimeDialog({
           </div>
 
           <div className='space-y-2'>
-            <Label>New Start Time Preview</Label>
+            <Label>Previzualizare Nouă Oră de Start</Label>
             <div className='p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-sm'>
               {format(
                 new Date(`${selectedDate}T${selectedTime}`),
@@ -135,9 +135,9 @@ export function UpdateStartTimeDialog({
 
         <DialogFooter>
           <Button variant='outline' onClick={handleCancel}>
-            Cancel
+            Anulează
           </Button>
-          <Button onClick={handleSubmit}>Update Start Time</Button>
+          <Button onClick={handleSubmit}>Actualizează Ora de Start</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

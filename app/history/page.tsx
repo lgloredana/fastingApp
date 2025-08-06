@@ -71,21 +71,21 @@ export default function HistoryPage() {
         <div className='flex items-center justify-between mb-8'>
           <div>
             <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>
-              Fasting History
+              Istoricul Postului
             </h1>
             <p className='text-lg text-gray-600 dark:text-gray-300'>
-              Track your progress and view past sessions
+              Urmărește-ți progresul și vezi sesiunile trecute
             </p>
           </div>
           <Link href='/'>
-            <Button variant='outline'>Back to Tracker</Button>
+            <Button variant='outline'>Înapoi la Monitor</Button>
           </Link>
         </div>
 
         {/* Statistics Overview */}
         <Card className='mb-6'>
           <CardHeader>
-            <CardTitle>Overall Statistics</CardTitle>
+            <CardTitle>Statistici Generale</CardTitle>
           </CardHeader>
           <CardContent>
             <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
@@ -93,25 +93,27 @@ export default function HistoryPage() {
                 <p className='text-3xl font-bold text-primary'>
                   {stats.totalSessions}
                 </p>
-                <p className='text-sm text-muted-foreground'>Total Sessions</p>
+                <p className='text-sm text-muted-foreground'>Sesiuni Totale</p>
               </div>
               <div className='text-center'>
                 <p className='text-3xl font-bold text-primary'>
                   {Math.floor(stats.totalFastingTime / (1000 * 60 * 60))}h
                 </p>
-                <p className='text-sm text-muted-foreground'>Total Time</p>
+                <p className='text-sm text-muted-foreground'>Timp Total</p>
               </div>
               <div className='text-center'>
                 <p className='text-3xl font-bold text-primary'>
                   {Math.floor(stats.averageFastingTime / (1000 * 60 * 60))}h
                 </p>
-                <p className='text-sm text-muted-foreground'>Average Fast</p>
+                <p className='text-sm text-muted-foreground'>Post Mediu</p>
               </div>
               <div className='text-center'>
                 <p className='text-3xl font-bold text-primary'>
                   {Math.floor(stats.longestFast / (1000 * 60 * 60))}h
                 </p>
-                <p className='text-sm text-muted-foreground'>Longest Fast</p>
+                <p className='text-sm text-muted-foreground'>
+                  Cel Mai Lung Post
+                </p>
               </div>
             </div>
           </CardContent>
@@ -120,24 +122,24 @@ export default function HistoryPage() {
         {/* Action Buttons */}
         <div className='flex gap-2 mb-6'>
           <Button onClick={exportFastingDataAsFile} variant='outline'>
-            Export Data
+            Exportă Datele
           </Button>
           <Button onClick={handleClearData} variant='destructive'>
-            Clear All Data
+            Șterge Toate Datele
           </Button>
         </div>
 
         {/* Sessions History */}
         <Card>
           <CardHeader>
-            <CardTitle>Session History</CardTitle>
+            <CardTitle>Istoricul Sesiunilor</CardTitle>
           </CardHeader>
           <CardContent>
             {history.length === 0 ? (
               <div className='text-center py-8 text-muted-foreground'>
-                <p>No fasting sessions recorded yet.</p>
+                <p>Nu există încă sesiuni de post înregistrate.</p>
                 <Link href='/'>
-                  <Button className='mt-4'>Start Your First Fast</Button>
+                  <Button className='mt-4'>Începe Primul Tău Post</Button>
                 </Link>
               </div>
             ) : (
@@ -154,12 +156,12 @@ export default function HistoryPage() {
                         })}
                       </div>
                       <div className='text-sm text-muted-foreground'>
-                        Started:{' '}
+                        Început:{' '}
                         {format(session.startTime, 'HH:mm', { locale: ro })}
                         {session.endTime && (
                           <span>
                             {' '}
-                            • Ended:{' '}
+                            • Terminat:{' '}
                             {format(session.endTime, 'HH:mm', { locale: ro })}
                           </span>
                         )}
@@ -173,14 +175,14 @@ export default function HistoryPage() {
 
                     <div className='text-right'>
                       <div className='text-2xl font-bold text-primary'>
-                        {session.duration
-                          ? formatTime(session.duration)
-                          : 'In Progress'}
+                                                          {session.duration
+                                    ? formatTime(session.duration)
+                                    : 'În Desfășurare'}
                       </div>
                       {session.duration && (
                         <div className='text-sm text-muted-foreground'>
                           {(session.duration / (1000 * 60 * 60)).toFixed(1)}{' '}
-                          hours
+                                                              ore
                         </div>
                       )}
                     </div>

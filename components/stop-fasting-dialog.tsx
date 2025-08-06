@@ -60,14 +60,14 @@ export function StopFastingDialog({
         <DialogHeader>
           <DialogTitle className='flex items-center gap-2 text-destructive'>
             <AlertTriangle className='h-5 w-5' />
-            Stop Fasting Session?
+            Oprești Sesiunea de Post?
           </DialogTitle>
           <DialogDescription>
-            Are you sure you want to stop this fasting period?
+            Ești sigur că vrei să oprești această perioadă de post?
           </DialogDescription>
           <div className='text-sm text-muted-foreground mt-2'>
-            This action cannot be undone and your current session will be saved
-            to history.
+            Această acțiune nu poate fi anulată și sesiunea ta curentă va fi salvată
+            în istoric.
           </div>
         </DialogHeader>
 
@@ -75,7 +75,7 @@ export function StopFastingDialog({
           <div className='space-y-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
             <div className='text-center'>
               <p className='text-sm text-muted-foreground mb-1'>
-                Current Session
+                Sesiunea Curentă
               </p>
               <p className='text-2xl font-bold text-primary'>
                 {formatTime(elapsedTime)}
@@ -84,15 +84,15 @@ export function StopFastingDialog({
 
             <div className='space-y-1 text-sm'>
               <div className='flex justify-between'>
-                <span>Started:</span>
+                <span>Început:</span>
                 <span>
                   {format(fastingStartTime, 'HH:mm, dd MMM', { locale: ro })}
                 </span>
               </div>
               <div className='flex justify-between'>
-                <span>Duration:</span>
+                <span>Durata:</span>
                 <span className='font-medium'>
-                  {(elapsedTime / (1000 * 60 * 60)).toFixed(1)} hours
+                  {(elapsedTime / (1000 * 60 * 60)).toFixed(1)} ore
                 </span>
               </div>
             </div>
@@ -101,7 +101,7 @@ export function StopFastingDialog({
 
         <DialogFooter className='gap-2'>
           <Button variant='outline' onClick={handleCancel}>
-            Continue Fasting
+            Continuă Postul
           </Button>
           <Button
             variant='destructive'
@@ -109,7 +109,7 @@ export function StopFastingDialog({
             className='gap-2'
           >
             <StopCircle className='h-4 w-4' />
-            Stop & Save Session
+            Oprește & Salvează Sesiunea
           </Button>
         </DialogFooter>
       </DialogContent>

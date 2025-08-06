@@ -265,16 +265,16 @@ export default function FastingTracker() {
           <div className='flex items-center justify-between mb-4'>
             <div className='flex-1'></div>
             <h1 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'>
-              Fasting Tracker
+              Monitorul de Post
             </h1>
             <div className='flex-1 flex justify-end'>
               <Link href='/history'>
-                <Button variant='outline'>View History</Button>
+                <Button variant='outline'>Vezi Istoricul</Button>
               </Link>
             </div>
           </div>
           <p className='text-lg text-gray-600 dark:text-gray-300'>
-            Track your intermittent fasting journey and phases
+            Urmărește-ți călătoria de post intermitent și fazele acestuia
           </p>
         </div>
 
@@ -285,7 +285,7 @@ export default function FastingTracker() {
             <Card className='h-full'>
               <CardHeader>
                 <CardTitle className='text-2xl font-bold text-center'>
-                  Current Status
+                  Starea Curentă
                 </CardTitle>
               </CardHeader>
               <CardContent className='space-y-8'>
@@ -300,7 +300,7 @@ export default function FastingTracker() {
                   {fastingStartTime && (
                     <div className='text-center'>
                       <p className='text-sm text-muted-foreground mb-2'>
-                        Started:{' '}
+                        Început:{' '}
                         {safeFormatDate(fastingStartTime, 'HH:mm, dd MMM')}
                       </p>
                       <UpdateStartTimeDialog
@@ -381,7 +381,7 @@ export default function FastingTracker() {
             {fastingStartTime && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-xl'>Upcoming Phases</CardTitle>
+                  <CardTitle className='text-xl'>Fazele Urmățoare</CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-3'>
                   <TooltipProvider>
@@ -427,7 +427,7 @@ export default function FastingTracker() {
                                     }`}
                                   >
                                     {isActive
-                                      ? '✓ Complete'
+                                      ? '✓ Completă'
                                       : prediction.predictedTime}
                                   </span>
                                 </div>
@@ -461,12 +461,12 @@ export default function FastingTracker() {
             {/* Progress Overview */}
             <Card>
               <CardHeader>
-                <CardTitle className='text-xl'>Progress Overview</CardTitle>
+                <CardTitle className='text-xl'>Privire de Ansamblu</CardTitle>
               </CardHeader>
               <CardContent className='space-y-4'>
                 <div className='space-y-2'>
                   <div className='flex justify-between text-sm'>
-                    <span>Current Phase</span>
+                    <span>Faza Curentă</span>
                     <span className='font-medium'>
                       {Math.floor(elapsedTime / (1000 * 60 * 60))}h
                     </span>
@@ -491,13 +491,13 @@ export default function FastingTracker() {
                 <div className='pt-2 border-t'>
                   <div className='text-sm space-y-1'>
                     <div className='flex justify-between'>
-                      <span>Total Time:</span>
+                      <span>Timp Total:</span>
                       <span className='font-mono'>
                         {formatTime(elapsedTime)}
                       </span>
                     </div>
                     <div className='flex justify-between'>
-                      <span>Hours Fasted:</span>
+                      <span>Ore de Post:</span>
                       <span className='font-mono'>
                         {(elapsedTime / (1000 * 60 * 60)).toFixed(1)}h
                       </span>
@@ -511,7 +511,7 @@ export default function FastingTracker() {
             {fastingStartTime && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-xl'>Current Session</CardTitle>
+                  <CardTitle className='text-xl'>Sesiunea Curentă</CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-3'>
                   <div className='grid grid-cols-2 gap-4 text-center'>
@@ -519,13 +519,13 @@ export default function FastingTracker() {
                       <p className='text-2xl font-bold text-primary'>
                         {Math.floor(elapsedTime / (1000 * 60 * 60))}
                       </p>
-                      <p className='text-xs text-muted-foreground'>Hours</p>
+                      <p className='text-xs text-muted-foreground'>Ore</p>
                     </div>
                     <div className='space-y-1'>
                       <p className='text-2xl font-bold text-primary'>
                         {Math.floor(elapsedTime / (1000 * 60))}
                       </p>
-                      <p className='text-xs text-muted-foreground'>Minutes</p>
+                      <p className='text-xs text-muted-foreground'>Minute</p>
                     </div>
                   </div>
                 </CardContent>
@@ -535,30 +535,30 @@ export default function FastingTracker() {
             {/* Overall Statistics */}
             <Card>
               <CardHeader>
-                <CardTitle className='text-xl'>Statistics</CardTitle>
+                <CardTitle className='text-xl'>Statistici</CardTitle>
               </CardHeader>
               <CardContent className='space-y-3'>
                 <div className='space-y-2'>
                   <div className='flex justify-between text-sm'>
-                    <span>Total Sessions:</span>
+                    <span>Sesiuni Totale:</span>
                     <span className='font-medium'>
                       {fastingStats.totalSessions}
                     </span>
                   </div>
                   <div className='flex justify-between text-sm'>
-                    <span>Total Time:</span>
+                    <span>Timp Total:</span>
                     <span className='font-medium'>
                       {formatTime(fastingStats.totalFastingTime)}
                     </span>
                   </div>
                   <div className='flex justify-between text-sm'>
-                    <span>Average Fast:</span>
+                    <span>Post Mediu:</span>
                     <span className='font-medium'>
                       {formatTime(fastingStats.averageFastingTime)}
                     </span>
                   </div>
                   <div className='flex justify-between text-sm'>
-                    <span>Longest Fast:</span>
+                    <span>Cel Mai Lung Post:</span>
                     <span className='font-medium'>
                       {formatTime(fastingStats.longestFast)}
                     </span>
@@ -572,7 +572,7 @@ export default function FastingTracker() {
                     size='sm'
                     className='w-full'
                   >
-                    Export Data
+                    Exportă Datele
                   </Button>
                 </div>
               </CardContent>
@@ -582,7 +582,7 @@ export default function FastingTracker() {
             {fastingHistory.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-xl'>Recent Sessions</CardTitle>
+                  <CardTitle className='text-xl'>Sesiuni Recente</CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-2'>
                   {fastingHistory.slice(0, 3).map((session) => (
@@ -597,7 +597,7 @@ export default function FastingTracker() {
                         <span className='font-medium'>
                           {session.duration
                             ? formatTime(session.duration)
-                            : 'In Progress'}
+                            : 'În Desfășurare'}
                         </span>
                       </div>
                       {session.duration && (
@@ -613,7 +613,7 @@ export default function FastingTracker() {
                     <div className='text-center pt-2'>
                       <Link href='/history'>
                         <Button variant='ghost' size='sm' className='text-xs'>
-                          View All {fastingHistory.length} Sessions
+                          Vezi Toate {fastingHistory.length} Sesiunile
                         </Button>
                       </Link>
                     </div>
