@@ -473,7 +473,7 @@ export default function FastingTracker() {
                       style={{ borderRadius: '50px' }}
                     >
                       <Info className='h-4 w-4 flex-shrink-0' />
-                      <span className='text-sm font-medium'>
+                      <span className='text-sm text-semibold font-medium'>
                         Vezi De Ce e Benefică Pauza Alimentară.
                       </span>
                     </Button>
@@ -481,7 +481,7 @@ export default function FastingTracker() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className='flex justify-center gap-4 pt-4'>
+                <div className='flex justify-center gap-4'>
                   {!fastingStartTime ? (
                     <Button
                       onClick={startFasting}
@@ -528,20 +528,20 @@ export default function FastingTracker() {
 
                       {/* Allowed drinks image */}
                       <div className='flex justify-center mb-4'>
-                        <div className='relative w-full max-w-md h-32 overflow-hidden rounded-lg shadow-lg'>
+                        <div className='relative w-full max-w-2xl h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[28rem] overflow-hidden rounded-lg shadow-lg'>
                           <Image
                             src={`${
                               process.env.NODE_ENV === 'production'
                                 ? '/fastingApp'
                                 : ''
-                            }/bauturi.png`}
+                            }/bauturi3.png`}
                             alt='Băuturi permise în timpul pauzei alimentare'
                             fill
                             className='object-cover'
                             style={{
                               objectPosition: 'center 60%',
                             }}
-                            sizes='(max-width: 768px) 100vw, 448px'
+                            sizes='(max-width: 1700px) 100vw, 100vp'
                             priority={false}
                           />
                           <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 z-10'>
