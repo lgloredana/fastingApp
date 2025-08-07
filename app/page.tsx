@@ -16,6 +16,7 @@ import {
   trackUpdateStartTime,
 } from '@/lib/analytics';
 import Link from 'next/link';
+import { Info } from 'lucide-react';
 import {
   startFastingSession,
   endFastingSession,
@@ -460,6 +461,22 @@ export default function FastingTracker() {
                       }
                       return null;
                     })()}
+                </div>
+
+                {/* Info Button */}
+                <div className='flex justify-center pb-4'>
+                  <Link href='/beneficii'>
+                    <Button
+                      variant='outline'
+                      className='gap-2 rounded-full text-blue-700 border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300'
+                      style={{ borderRadius: '50px' }}
+                    >
+                      <Info className='h-4 w-4 flex-shrink-0' />
+                      <span className='text-sm font-medium'>
+                        Vezi De Ce E Benefică Pauza Alimentară?
+                      </span>
+                    </Button>
+                  </Link>
                 </div>
 
                 {/* Action Buttons */}
