@@ -372,18 +372,9 @@ export default function FastingTracker() {
               <CardContent className='space-y-8'>
                 {/* Timer Display */}
                 <div className='text-center'>
-                  <div className='flex items-center justify-center gap-4 mb-2'>
-                    <p className='text-readable-xl text-muted-foreground'>
-                      Timp scurs:
-                    </p>
-                    {fastingStartTime && (
-                      <StopFastingDialog
-                        onConfirmStop={stopFasting}
-                        fastingStartTime={fastingStartTime}
-                        elapsedTime={elapsedTime}
-                      />
-                    )}
-                  </div>
+                  <p className='text-readable-xl text-muted-foreground mb-2'>
+                    Timp scurs:
+                  </p>
                   <p className='text-6xl md:text-7xl font-extrabold tracking-tight text-primary mb-4'>
                     {formatTime(elapsedTime)}
                   </p>
@@ -479,10 +470,15 @@ export default function FastingTracker() {
                       Începe Postul
                     </Button>
                   ) : (
-                    <div className='text-center text-muted-foreground'>
-                      <p className='text-readable-base'>
+                    <div className='text-center space-y-4'>
+                      <p className='text-readable-base text-muted-foreground'>
                         Sesiunea de post este activă
                       </p>
+                      <StopFastingDialog
+                        onConfirmStop={stopFasting}
+                        fastingStartTime={fastingStartTime}
+                        elapsedTime={elapsedTime}
+                      />
                     </div>
                   )}
                 </div>
