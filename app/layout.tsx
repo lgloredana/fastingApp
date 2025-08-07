@@ -11,10 +11,12 @@ export const metadata: Metadata = {
   keywords: ['post', 'post intermitent', 'sănătate', 'wellness', 'monitor'],
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon.ico', sizes: '32x32' },
       { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+      { url: '/favicon-16.svg', sizes: '16x16', type: 'image/svg+xml' },
     ],
     apple: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
+    shortcut: '/favicon.svg',
   },
   manifest: '/manifest.json',
 };

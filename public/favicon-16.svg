@@ -1,0 +1,27 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="16" height="16" rx="3" fill="#4CAF50"/>
+  <circle cx="8" cy="8" r="5.5" fill="white" stroke="none"/>
+  <circle cx="8" cy="8" r="3.5" stroke="#4CAF50" stroke-width="0.5" fill="white"/>
+  <circle cx="8" cy="5" r="0.3" fill="#4CAF50"/>
+  <circle cx="9.8" cy="5.5" r="0.2" fill="#4CAF50"/>
+  <circle cx="11" cy="7" r="0.2" fill="#4CAF50"/>
+  <circle cx="11" cy="8" r="0.3" fill="#4CAF50"/>
+  <circle cx="11" cy="9" r="0.2" fill="#4CAF50"/>
+  <circle cx="9.8" cy="10.5" r="0.2" fill="#4CAF50"/>
+  <circle cx="8" cy="11" r="0.3" fill="#4CAF50"/>
+  <circle cx="6.2" cy="10.5" r="0.2" fill="#4CAF50"/>
+  <circle cx="5" cy="9" r="0.2" fill="#4CAF50"/>
+  <circle cx="5" cy="8" r="0.3" fill="#4CAF50"/>
+  <circle cx="5" cy="7" r="0.2" fill="#4CAF50"/>
+  <circle cx="6.2" cy="5.5" r="0.2" fill="#4CAF50"/>
+  <line x1="8" y1="8" x2="8" y2="5.8" stroke="#4CAF50" stroke-width="0.4" stroke-linecap="round"/>
+  <line x1="8" y1="8" x2="9.8" y2="8" stroke="#4CAF50" stroke-width="0.3" stroke-linecap="round"/>
+  <circle cx="8" cy="8" r="0.4" fill="#4CAF50"/>
+  <rect x="3.5" y="5" width="0.5" height="6" rx="0.2" fill="white"/>
+  <rect x="3.2" y="5" width="0.3" height="1.5" rx="0.1" fill="white"/>
+  <rect x="3.5" y="5" width="0.3" height="1.5" rx="0.1" fill="white"/>
+  <rect x="3.8" y="5" width="0.3" height="1.5" rx="0.1" fill="white"/>
+  <rect x="4.1" y="5" width="0.3" height="1.5" rx="0.1" fill="white"/>
+  <rect x="12" y="5" width="0.5" height="6" rx="0.2" fill="white"/>
+  <path d="M12.2 5 C12.2 4.2, 12.5 4.2, 12.5 5 Z" fill="white"/>
+</svg>
