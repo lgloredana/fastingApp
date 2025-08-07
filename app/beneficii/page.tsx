@@ -129,7 +129,8 @@ export default function BeneficiiPage() {
         {/* Carousel */}
         <div className='relative'>
           <Card
-            className={`${currentBenefit.color} ${currentBenefit.borderColor} border-2 min-h-[500px] transition-all duration-500`}
+            className={`${currentBenefit.color} ${currentBenefit.borderColor} border-2 min-h-[500px] transition-all duration-500 cursor-pointer`}
+            onClick={nextSlide}
           >
             <CardContent className='py-8 px-6 sm:px-20'>
               <div className='text-center mb-6'>
