@@ -9,7 +9,23 @@ export const metadata: Metadata = {
   description:
     'Un monitor cuprinzător de post pentru a urmări fazele și progresul postului intermitent',
   keywords: ['post', 'post intermitent', 'sănătate', 'wellness', 'monitor'],
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+    ],
+    apple: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
+  },
+  manifest: '/manifest.json',
 };
+
+export function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: '#2563eb',
+  };
+}
 
 export default function RootLayout({
   children,
