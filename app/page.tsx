@@ -290,7 +290,7 @@ export default function FastingTracker() {
               </Link>
             </div>
           </div>
-          
+
           {/* Desktop Layout - Horizontal */}
           <div className='hidden md:flex items-center justify-between mb-4'>
             <div className='flex-1'></div>
@@ -303,7 +303,7 @@ export default function FastingTracker() {
               </Link>
             </div>
           </div>
-          
+
           <p className='text-lg text-gray-600 dark:text-gray-300'>
             Urmărește-ți călătoria de post intermitent și fazele acestuia
           </p>
