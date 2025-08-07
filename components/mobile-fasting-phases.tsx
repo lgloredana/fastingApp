@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Clock, Info } from 'lucide-react';
@@ -28,6 +28,11 @@ export function MobileFastingPhases({
     currentPhaseIndex
   );
 
+  // Update expanded phase when current phase changes
+  useEffect(() => {
+    setExpandedPhase(currentPhaseIndex);
+  }, [currentPhaseIndex]);
+
   const togglePhase = (index: number) => {
     const isExpanding = expandedPhase !== index;
     setExpandedPhase(expandedPhase === index ? null : index);
@@ -39,10 +44,10 @@ export function MobileFastingPhases({
   };
 
   const getPhaseStatus = (index: number, phase: FastingPhase) => {
-    if (elapsedHours >= phase.durationHours) {
-      return 'completed';
-    } else if (index === currentPhaseIndex) {
+    if (index === currentPhaseIndex) {
       return 'current';
+    } else if (elapsedHours >= phase.durationHours) {
+      return 'completed';
     } else {
       return 'upcoming';
     }
@@ -64,7 +69,7 @@ export function MobileFastingPhases({
       case 'completed':
         return '✅';
       case 'current':
-        return '🔄';
+        return '🎉';
       default:
         return '⏳';
     }
@@ -141,20 +146,20 @@ export function MobileFastingPhases({
                       ))}
                     </div>
 
-                    {status === 'current' && (
-                      <div className='mt-2 p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded text-center'>
-                        <p className='text-xs text-blue-800 dark:text-blue-200 font-medium'>
-                          🔄 Curent: {elapsedHours.toFixed(1)}h /{' '}
-                          {phase.durationHours}h
-                        </p>
-                      </div>
-                    )}
-
                     {status === 'completed' && (
                       <div className='mt-2 p-1.5 bg-green-100 dark:bg-green-900/30 rounded text-center'>
                         <p className='text-xs text-green-800 dark:text-green-200 font-medium'>
                           <span className='text-green-500 mr-1'>✅</span>{' '}
                           Completă
+                        </p>
+                      </div>
+                    )}
+
+                    {status === 'current' && (
+                      <div className='mt-2 p-1.5 bg-green-100 dark:bg-green-900/30 rounded text-center'>
+                        <p className='text-xs text-green-800 dark:text-green-200 font-medium'>
+                          <span className='text-green-500 mr-1'>🎉</span> În
+                          Progres
                         </p>
                       </div>
                     )}
