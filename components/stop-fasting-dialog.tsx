@@ -52,7 +52,8 @@ export function StopFastingDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant='destructive' size='lg' className='px-8 py-3 text-lg'>
+        <Button variant='outline' size='lg' className='px-6 py-2 gap-2'>
+          <StopCircle className='h-4 w-4' />
           Oprește Fastingul
         </Button>
       </DialogTrigger>

@@ -364,16 +364,27 @@ export default function FastingTracker() {
                       Începe Fastingul
                     </Button>
                   ) : (
-                    <StopFastingDialog
-                      onConfirmStop={stopFasting}
-                      fastingStartTime={fastingStartTime}
-                      elapsedTime={elapsedTime}
-                    />
+                    <div className='text-center text-muted-foreground'>
+                      <p className='text-sm'>
+                        Sesiunea de post este activă
+                      </p>
+                    </div>
                   )}
                 </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Stop Button Section - Only when fasting */}
+          {fastingStartTime && (
+            <div className='lg:col-span-3 flex justify-center mb-4'>
+              <StopFastingDialog
+                onConfirmStop={stopFasting}
+                fastingStartTime={fastingStartTime}
+                elapsedTime={elapsedTime}
+              />
+            </div>
+          )}
 
           {/* History Button Section */}
           <div className='lg:col-span-3 flex justify-center mb-6'>
