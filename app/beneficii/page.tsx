@@ -92,6 +92,11 @@ const benefitsData = [
 
 export default function BeneficiiPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance (in px) to trigger slide change
+  const minSwipeDistance = 50;
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % benefitsData.length);
@@ -105,6 +110,29 @@ export default function BeneficiiPage() {
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
   };
 
   const currentBenefit = benefitsData[currentSlide];
@@ -131,6 +159,9 @@ export default function BeneficiiPage() {
           <Card
             className={`${currentBenefit.color} ${currentBenefit.borderColor} border-2 min-h-[500px] transition-all duration-500 cursor-pointer`}
             onClick={nextSlide}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
           >
             <CardContent className='py-8 px-6 sm:px-20'>
               <div className='text-center mb-6'>
