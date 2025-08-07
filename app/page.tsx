@@ -95,7 +95,7 @@ const FASTING_PHASES: FastingPhase[] = [
   },
   {
     durationHours: 18,
-    title: 'După 18-20 ore: Autofagie intensă',
+    title: 'După 18 ore: Autofagie intensă',
     description:
       'Autofagia se intensifică, grăsimile sunt arse la intensitate maximă, se simte o claritate mentală sau ușoară euforie, reparații interioare serioase, corpul face curat.',
     color: '#42A5F5', // Albastru mediu - autofagie + cetoză
@@ -339,15 +339,19 @@ export default function FastingTracker() {
       <div className='max-w-7xl mx-auto'>
         {/* Header - Compact */}
         <div className='text-center mb-4'>
-          <Button
-            variant='outline'
-            size='lg'
-            className='inline-flex items-center justify-center h-auto p-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors w-full'
+          <Card
+            className='bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 border-green-400 dark:border-green-600 cursor-pointer hover:from-green-600 hover:to-green-700 dark:hover:from-green-700 dark:hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl'
             onClick={() => setShowHeaderInfo(!showHeaderInfo)}
           >
-            <h1 className='text-readable-lg font-medium'>Monitorul de Post</h1>
-            <Info className='h-4 w-4 text-gray-400' />
-          </Button>
+            <CardContent className='p-0'>
+              <div className='inline-flex items-center justify-center gap-2 w-full py-1 px-4'>
+                <h1 className='text-readable-lg font-medium text-white'>
+                  Monitorul de Post
+                </h1>
+                <Info className='h-4 w-4 text-white/80' />
+              </div>
+            </CardContent>
+          </Card>
 
           {showHeaderInfo && (
             <p className='text-readable-sm text-gray-500 dark:text-gray-400 mt-2 animate-in slide-in-from-top-1 duration-200'>
@@ -406,6 +410,53 @@ export default function FastingTracker() {
                       </p>
                     ))}
                   </div>
+
+                  {/* Next Phase Info */}
+                  {fastingStartTime &&
+                    (() => {
+                      const currentPhaseIndex = FASTING_PHASES.findIndex(
+                        (phase) =>
+                          phase.durationHours === currentPhase.durationHours
+                      );
+                      const nextPhase = FASTING_PHASES[currentPhaseIndex + 1];
+
+                      if (nextPhase) {
+                        const currentHours = elapsedTime / (1000 * 60 * 60);
+                        const hoursUntilNext =
+                          nextPhase.durationHours - currentHours;
+
+                        if (hoursUntilNext > 0) {
+                          const nextPhaseTime = new Date(
+                            fastingStartTime +
+                              nextPhase.durationHours * 60 * 60 * 1000
+                          );
+
+                          return (
+                            <div className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'>
+                              <div className='text-center space-y-2'>
+                                <p className='text-readable-base text-blue-700 dark:text-blue-300 font-medium'>
+                                  🎯 Următoarea fază
+                                </p>
+                                <h3 className='text-readable-lg font-semibold text-blue-800 dark:text-blue-200'>
+                                  {nextPhase.title}
+                                </h3>
+                                <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-readable-sm text-blue-600 dark:text-blue-400'>
+                                  <span>
+                                    În {Math.floor(hoursUntilNext)}h{' '}
+                                    {Math.floor((hoursUntilNext % 1) * 60)}min
+                                  </span>
+                                  <span className='hidden sm:inline'>•</span>
+                                  <span>
+                                    la {safeFormatDate(nextPhaseTime, 'HH:mm')}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }
+                      }
+                      return null;
+                    })()}
                 </div>
 
                 {/* Action Buttons */}
