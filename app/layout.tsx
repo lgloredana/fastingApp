@@ -7,10 +7,10 @@ import './globals.css';
 const basePath = process.env.NODE_ENV === 'production' ? '/fastingApp' : '';
 
 export const metadata: Metadata = {
-  title: 'Monitorul de Post - Urmărește-ți Călătoria de Post Intermitent',
+  title: 'Monitorul de Pauza Alimentara - Urmărește-ți Călătoria de Pauza Alimentara',
   description:
-    'Un monitor cuprinzător de post pentru a urmări fazele și progresul postului intermitent',
-  keywords: ['post', 'post intermitent', 'sănătate', 'wellness', 'monitor'],
+    'Un monitor cuprinzător de pauza alimentara pentru a urmări fazele și progresul pauzei alimentare intermitente',
+  keywords: ['pauza alimentara', 'pauza alimentara intermitenta', 'sănătate', 'wellness', 'monitor'],
   icons: {
     icon: [
       { url: `${basePath}/favicon.ico`, sizes: '32x32' },

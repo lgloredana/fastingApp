@@ -80,11 +80,11 @@ export function UpdateStartTimeDialog({
         <DialogHeader>
           <DialogTitle className='flex items-center gap-2'>
             <Clock className='h-5 w-5' />
-            Actualizează Ora de Început a Postului
+            Actualizează Ora de Început a Pauzei Alimentare
           </DialogTitle>
           <DialogDescription>
-            Ajustează când ai început de fapt postul. Aceasta va recalcula
-            progresul tău curent.
+            Ajustează când ai început de fapt pauza alimentara. Aceasta va
+            recalcula progresul tău curent.
           </DialogDescription>
         </DialogHeader>
 

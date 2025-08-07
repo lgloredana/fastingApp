@@ -1,7 +1,7 @@
 {
-  "name": "Monitorul de Post - Fasting Tracker",
+  "name": "Monitorul de Pauza Alimentara - Fasting Tracker",
   "short_name": "Fasting Tracker",
-  "description": "Urmărește-ți călătoria de post intermitent și fazele acestuia",
+  "description": "Urmărește-ți călătoria de pauza alimentara intermitenta și fazele acestuia",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

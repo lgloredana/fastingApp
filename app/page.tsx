@@ -346,7 +346,7 @@ export default function FastingTracker() {
             <CardContent className='p-0'>
               <div className='inline-flex items-center justify-center gap-2 w-full py-1 px-4'>
                 <h1 className='text-readable-lg font-medium text-white'>
-                  Monitorul de Post
+                  Monitorul de Pauza Alimentara
                 </h1>
                 <Info className='h-4 w-4 text-white/80' />
               </div>
@@ -355,7 +355,7 @@ export default function FastingTracker() {
 
           {showHeaderInfo && (
             <p className='text-readable-sm text-gray-500 dark:text-gray-400 mt-2 animate-in slide-in-from-top-1 duration-200'>
-              Urmărește-ți călătoria de post intermitent și fazele acestuia
+              Urmărește-ți călătoria de pauza alimentara și fazele acestuia
             </p>
           )}
         </div>
@@ -467,12 +467,12 @@ export default function FastingTracker() {
                       size='lg'
                       className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold bg-green-600 hover:bg-green-700 text-white border-green-600 hover:border-green-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px]'
                     >
-                      Începe Postul
+                      Începe Pauza Alimentara
                     </Button>
                   ) : (
                     <div className='text-center space-y-4'>
                       <p className='text-readable-base text-muted-foreground'>
-                        Sesiunea de post este activă
+                        Sesiunea de pauza alimentara este activă
                       </p>
                       <StopFastingDialog
                         onConfirmStop={stopFasting}
@@ -493,7 +493,7 @@ export default function FastingTracker() {
               <Card>
                 <CardHeader>
                   <CardTitle className='text-readable-xl'>
-                    Toate Fazele de Post
+                    Toate Fazele de Pauza Alimentara
                   </CardTitle>
                 </CardHeader>
                 <CardContent
@@ -683,7 +683,7 @@ export default function FastingTracker() {
                       </span>
                     </div>
                     <div className='flex justify-between'>
-                      <span>Ore de Post:</span>
+                      <span>Ore de Pauza Alimentara:</span>
                       <span className='font-mono'>
                         {(elapsedTime / (1000 * 60 * 60)).toFixed(1)}h
                       </span>
@@ -738,13 +738,13 @@ export default function FastingTracker() {
                     </span>
                   </div>
                   <div className='flex justify-between text-sm'>
-                    <span>Post Mediu:</span>
+                    <span>Pauza Alimentara Medie:</span>
                     <span className='font-medium'>
                       {formatTime(fastingStats.averageFastingTime)}
                     </span>
                   </div>
                   <div className='flex justify-between text-sm'>
-                    <span>Cel Mai Lung Post:</span>
+                    <span>Cea Mai Lungă Pauza Alimentara:</span>
                     <span className='font-medium'>
                       {formatTime(fastingStats.longestFast)}
                     </span>

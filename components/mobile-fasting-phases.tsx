@@ -83,7 +83,7 @@ export function MobileFastingPhases({
       <CardHeader className='pb-3'>
         <CardTitle className='flex items-center gap-2 text-base'>
           <Info className='h-4 w-4' />
-          Fazele Postului
+          Fazele Pauzei Alimentare
         </CardTitle>
       </CardHeader>
       <CardContent className='space-y-2'>

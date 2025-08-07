@@ -13,7 +13,11 @@ import {
   clearAllData,
   type FastingSession,
 } from '@/lib/client-storage';
-import { trackHistoryView, trackDataExport, trackDataClear } from '@/lib/analytics';
+import {
+  trackHistoryView,
+  trackDataExport,
+  trackDataClear,
+} from '@/lib/analytics';
 
 const formatTime = (milliseconds: number): string => {
   const totalSeconds = Math.floor(milliseconds / 1000);
@@ -43,7 +47,7 @@ export default function HistoryPage() {
 
       setHistory(fastingHistory);
       setStats(fastingStats);
-      
+
       // Track page view
       trackHistoryView();
     };
@@ -70,7 +74,7 @@ export default function HistoryPage() {
         averageFastingTime: 0,
         longestFast: 0,
       });
-      
+
       // Track analytics event
       trackDataClear();
     }
@@ -83,7 +87,7 @@ export default function HistoryPage() {
         <div className='flex items-center justify-between mb-8'>
           <div>
             <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>
-              Istoricul Postului
+              Istoricul Pauzei Alimentare
             </h1>
             <p className='text-lg text-gray-600 dark:text-gray-300'>
               Urmărește-ți progresul și vezi sesiunile trecute
@@ -117,14 +121,16 @@ export default function HistoryPage() {
                 <p className='text-3xl font-bold text-primary'>
                   {Math.floor(stats.averageFastingTime / (1000 * 60 * 60))}h
                 </p>
-                <p className='text-sm text-muted-foreground'>Post Mediu</p>
+                <p className='text-sm text-muted-foreground'>
+                  Pauza Alimentara Medie
+                </p>
               </div>
               <div className='text-center'>
                 <p className='text-3xl font-bold text-primary'>
                   {Math.floor(stats.longestFast / (1000 * 60 * 60))}h
                 </p>
                 <p className='text-sm text-muted-foreground'>
-                  Cel Mai Lung Post
+                  Cel Mai Lungă Pauza Alimentara
                 </p>
               </div>
             </div>
@@ -149,9 +155,11 @@ export default function HistoryPage() {
           <CardContent>
             {history.length === 0 ? (
               <div className='text-center py-8 text-muted-foreground'>
-                <p>Nu există încă sesiuni de post înregistrate.</p>
+                <p>Nu există încă sesiuni de pauza alimentara înregistrate.</p>
                 <Link href='/'>
-                  <Button className='mt-4'>Începe Primul Tău Post</Button>
+                  <Button className='mt-4'>
+                    Începe Prima Ta Pauza Alimentara
+                  </Button>
                 </Link>
               </div>
             ) : (
