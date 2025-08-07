@@ -398,13 +398,14 @@ export default function FastingTracker() {
             {fastingStartTime && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-xl'>Fazele Urmățoare</CardTitle>
+                  <CardTitle className='text-xl'>
+                    Toate Fazele de Post
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className='space-y-3'>
+                <CardContent className='space-y-3 max-h-[600px] overflow-y-auto'>
                   <TooltipProvider>
-                    {getPredictedPhaseTimes(fastingStartTime)
-                      .slice(0, 5)
-                      .map((prediction, index) => {
+                    {getPredictedPhaseTimes(fastingStartTime).map(
+                      (prediction, index) => {
                         const currentHours = elapsedTime / (1000 * 60 * 60);
                         const isActive =
                           currentHours >= prediction.phase.durationHours;
@@ -469,7 +470,8 @@ export default function FastingTracker() {
                             </TooltipContent>
                           </Tooltip>
                         );
-                      })}
+                      }
+                    )}
                   </TooltipProvider>
                 </CardContent>
               </Card>
