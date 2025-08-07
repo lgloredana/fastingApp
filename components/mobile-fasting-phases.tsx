@@ -81,7 +81,7 @@ export function MobileFastingPhases({
       {' '}
       {/* Only show on mobile */}
       <CardHeader className='pb-3'>
-        <CardTitle className='flex items-center gap-2 text-base'>
+        <CardTitle className='lg:text-lg font-semibold flex items-center gap-2 text-base'>
           <Info className='h-4 w-4' />
           Fazele Pauzei Alimentare
         </CardTitle>
@@ -123,7 +123,7 @@ export function MobileFastingPhases({
                     {!isExpanded && (
                       <h3
                         className={cn(
-                          'font-semibold text-xs leading-tight text-left truncate',
+                          'font-semibold text-sm leading-tight text-left truncate',
                           status === 'current' &&
                             'text-green-700 dark:text-green-300',
                           status === 'completed' &&
@@ -163,7 +163,7 @@ export function MobileFastingPhases({
                     >
                       {phase.title}
                     </h4>
-                    <div className='text-xs text-gray-700 dark:text-gray-300 space-y-1.5 pl-4'>
+                    <div className='text-sm font-semibold text-gray-700 dark:text-gray-300 space-y-1.5 pl-4'>
                       {phase.description.split('\n').map((line, lineIndex) => (
                         <p key={lineIndex} className='leading-relaxed'>
                           {line}
@@ -173,7 +173,7 @@ export function MobileFastingPhases({
 
                     {status === 'completed' && (
                       <div className='mt-2 p-1.5 bg-green-100 dark:bg-green-900/30 rounded text-center'>
-                        <p className='text-xs text-green-800 dark:text-green-200 font-medium'>
+                        <p className='text-sm font-semibold text-green-800 dark:text-green-200 font-medium'>
                           <span className='text-green-500 mr-1'>✅</span>{' '}
                           Completă
                         </p>
@@ -182,7 +182,7 @@ export function MobileFastingPhases({
 
                     {status === 'current' && (
                       <div className='mt-2 p-1.5 bg-green-100 dark:bg-green-900/30 rounded text-center'>
-                        <p className='text-xs text-green-800 dark:text-green-200 font-medium'>
+                        <p className='text-sm font-semibold text-green-800 dark:text-green-200 font-medium'>
                           <span className='text-green-500 mr-1'>🎉</span> În
                           Progres
                         </p>
@@ -191,7 +191,7 @@ export function MobileFastingPhases({
 
                     {status === 'upcoming' && (
                       <div className='mt-2 p-1.5 bg-gray-100 dark:bg-gray-800 rounded text-center'>
-                        <p className='text-xs text-gray-600 dark:text-gray-400 font-medium'>
+                        <p className='text-sm font-semibold text-gray-600 dark:text-gray-400 font-medium'>
                           ⏳ În{' '}
                           {(phase.durationHours - elapsedHours).toFixed(1)}h
                         </p>
@@ -205,7 +205,7 @@ export function MobileFastingPhases({
         })}
 
         <div className='mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-center'>
-          <p className='text-xs text-blue-700 dark:text-blue-300'>
+          <p className='text-sm font-semibold text-blue-700 dark:text-blue-300'>
             💡 Tap pentru detalii
           </p>
         </div>
