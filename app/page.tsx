@@ -263,13 +263,21 @@ export default function FastingTracker() {
       const currentPhaseIndex = FASTING_PHASES.findIndex(
         (phase) => phase.durationHours === currentPhase.durationHours
       );
-      if (currentPhaseIndex !== -1) {
-        setExpandedDesktopPhase(currentPhaseIndex);
+
+      // Find the corresponding index in getPredictedPhaseTimes (which excludes durationHours: 0)
+      const predictions = getPredictedPhaseTimes(fastingStartTime);
+      const predictionIndex = predictions.findIndex(
+        (prediction) =>
+          prediction.phase.durationHours === currentPhase.durationHours
+      );
+
+      if (predictionIndex !== -1) {
+        setExpandedDesktopPhase(predictionIndex);
 
         // Scroll to current phase within the phases container after a short delay
         setTimeout(() => {
           const currentPhaseElement = document.getElementById(
-            `desktop-phase-${currentPhaseIndex}`
+            `desktop-phase-${predictionIndex}`
           );
           const phasesContainer = document.getElementById(
             'desktop-phases-container'
@@ -434,6 +442,21 @@ export default function FastingTracker() {
                       const isNext = !isActive && index === 0;
                       const isExpanded = expandedDesktopPhase === index;
 
+                      // Find the current phase index in the full FASTING_PHASES array
+                      const currentPhaseIndex = FASTING_PHASES.findIndex(
+                        (phase) =>
+                          phase.durationHours === currentPhase.durationHours
+                      );
+
+                      // Map the prediction index to the actual FASTING_PHASES index
+                      // Since getPredictedPhaseTimes excludes phase with durationHours: 0
+                      const actualPhaseIndex = FASTING_PHASES.findIndex(
+                        (phase) =>
+                          phase.durationHours === prediction.phase.durationHours
+                      );
+
+                      const isCurrent = actualPhaseIndex === currentPhaseIndex;
+
                       return (
                         <div
                           key={index}
@@ -447,7 +470,9 @@ export default function FastingTracker() {
                           >
                             <div
                               className={`relative flex flex-col space-y-1 p-3 rounded-lg cursor-pointer transition-colors overflow-hidden w-full ${
-                                isActive
+                                isCurrent
+                                  ? 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800 border-2'
+                                  : isActive
                                   ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
                                   : isNext
                                   ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700'
@@ -464,7 +489,9 @@ export default function FastingTracker() {
                                 <div className='flex items-center justify-between flex-1'>
                                   <span
                                     className={`font-medium text-sm ${
-                                      isActive
+                                      isCurrent
+                                        ? 'text-green-700 dark:text-green-300'
+                                        : isActive
                                         ? 'text-green-800 dark:text-green-200'
                                         : isNext
                                         ? 'text-blue-800 dark:text-blue-200'
@@ -475,14 +502,18 @@ export default function FastingTracker() {
                                   </span>
                                   <span
                                     className={`text-xs ${
-                                      isActive
+                                      isCurrent
+                                        ? 'text-green-600 dark:text-green-300'
+                                        : isActive
                                         ? 'text-green-600 dark:text-green-300'
                                         : isNext
                                         ? 'text-blue-600 dark:text-blue-300'
                                         : 'text-muted-foreground'
                                     }`}
                                   >
-                                    {isActive
+                                    {isCurrent
+                                      ? '🎉 În Progres'
+                                      : isActive
                                       ? '✓ Completă'
                                       : prediction.predictedTime}
                                   </span>
@@ -502,7 +533,27 @@ export default function FastingTracker() {
                           </Button>
 
                           {isExpanded && (
-                            <div className='px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-lg ml-4'>
+                            <div
+                              className={`px-3 py-2 rounded-lg ml-4 ${
+                                isCurrent
+                                  ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+                                  : 'bg-gray-50 dark:bg-gray-800'
+                              }`}
+                            >
+                              {isCurrent && (
+                                <div className='mb-3 p-2 bg-green-100 dark:bg-green-900/30 rounded-lg border border-green-200 dark:border-green-700'>
+                                  <div className='flex items-center gap-2'>
+                                    <span className='text-lg'>🎉</span>
+                                    <span className='text-sm font-medium text-green-700 dark:text-green-300'>
+                                      În Progres
+                                    </span>
+                                  </div>
+                                  <p className='text-xs text-green-600 dark:text-green-400 mt-1'>
+                                    Această fază este în desfășurare. Continuă
+                                    să fii puternic/ă!
+                                  </p>
+                                </div>
+                              )}
                               <div className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                                 {prediction.phase.description
                                   .split('\n')
