@@ -16,6 +16,7 @@ import {
   trackUpdateStartTime,
 } from '@/lib/analytics';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Info } from 'lucide-react';
 import {
   startFastingSession,
@@ -528,15 +529,22 @@ export default function FastingTracker() {
                       {/* Allowed drinks image */}
                       <div className='flex justify-center mb-4'>
                         <div className='relative w-full max-w-md h-32 overflow-hidden rounded-lg shadow-lg'>
-                          <img
-                            src='/bauturi.png'
+                          <Image
+                            src={`${
+                              process.env.NODE_ENV === 'production'
+                                ? '/fastingApp'
+                                : ''
+                            }/bauturi.png`}
                             alt='Băuturi permise în timpul pauzei alimentare'
-                            className='w-full h-full object-cover object-center'
+                            fill
+                            className='object-cover'
                             style={{
                               objectPosition: 'center 60%',
                             }}
+                            sizes='(max-width: 768px) 100vw, 448px'
+                            priority={false}
                           />
-                          <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2'>
+                          <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 z-10'>
                             <p className='text-white text-sm font-medium text-center'>
                               Băuturi permise în timpul pauzei alimentare
                             </p>
