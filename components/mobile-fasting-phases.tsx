@@ -115,7 +115,7 @@ export function MobileFastingPhases({
                   <div className='flex-1 min-w-0'>
                     <div className='flex items-center gap-2 mb-1'>
                       <Clock className='h-4 w-4 opacity-60 flex-shrink-0' />
-                      <span className='font-medium text-sm text-muted-foreground'>
+                      <span className='text-xl font-semibold text-muted-foreground'>
                         {phase.durationHours}h
                       </span>
                     </div>
@@ -152,18 +152,18 @@ export function MobileFastingPhases({
                     {/* Full title when expanded */}
                     <h4
                       className={cn(
-                        'font-semibold text-sm mb-3 pl-2',
+                        'font-semibold text-xl mb-3 pl-2 ',
                         status === 'current' &&
                           'text-green-700 dark:text-green-300',
                         status === 'completed' &&
                           'text-green-600 dark:text-green-400',
                         status === 'upcoming' &&
-                          'text-gray-700 dark:text-gray-300'
+                          'text-[#4CBA98] dark:text-[#4CBA98]'
                       )}
                     >
                       {phase.title}
                     </h4>
-                    <div className='text-sm font-semibold text-gray-700 dark:text-gray-300 space-y-1.5 pl-4'>
+                    <div className='text-xl font-semibold text-gray-700 dark:text-gray-300 space-y-1.5 pl-4'>
                       {phase.description.split('\n').map((line, lineIndex) => (
                         <p key={lineIndex} className='leading-relaxed'>
                           {line}

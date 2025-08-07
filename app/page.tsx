@@ -3,16 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  ChevronDown,
-  ChevronUp,
-  HeartIcon,
-  Info,
-  SmileIcon,
-  Stethoscope,
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { ro } from 'date-fns/locale';
+import { ChevronDown, ChevronUp, Stethoscope } from 'lucide-react';
 import { safeFormatDate } from '@/lib/date-utils';
 import {
   trackFastingStart,
@@ -21,7 +12,6 @@ import {
 } from '@/lib/analytics';
 import Link from 'next/link';
 import {
-  readFastingData,
   startFastingSession,
   endFastingSession,
   getCurrentSession,
@@ -388,7 +378,7 @@ export default function FastingTracker() {
                 {/* Current Phase */}
                 <div className='text-center space-y-4'>
                   <div
-                    className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
+                    className='font-xl font-semibold mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
                     style={{ borderColor: currentPhase.color }}
                   >
                     <div className='text-center space-y-2'>
@@ -396,7 +386,7 @@ export default function FastingTracker() {
                         Starea curentă:
                       </p>
                       <h2
-                        className='text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
+                        className='text-xl font-semibold text-center max-w-2xl mx-auto px-4 transition-colors duration-500'
                         style={{ color: currentPhase.color }}
                       >
                         {currentPhase.title}
@@ -443,7 +433,7 @@ export default function FastingTracker() {
                                   🎯 Următoarea fază
                                 </p>
                                 <h2
-                                  className='text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
+                                  className='text-xl font-semibold text-center px-4 transition-colors duration-500'
                                   style={{ color: nextPhase.color }}
                                 >
                                   {nextPhase.title}
@@ -505,7 +495,7 @@ export default function FastingTracker() {
                     </Button>
                   ) : (
                     <div className='text-center space-y-4'>
-                      <p className='text-readable-base text-muted-foreground'>
+                      <p className='text-xl font-semibold text-muted-foreground'>
                         Sesiunea de pauza alimentara este activă
                       </p>
                       <StopFastingDialog
@@ -526,7 +516,7 @@ export default function FastingTracker() {
             {fastingStartTime && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-readable-xl'>
+                  <CardTitle className='text-xl font-semibold'>
                     Toate Fazele de Pauza Alimentara
                   </CardTitle>
                 </CardHeader>
@@ -588,7 +578,7 @@ export default function FastingTracker() {
                               <div className='flex items-center justify-between w-full'>
                                 <div className='flex items-center justify-between flex-1'>
                                   <span
-                                    className={`font-medium text-readable-base ${
+                                    className={`font-xl font-semibold  ${
                                       isCurrent
                                         ? 'text-green-700 dark:text-green-300'
                                         : isActive
@@ -601,7 +591,7 @@ export default function FastingTracker() {
                                     {prediction.phase.title.split(':')[0]}
                                   </span>
                                   <span
-                                    className={`text-readable-sm ${
+                                    className={`text-sm font-semibold ${
                                       isCurrent
                                         ? 'text-green-600 dark:text-green-300'
                                         : isActive
@@ -626,7 +616,7 @@ export default function FastingTracker() {
                                   )}
                                 </div>
                               </div>
-                              <span className='text-readable-sm text-muted-foreground text-left'>
+                              <span className='text-sm font-semibold text-muted-foreground text-left'>
                                 {prediction.phase.durationHours}h mark
                               </span>
                             </div>
@@ -644,17 +634,17 @@ export default function FastingTracker() {
                                 <div className='mb-3 p-2 bg-green-100 dark:bg-green-900/30 rounded-lg border border-green-200 dark:border-green-700'>
                                   <div className='flex items-center gap-2'>
                                     <span className='text-lg'>🎉</span>
-                                    <span className='text-readable-base font-medium text-green-700 dark:text-green-300'>
+                                    <span className='text-xl font-semibold text-green-700 dark:text-green-300'>
                                       În Progres
                                     </span>
                                   </div>
-                                  <p className='text-readable-sm text-green-600 dark:text-green-400 mt-1'>
+                                  <p className='text-xl font-semibold text-green-600 dark:text-green-400 mt-1'>
                                     Această fază este în desfășurare. Continuă
                                     să fii puternic/ă!
                                   </p>
                                 </div>
                               )}
-                              <div className='text-readable-base text-gray-700 dark:text-gray-300 space-y-1'>
+                              <div className='text-xl font-semibold text-gray-700 dark:text-gray-300 space-y-1'>
                                 {prediction.phase.description
                                   .split('\n')
                                   .map((line, lineIndex) => (
@@ -679,13 +669,13 @@ export default function FastingTracker() {
             {/* Progress Overview */}
             <Card>
               <CardHeader>
-                <CardTitle className='text-readable-xl'>
+                <CardTitle className='text-xl font-semibold'>
                   Privire de Ansamblu
                 </CardTitle>
               </CardHeader>
               <CardContent className='space-y-4'>
                 <div className='space-y-2'>
-                  <div className='flex justify-between text-readable-base'>
+                  <div className='flex justify-between text-xl font-semibold'>
                     <span>Faza Curentă</span>
                     <span className='font-medium'>
                       {Math.floor(elapsedTime / (1000 * 60 * 60))}h
