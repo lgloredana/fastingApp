@@ -55,7 +55,7 @@ const FASTING_PHASES: FastingPhase[] = [
     durationHours: 0,
     title: '0–4 ore după ultima masă',
     description:
-      '- Corpul digeră glucoza din mâncare si e folosită pentru energie.\n- Rezervele rapide de glucoză din ficat și mușchi se reîncarcă.\n- Te simți bine, fără foame. E liniște metabolică.',
+      'Corpul digeră glucoza din mâncare si e folosită pentru energie.\n Rezervele rapide de glucoză din ficat și mușchi se reîncarcă.\n Te simți bine, fără foame. E liniște metabolică.',
     color: '#FFA726', // Portocaliu cald - digestie activă
   },
   {
@@ -465,9 +465,9 @@ export default function FastingTracker() {
                     <Button
                       onClick={startFasting}
                       size='lg'
-                      className='px-8 py-4 text-readable-lg bg-green-600 hover:bg-green-700 text-white border-green-600 hover:border-green-700'
+                      className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold bg-green-600 hover:bg-green-700 text-white border-green-600 hover:border-green-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px]'
                     >
-                      Începe Fastingul
+                      Începe Postul
                     </Button>
                   ) : (
                     <div className='text-center text-muted-foreground'>
