@@ -3,12 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { safeFormatDate } from '@/lib/date-utils';
@@ -167,6 +162,9 @@ export default function FastingTracker() {
     null
   );
   const [fastingHistory, setFastingHistory] = useState<FastingSession[]>([]);
+  const [expandedDesktopPhase, setExpandedDesktopPhase] = useState<
+    number | null
+  >(null);
   const [fastingStats, setFastingStats] = useState({
     totalSessions: 0,
     totalFastingTime: 0,
@@ -255,6 +253,49 @@ export default function FastingTracker() {
     }
   }, [currentSession]);
 
+  const toggleDesktopPhase = (index: number) => {
+    setExpandedDesktopPhase(expandedDesktopPhase === index ? null : index);
+  };
+
+  // Auto-expand current phase in desktop sidebar and scroll to it
+  useEffect(() => {
+    if (fastingStartTime) {
+      const currentPhaseIndex = FASTING_PHASES.findIndex(
+        (phase) => phase.durationHours === currentPhase.durationHours
+      );
+      if (currentPhaseIndex !== -1) {
+        setExpandedDesktopPhase(currentPhaseIndex);
+
+        // Scroll to current phase within the phases container after a short delay
+        setTimeout(() => {
+          const currentPhaseElement = document.getElementById(
+            `desktop-phase-${currentPhaseIndex}`
+          );
+          const phasesContainer = document.getElementById(
+            'desktop-phases-container'
+          );
+
+          if (currentPhaseElement && phasesContainer) {
+            const containerRect = phasesContainer.getBoundingClientRect();
+            const elementRect = currentPhaseElement.getBoundingClientRect();
+
+            // Calculate scroll position to center the element in the container
+            const scrollTop =
+              phasesContainer.scrollTop +
+              (elementRect.top - containerRect.top) -
+              containerRect.height / 2 +
+              elementRect.height / 2;
+
+            phasesContainer.scrollTo({
+              top: scrollTop,
+              behavior: 'smooth',
+            });
+          }
+        }, 100);
+      }
+    }
+  }, [currentPhase, fastingStartTime]);
+
   const handleUpdateStartTime = useCallback((newStartTime: number) => {
     const updatedSession = updateSessionStartTime(newStartTime);
     if (updatedSession) {
@@ -335,40 +376,21 @@ export default function FastingTracker() {
                 </div>
 
                 {/* Current Phase */}
-                <TooltipProvider>
-                  <div className='text-center space-y-4'>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <h2
-                          className='text-2xl md:text-3xl font-semibold cursor-help text-center px-4 transition-colors duration-500'
-                          style={{ color: currentPhase.color }}
-                        >
-                          {currentPhase.title}
-                        </h2>
-                      </TooltipTrigger>
-                      <TooltipContent className='max-w-md text-center'>
-                        <div>
-                          {currentPhase.description
-                            .split('\n')
-                            .map((line, index) => (
-                              <p key={index} className='mb-1 last:mb-0'>
-                                {line}
-                              </p>
-                            ))}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                    <div className='text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
-                      {currentPhase.description
-                        .split('\n')
-                        .map((line, index) => (
-                          <p key={index} className='mb-2 last:mb-0'>
-                            {line}
-                          </p>
-                        ))}
-                    </div>
+                <div className='text-center space-y-4'>
+                  <h2
+                    className='text-2xl md:text-3xl font-semibold text-center px-4 transition-colors duration-500'
+                    style={{ color: currentPhase.color }}
+                  >
+                    {currentPhase.title}
+                  </h2>
+                  <div className='text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                    {currentPhase.description.split('\n').map((line, index) => (
+                      <p key={index} className='mb-2 last:mb-0'>
+                        {line}
+                      </p>
+                    ))}
                   </div>
-                </TooltipProvider>
+                </div>
 
                 {/* Action Buttons */}
                 <div className='flex justify-center gap-4 pt-4'>
@@ -400,34 +422,46 @@ export default function FastingTracker() {
                     Toate Fazele de Post
                   </CardTitle>
                 </CardHeader>
-                <CardContent className='space-y-3 max-h-[600px] overflow-y-auto'>
-                  <TooltipProvider>
-                    {getPredictedPhaseTimes(fastingStartTime).map(
-                      (prediction, index) => {
-                        const currentHours = elapsedTime / (1000 * 60 * 60);
-                        const isActive =
-                          currentHours >= prediction.phase.durationHours;
-                        const isNext = !isActive && index === 0;
+                <CardContent
+                  id='desktop-phases-container'
+                  className='space-y-3 max-h-[600px] overflow-y-auto'
+                >
+                  {getPredictedPhaseTimes(fastingStartTime).map(
+                    (prediction, index) => {
+                      const currentHours = elapsedTime / (1000 * 60 * 60);
+                      const isActive =
+                        currentHours >= prediction.phase.durationHours;
+                      const isNext = !isActive && index === 0;
+                      const isExpanded = expandedDesktopPhase === index;
 
-                        return (
-                          <Tooltip key={index}>
-                            <TooltipTrigger asChild>
+                      return (
+                        <div
+                          key={index}
+                          id={`desktop-phase-${index}`}
+                          className='space-y-2'
+                        >
+                          <Button
+                            variant='ghost'
+                            className='w-full p-0 h-auto justify-start hover:bg-transparent'
+                            onClick={() => toggleDesktopPhase(index)}
+                          >
+                            <div
+                              className={`relative flex flex-col space-y-1 p-3 rounded-lg cursor-pointer transition-colors overflow-hidden w-full ${
+                                isActive
+                                  ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
+                                  : isNext
+                                  ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700'
+                                  : 'bg-gray-50 dark:bg-gray-800'
+                              }`}
+                            >
                               <div
-                                className={`relative flex flex-col space-y-1 p-3 rounded-lg cursor-help transition-colors overflow-hidden ${
-                                  isActive
-                                    ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
-                                    : isNext
-                                    ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700'
-                                    : 'bg-gray-50 dark:bg-gray-800'
-                                }`}
-                              >
-                                <div
-                                  className='absolute left-0 top-0 bottom-0 w-1 transition-colors duration-300'
-                                  style={{
-                                    backgroundColor: prediction.phase.color,
-                                  }}
-                                />
-                                <div className='flex items-center justify-between'>
+                                className='absolute left-0 top-0 bottom-0 w-1 transition-colors duration-300'
+                                style={{
+                                  backgroundColor: prediction.phase.color,
+                                }}
+                              />
+                              <div className='flex items-center justify-between w-full'>
+                                <div className='flex items-center justify-between flex-1'>
                                   <span
                                     className={`font-medium text-sm ${
                                       isActive
@@ -453,30 +487,40 @@ export default function FastingTracker() {
                                       : prediction.predictedTime}
                                   </span>
                                 </div>
-                                <span className='text-xs text-muted-foreground'>
-                                  {prediction.phase.durationHours}h mark
-                                </span>
+                                <div className='ml-2'>
+                                  {isExpanded ? (
+                                    <ChevronUp className='h-4 w-4 opacity-60' />
+                                  ) : (
+                                    <ChevronDown className='h-4 w-4 opacity-60' />
+                                  )}
+                                </div>
                               </div>
-                            </TooltipTrigger>
-                            <TooltipContent className='max-w-xs text-center'>
-                              <div>
+                              <span className='text-xs text-muted-foreground text-left'>
+                                {prediction.phase.durationHours}h mark
+                              </span>
+                            </div>
+                          </Button>
+
+                          {isExpanded && (
+                            <div className='px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-lg ml-4'>
+                              <div className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                                 {prediction.phase.description
                                   .split('\n')
-                                  .map((line, index) => (
+                                  .map((line, lineIndex) => (
                                     <p
-                                      key={index}
-                                      className='mb-1 last:mb-0 text-sm'
+                                      key={lineIndex}
+                                      className='leading-relaxed'
                                     >
                                       {line}
                                     </p>
                                   ))}
                               </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        );
-                      }
-                    )}
-                  </TooltipProvider>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+                  )}
                 </CardContent>
               </Card>
             )}
