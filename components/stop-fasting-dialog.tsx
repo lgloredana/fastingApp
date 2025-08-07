@@ -55,10 +55,17 @@ export function StopFastingDialog({
         <Button
           variant='outline'
           size='default'
-          className='sm:w-auto px-12 py-8 gap-4 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px] sm:min-h-auto'
+          className='sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-auto'
         >
-          <UtensilsCrossed className='!h-12 !w-12' />
-          Oprește Pauza Alimentara
+          <div className='flex items-center gap-4'>
+            <UtensilsCrossed className='!h-12 !w-12 flex-shrink-0' />
+            <span className='hidden sm:inline'>Oprește Pauza Alimentara</span>
+            <span className='sm:hidden flex flex-col text-center leading-tight'>
+              <span>Oprește</span>
+              <span>Pauza</span>
+              <span>Alimentara</span>
+            </span>
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[500px] max-h-[90vh] overflow-y-auto'>

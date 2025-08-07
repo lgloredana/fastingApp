@@ -3,7 +3,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronDown, ChevronUp, Info } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronUp,
+  HeartIcon,
+  Info,
+  SmileIcon,
+  Stethoscope,
+} from 'lucide-react';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { safeFormatDate } from '@/lib/date-utils';
@@ -165,7 +172,6 @@ export default function FastingTracker() {
   const [expandedDesktopPhase, setExpandedDesktopPhase] = useState<
     number | null
   >(null);
-  const [showHeaderInfo, setShowHeaderInfo] = useState(false);
   const [fastingStats, setFastingStats] = useState({
     totalSessions: 0,
     totalFastingTime: 0,
@@ -335,29 +341,16 @@ export default function FastingTracker() {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 '>
+    <div className='min-h-screen bg-gradient-to-br from-light-green-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 '>
       <div className='max-w-7xl mx-auto'>
         {/* Header - Compact */}
-        <div className='text-center mb-4'>
-          <Card
-            className='bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 border-green-400 dark:border-green-600 cursor-pointer hover:from-green-600 hover:to-green-700 dark:hover:from-green-700 dark:hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl'
-            onClick={() => setShowHeaderInfo(!showHeaderInfo)}
-          >
-            <CardContent className='p-0'>
-              <div className='inline-flex items-center justify-center gap-2 w-full py-1 px-4'>
-                <h1 className='text-readable-lg font-medium text-white'>
-                  Monitorul de Pauza Alimentara
-                </h1>
-                <Info className='h-4 w-4 text-white/80' />
-              </div>
-            </CardContent>
-          </Card>
-
-          {showHeaderInfo && (
-            <p className='text-readable-sm text-gray-500 dark:text-gray-400 mt-2 animate-in slide-in-from-top-1 duration-200'>
-              Urmărește-ți călătoria de pauza alimentara și fazele acestuia
-            </p>
-          )}
+        <div className='text-center mb-4 pt-2'>
+          <div className='flex items-center justify-center gap-2 w-full py-1 px-4 bg-light-green-200'>
+            <Stethoscope className='h-8 w-8 text-light-green-800' />
+            <h1 className='text-xl font-semibold text-light-green-800'>
+              Monitorul de Pauza Alimentara
+            </h1>
+          </div>
         </div>
 
         {/* Main Content Grid */}
@@ -372,7 +365,7 @@ export default function FastingTracker() {
               <CardContent className='space-y-8'>
                 {/* Timer Display */}
                 <div className='text-center'>
-                  <p className='text-readable-xl text-muted-foreground mb-2'>
+                  <p className='text-xl font-semibold text-muted-foreground mb-2'>
                     Timp scurs:
                   </p>
                   <p className='text-6xl md:text-7xl font-extrabold tracking-tight text-primary mb-4'>
@@ -380,7 +373,7 @@ export default function FastingTracker() {
                   </p>
                   {fastingStartTime && (
                     <div className='text-center'>
-                      <p className='text-readable-base text-muted-foreground mb-2'>
+                      <p className='text-xl font-semibold text-muted-foreground mb-2'>
                         Început :{' '}
                         {safeFormatDate(fastingStartTime, 'HH:mm, dd MMM')}{' '}
                         <UpdateStartTimeDialog
@@ -399,16 +392,16 @@ export default function FastingTracker() {
                     style={{ borderColor: currentPhase.color }}
                   >
                     <div className='text-center space-y-2'>
-                      <p className='text-readable-xl text-muted-foreground mb-2'>
+                      <p className='text-xl font-semibold text-muted-foreground mb-2'>
                         Starea curentă:
                       </p>
                       <h2
-                        className='text-readable-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
+                        className='text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
                         style={{ color: currentPhase.color }}
                       >
                         {currentPhase.title}
                       </h2>
-                      <div className='text-readable-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                      <div className='text-xl font-semibold text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
                         {currentPhase.description
                           .split('\n')
                           .map((line, index) => (
@@ -445,12 +438,12 @@ export default function FastingTracker() {
                               className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
                               style={{ borderColor: nextPhase.color }}
                             >
-                              <div className='text-readable-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
-                                <p className='text-readable-base font-medium'>
+                              <div className='text-xl font-semibold text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                                <p className='text-xl font-semibold'>
                                   🎯 Următoarea fază
                                 </p>
                                 <h2
-                                  className='text-readable-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
+                                  className='text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
                                   style={{ color: nextPhase.color }}
                                 >
                                   {nextPhase.title}
