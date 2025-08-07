@@ -441,15 +441,21 @@ export default function FastingTracker() {
                           );
 
                           return (
-                            <div className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'>
-                              <div className='text-center space-y-2'>
-                                <p className='text-readable-base text-blue-700 dark:text-blue-300 font-medium'>
+                            <div
+                              className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
+                              style={{ borderColor: nextPhase.color }}
+                            >
+                              <div className='text-readable-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                                <p className='text-readable-base font-medium'>
                                   🎯 Următoarea fază
                                 </p>
-                                <h3 className='text-readable-lg font-semibold text-blue-800 dark:text-blue-200'>
+                                <h2
+                                  className='text-readable-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
+                                  style={{ color: nextPhase.color }}
+                                >
                                   {nextPhase.title}
-                                </h3>
-                                <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-readable-sm text-blue-600 dark:text-blue-400'>
+                                </h2>
+                                <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-readable-sm '>
                                   <span>
                                     În {Math.floor(hoursUntilNext)}h{' '}
                                     {Math.floor((hoursUntilNext % 1) * 60)}min
