@@ -277,33 +277,11 @@ export default function FastingTracker() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-6'>
       <div className='max-w-7xl mx-auto'>
-        {/* Header */}
+                {/* Header */}
         <div className='text-center mb-8'>
-          {/* Mobile Layout - Stacked */}
-          <div className='block md:hidden'>
-            <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
-              Monitorul de Post
-            </h1>
-            <div className='flex justify-center mb-4'>
-              <Link href='/history'>
-                <Button variant='outline'>Vezi Istoricul</Button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Desktop Layout - Horizontal */}
-          <div className='hidden md:flex items-center justify-between mb-4'>
-            <div className='flex-1'></div>
-            <h1 className='text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white'>
-              Monitorul de Post
-            </h1>
-            <div className='flex-1 flex justify-end'>
-              <Link href='/history'>
-                <Button variant='outline'>Vezi Istoricul</Button>
-              </Link>
-            </div>
-          </div>
-
+          <h1 className='text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4'>
+            Monitorul de Post
+          </h1>
           <p className='text-lg text-gray-600 dark:text-gray-300'>
             Urmărește-ți călătoria de post intermitent și fazele acestuia
           </p>
@@ -395,6 +373,15 @@ export default function FastingTracker() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+
+          {/* History Button Section */}
+          <div className='lg:col-span-3 flex justify-center mb-6'>
+            <Link href='/history'>
+              <Button variant='outline' size='lg' className='px-6 py-2'>
+                📊 Vezi Istoricul Complet
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Phases Section - Only visible on mobile */}
