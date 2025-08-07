@@ -55,48 +55,48 @@ export function StopFastingDialog({
         <Button
           variant='outline'
           size='lg'
-          className='w-full sm:w-auto px-12 py-8 gap-3 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px]'
+          className='w-full sm:w-auto px-12 py-8 gap-4 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px]'
         >
-          <UtensilsCrossed className='h-7 w-7' />
+          <UtensilsCrossed className='!h-12 !w-12' />
           Oprește Postul
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='sm:max-w-[500px] max-h-[90vh] overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle className='flex items-center gap-2 text-destructive'>
-            <AlertTriangle className='h-5 w-5' />
-            Oprești Sesiunea de Post?
+          <DialogTitle className='flex items-center gap-2 text-destructive flex-wrap'>
+            <AlertTriangle className='h-5 w-5 flex-shrink-0' />
+            <span className='break-words'>Oprești Sesiunea de Post?</span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className='text-wrap'>
             Ești sigur că vrei să oprești această perioadă de post?
           </DialogDescription>
-          <div className='text-sm text-muted-foreground mt-2'>
+          <div className='text-sm text-muted-foreground mt-2 text-wrap leading-relaxed'>
             Această acțiune nu poate fi anulată și sesiunea ta curentă va fi
             salvată în istoric.
           </div>
         </DialogHeader>
 
-        <div className='grid gap-4 py-4'>
-          <div className='space-y-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+        <div className='py-4'>
+          <div className='space-y-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mx-auto max-w-full'>
             <div className='text-center'>
               <p className='text-sm text-muted-foreground mb-1'>
                 Sesiunea Curentă
               </p>
-              <p className='text-2xl font-bold text-primary'>
+              <p className='text-xl font-bold text-primary break-all'>
                 {formatTime(elapsedTime)}
               </p>
             </div>
 
             <div className='space-y-1 text-sm'>
-              <div className='flex justify-between'>
-                <span>Început:</span>
-                <span>
+              <div className='flex justify-between items-center flex-wrap gap-1'>
+                <span className='flex-shrink-0'>Început:</span>
+                <span className='text-right'>
                   {format(fastingStartTime, 'HH:mm, dd MMM', { locale: ro })}
                 </span>
               </div>
-              <div className='flex justify-between'>
-                <span>Durata:</span>
-                <span className='font-medium'>
+              <div className='flex justify-between items-center flex-wrap gap-1'>
+                <span className='flex-shrink-0'>Durata:</span>
+                <span className='font-medium text-right'>
                   {(elapsedTime / (1000 * 60 * 60)).toFixed(1)} ore
                 </span>
               </div>
@@ -104,16 +104,20 @@ export function StopFastingDialog({
           </div>
         </div>
 
-        <DialogFooter className='gap-2'>
-          <Button variant='outline' onClick={handleCancel}>
+        <DialogFooter className='gap-3 flex-col sm:flex-row'>
+          <Button
+            variant='outline'
+            onClick={handleCancel}
+            className='w-full sm:w-auto px-6 py-3 text-lg font-semibold'
+          >
             Continuă Postul
           </Button>
           <Button
             variant='destructive'
             onClick={handleConfirm}
-            className='gap-2'
+            className='w-full sm:w-auto gap-3 px-6 py-3 text-lg font-semibold'
           >
-            <UtensilsCrossed className='h-4 w-4' />
+            <UtensilsCrossed className='!h-6 !w-6' />
             Oprește & Salvează Sesiunea
           </Button>
         </DialogFooter>
