@@ -11,6 +11,7 @@ interface FastingPhase {
   title: string;
   description: string;
   durationHours: number;
+  color: string;
 }
 
 interface MobileFastingPhasesProps {
@@ -94,10 +95,14 @@ export function MobileFastingPhases({
             <div
               key={index}
               className={cn(
-                'rounded-lg border-2 transition-all duration-200',
+                'relative rounded-lg border-2 transition-all duration-200 overflow-hidden',
                 getStatusColor(status)
               )}
             >
+              <div
+                className='absolute left-0 top-0 bottom-0 w-1 transition-colors duration-300'
+                style={{ backgroundColor: phase.color }}
+              />
               <Button
                 variant='ghost'
                 className='w-full p-3 h-auto justify-between hover:bg-transparent'

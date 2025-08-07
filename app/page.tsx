@@ -52,6 +52,7 @@ interface FastingPhase {
   title: string;
   description: string;
   durationHours: number; // Added duration in hours for calculation
+  color: string; // Color for this phase
 }
 
 const FASTING_PHASES: FastingPhase[] = [
@@ -60,54 +61,63 @@ const FASTING_PHASES: FastingPhase[] = [
     title: '0–4 ore după ultima masă',
     description:
       '- Corpul digeră glucoza din mâncare si e folosită pentru energie.\n- Rezervele rapide de glucoză din ficat și mușchi se reîncarcă.\n- Te simți bine, fără foame. E liniște metabolică.',
+    color: '#FFA726', // Portocaliu cald - digestie activă
   },
   {
     durationHours: 4,
     title: 'După 4 ore: Tranziția energetică',
     description:
       'Corpul începe să scoată energie din depozite, funcționează pe baterii interne.',
+    color: '#FDD835', // Galben-muștar - tranziție
   },
   {
     durationHours: 5,
     title: 'După 5 ore: Schimbarea combustibilului',
     description:
       'O ușoară foame și scădere de energie, motorul începe să schimbe combustibilul.',
+    color: '#FDD835', // Galben-muștar - tranziție
   },
   {
     durationHours: 8,
     title: 'După 8 ore: Începe arderea grăsimilor',
     description:
       'Începe arderea grăsimilor, grelina atinge vârf maxim (trece după 20-30 min), primul prag metabolic important.',
+    color: '#FB8C00', // Chihlimbar - orange închis
   },
   {
     durationHours: 12,
     title: 'După 12 ore: Grăsimea ca sursă principală',
     description:
       'Grăsimea devine principala sursă de energie, creierul începe să meargă pe mod eco: cetone.',
+    color: '#FB8C00', // Chihlimbar - orange închis
   },
   {
     durationHours: 16,
     title: 'După 16 ore: Debutează autofagia',
     description:
       'Autofagia debutează, arderea grăsimilor este la maxim, corpul intră în faza de curățare interioară.',
+    color: '#42A5F5', // Albastru mediu - autofagie + cetoză
   },
   {
     durationHours: 18,
     title: 'După 18-20 ore: Autofagie intensă',
     description:
       'Autofagia se intensifică, grăsimile sunt arse la intensitate maximă, se simte o claritate mentală sau ușoară euforie, reparații interioare serioase, corpul face curat.',
+    color: '#42A5F5', // Albastru mediu - autofagie + cetoză
   },
   {
     durationHours: 24,
     title: 'După 24 ore: Echilibru profund',
     description:
       'Stare de echilibru metabolic profund, inflamația sistematică scade, se curăță structuri implicate în îmbătrânire și boli cronice, nivel maxim de autofagie.',
+    color: '#3949AB', // Indigo închis - autofagie profundă
   },
   {
     durationHours: 36,
     title: 'După 36-48 ore: Regenerare și resetare',
     description:
       'Autofagia e profundă, corpul începe regenerarea: tulpini celulare în intestin și sistemul imunitar sunt stimulate, cetonele domină complet: claritate, energie lină, puțină foame, curățare + reconstrucție (resetarea sistemului).',
+    color: '#7E57C2', // Violet profund - regenerare completă
   },
 ];
 
@@ -291,7 +301,11 @@ export default function FastingTracker() {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           {/* Current Status - Main Card */}
           <div className='lg:col-span-2'>
-            <Card className='h-full'>
+            <Card className='h-full relative overflow-hidden'>
+              <div
+                className='absolute top-0 left-0 right-0 h-1 transition-colors duration-500'
+                style={{ backgroundColor: currentPhase.color }}
+              />
               <CardHeader>
                 <CardTitle className='text-2xl font-bold text-center'>
                   Starea Curentă
@@ -325,7 +339,10 @@ export default function FastingTracker() {
                   <div className='text-center space-y-4'>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <h2 className='text-2xl md:text-3xl font-semibold cursor-help text-center px-4'>
+                        <h2
+                          className='text-2xl md:text-3xl font-semibold cursor-help text-center px-4 transition-colors duration-500'
+                          style={{ color: currentPhase.color }}
+                        >
                           {currentPhase.title}
                         </h2>
                       </TooltipTrigger>
@@ -396,7 +413,7 @@ export default function FastingTracker() {
                           <Tooltip key={index}>
                             <TooltipTrigger asChild>
                               <div
-                                className={`flex flex-col space-y-1 p-3 rounded-lg cursor-help transition-colors ${
+                                className={`relative flex flex-col space-y-1 p-3 rounded-lg cursor-help transition-colors overflow-hidden ${
                                   isActive
                                     ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
                                     : isNext
@@ -404,6 +421,12 @@ export default function FastingTracker() {
                                     : 'bg-gray-50 dark:bg-gray-800'
                                 }`}
                               >
+                                <div
+                                  className='absolute left-0 top-0 bottom-0 w-1 transition-colors duration-300'
+                                  style={{
+                                    backgroundColor: prediction.phase.color,
+                                  }}
+                                />
                                 <div className='flex items-center justify-between'>
                                   <span
                                     className={`font-medium text-sm ${
