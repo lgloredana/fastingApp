@@ -464,16 +464,16 @@ export default function FastingTracker() {
                 </div>
 
                 {/* Info Button */}
-                <div className='flex justify-center pb-4'>
+                <div className='flex justify-center'>
                   <Link href='/beneficii'>
                     <Button
                       variant='outline'
-                      className='gap-2 rounded-full text-blue-700 border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300'
+                      className='gap-2 rounded-full text-green-700 border-green-700 hover:bg-green-50 hover:border-green-300 transition-all duration-300'
                       style={{ borderRadius: '50px' }}
                     >
                       <Info className='h-4 w-4 flex-shrink-0' />
                       <span className='text-sm font-medium'>
-                        Vezi De Ce E Benefică Pauza Alimentară?
+                        Vezi De Ce e Benefică Pauza Alimentară.
                       </span>
                     </Button>
                   </Link>
