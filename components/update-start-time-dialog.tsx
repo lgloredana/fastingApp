@@ -74,7 +74,6 @@ export function UpdateStartTimeDialog({
       <DialogTrigger asChild>
         <Button variant='outline' size='sm' className='gap-2'>
           <Edit3 className='h-4 w-4' />
-          Actualizează Ora de Start
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
