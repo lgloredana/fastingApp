@@ -55,23 +55,26 @@ export function StopFastingDialog({
         <Button
           variant='outline'
           size='default'
-          className='sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-auto'
+          className='sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-auto rounded-full'
           style={{
             background:
               'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)',
             borderColor: '#C5E8DD',
+            borderRadius: '50px',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background =
               'linear-gradient(135deg, #48b895 0%, #3a9d7a 50%, #2d7a5f 100%)';
             e.currentTarget.style.borderColor = '#48b895';
             e.currentTarget.style.color = '#ffffff';
+            e.currentTarget.style.borderRadius = '50px';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background =
               'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)';
             e.currentTarget.style.borderColor = '#C5E8DD';
             e.currentTarget.style.color = '#14532d';
+            e.currentTarget.style.borderRadius = '50px';
           }}
         >
           <div className='flex items-center gap-4'>
@@ -139,11 +142,12 @@ export function StopFastingDialog({
           <Button
             variant='outline'
             onClick={handleCancel}
-            className='w-full gap-2 sm:gap-3 px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold order-2 text-green-900 hover:text-white transition-colors duration-300'
+            className='w-full gap-2 sm:gap-3 px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold order-2 text-green-900 hover:text-white transition-colors duration-300 rounded-full'
             style={{
               background:
                 'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)',
               borderColor: '#C5E8DD',
+              borderRadius: '50px',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background =
@@ -154,6 +158,7 @@ export function StopFastingDialog({
               e.currentTarget.style.background =
                 'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)';
               e.currentTarget.style.borderColor = '#C5E8DD';
+              e.currentTarget.style.borderRadius = '50px';
             }}
           >
             <Stethoscope className='h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0' />
@@ -162,18 +167,21 @@ export function StopFastingDialog({
           <Button
             variant='destructive'
             onClick={handleConfirm}
-            className='w-full gap-2 sm:gap-3 px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold order-1 text-black border-blue-600 hover:border-blue-700 transition-all duration-300'
+            className='w-full gap-2 sm:gap-3 px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold order-1 text-black border-blue-600 hover:border-blue-700 transition-all duration-300 rounded-full'
             style={{
               background:
                 'linear-gradient(135deg, #DBEAFE 0%, #3B82F6 50%, #1D4ED8 100%)',
+              borderRadius: '50px',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background =
                 'linear-gradient(135deg, #1D4ED8 0%, #1E40AF 50%, #1E3A8A 100%)';
+              e.currentTarget.style.borderRadius = '50px';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background =
                 'linear-gradient(135deg, #DBEAFE 0%, #3B82F6 50%, #1D4ED8 100%)';
+              e.currentTarget.style.borderRadius = '50px';
             }}
           >
             <UtensilsCrossed className='h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0' />

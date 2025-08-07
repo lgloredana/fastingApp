@@ -3,7 +3,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronDown, ChevronUp, Stethoscope } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronUp,
+  Stethoscope,
+  UtensilsCrossed,
+} from 'lucide-react';
 import { safeFormatDate } from '@/lib/date-utils';
 import {
   trackFastingStart,
@@ -463,26 +468,30 @@ export default function FastingTracker() {
                     <Button
                       onClick={startFasting}
                       size='lg'
-                      className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-[80px]'
+                      className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-[80px] rounded-full'
                       style={{
                         background:
                           'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)',
                         borderColor: '#C5E8DD',
+                        borderRadius: '65px',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
                           'linear-gradient(135deg, #48b895 0%, #3a9d7a 50%, #2d7a5f 100%)';
                         e.currentTarget.style.borderColor = '#48b895';
                         e.currentTarget.style.color = '#ffffff';
+                        e.currentTarget.style.borderRadius = '65px';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background =
                           'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)';
                         e.currentTarget.style.borderColor = '#C5E8DD';
                         e.currentTarget.style.color = '#14532d';
+                        e.currentTarget.style.borderRadius = '65px';
                       }}
                     >
                       <div className='flex items-center gap-4'>
+                        <Stethoscope className='!h-12 !w-12 flex-shrink-0' />
                         <span className='hidden sm:inline'>
                           Începe Pauza Alimentara
                         </span>

@@ -72,7 +72,12 @@ export function UpdateStartTimeDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant='outline' size='sm' className='gap-2'>
+        <Button
+          variant='outline'
+          size='sm'
+          className='gap-2 rounded-full'
+          style={{ borderRadius: '50px' }}
+        >
           <Edit3 className='h-4 w-4' />
         </Button>
       </DialogTrigger>
@@ -133,10 +138,21 @@ export function UpdateStartTimeDialog({
         </div>
 
         <DialogFooter>
-          <Button variant='outline' onClick={handleCancel}>
+          <Button
+            variant='outline'
+            onClick={handleCancel}
+            className='rounded-full'
+            style={{ borderRadius: '50px' }}
+          >
             Anulează
           </Button>
-          <Button onClick={handleSubmit}>Actualizează Ora de Start</Button>
+          <Button
+            onClick={handleSubmit}
+            className='rounded-full'
+            style={{ borderRadius: '50px' }}
+          >
+            Actualizează Ora de Start
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
