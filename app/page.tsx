@@ -465,7 +465,7 @@ export default function FastingTracker() {
                     <Button
                       onClick={startFasting}
                       size='lg'
-                      className='px-8 py-4 text-readable-lg'
+                      className='px-8 py-4 text-readable-lg bg-green-600 hover:bg-green-700 text-white border-green-600 hover:border-green-700'
                     >
                       Începe Fastingul
                     </Button>
