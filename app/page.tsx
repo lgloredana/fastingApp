@@ -524,6 +524,25 @@ export default function FastingTracker() {
                       <p className='text-xl font-semibold text-muted-foreground'>
                         Sesiunea de pauza alimentara este activă
                       </p>
+
+                      {/* Allowed drinks image */}
+                      <div className='flex justify-center mb-4'>
+                        <div className='relative w-full max-w-md h-32 overflow-hidden rounded-lg shadow-lg'>
+                          <img
+                            src='/bauturi.png'
+                            alt='Băuturi permise în timpul pauzei alimentare'
+                            className='w-full h-full object-cover object-center'
+                            style={{
+                              objectPosition: 'center 60%',
+                            }}
+                          />
+                          <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2'>
+                            <p className='text-white text-sm font-medium text-center'>
+                              Băuturi permise în timpul pauzei alimentare
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                       <StopFastingDialog
                         onConfirmStop={stopFasting}
                         fastingStartTime={fastingStartTime}
