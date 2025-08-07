@@ -160,7 +160,7 @@ export default function BeneficiiPage() {
             onClick={prevSlide}
             variant='outline'
             size='icon'
-            className='absolute left-4 top-1/2 transform -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white'
+            className='hidden sm:block absolute left-4 top-1/2 transform -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white'
             style={{ borderRadius: '50px' }}
           >
             <ChevronLeft className='h-6 w-6' />
@@ -170,7 +170,7 @@ export default function BeneficiiPage() {
             onClick={nextSlide}
             variant='outline'
             size='icon'
-            className='absolute right-4 top-1/2 transform -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white'
+            className='hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white'
             style={{ borderRadius: '50px' }}
           >
             <ChevronRight className='h-6 w-6' />
