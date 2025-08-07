@@ -279,9 +279,22 @@ export default function FastingTracker() {
       <div className='max-w-7xl mx-auto'>
         {/* Header */}
         <div className='text-center mb-8'>
-          <div className='flex items-center justify-between mb-4'>
+          {/* Mobile Layout - Stacked */}
+          <div className='block md:hidden'>
+            <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
+              Monitorul de Post
+            </h1>
+            <div className='flex justify-center mb-4'>
+              <Link href='/history'>
+                <Button variant='outline'>Vezi Istoricul</Button>
+              </Link>
+            </div>
+          </div>
+          
+          {/* Desktop Layout - Horizontal */}
+          <div className='hidden md:flex items-center justify-between mb-4'>
             <div className='flex-1'></div>
-            <h1 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-white'>
+            <h1 className='text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white'>
               Monitorul de Post
             </h1>
             <div className='flex-1 flex justify-end'>
@@ -290,6 +303,7 @@ export default function FastingTracker() {
               </Link>
             </div>
           </div>
+          
           <p className='text-lg text-gray-600 dark:text-gray-300'>
             Urmărește-ți călătoria de post intermitent și fazele acestuia
           </p>
