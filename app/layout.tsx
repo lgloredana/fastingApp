@@ -4,6 +4,8 @@ import { GeistMono } from 'geist/font/mono';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 
+const basePath = process.env.NODE_ENV === 'production' ? '/fastingApp' : '';
+
 export const metadata: Metadata = {
   title: 'Monitorul de Post - Urmărește-ți Călătoria de Post Intermitent',
   description:
@@ -11,14 +13,14 @@ export const metadata: Metadata = {
   keywords: ['post', 'post intermitent', 'sănătate', 'wellness', 'monitor'],
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '32x32' },
-      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
-      { url: '/favicon-16.svg', sizes: '16x16', type: 'image/svg+xml' },
+      { url: `${basePath}/favicon.ico`, sizes: '32x32' },
+      { url: `${basePath}/favicon.svg`, sizes: 'any', type: 'image/svg+xml' },
+      { url: `${basePath}/favicon-16.svg`, sizes: '16x16', type: 'image/svg+xml' },
     ],
-    apple: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
-    shortcut: '/favicon.svg',
+    apple: [{ url: `${basePath}/icon-192.png`, sizes: '192x192', type: 'image/png' }],
+    shortcut: `${basePath}/favicon.svg`,
   },
-  manifest: '/manifest.json',
+  manifest: `${basePath}/manifest.json`,
 };
 
 export function generateViewport() {
@@ -36,6 +38,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ro' className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <head>
+        {/* Manual favicon links for better GitHub Pages compatibility */}
+        <link rel="icon" type="image/x-icon" href={`${basePath}/favicon.ico`} />
+        <link rel="icon" type="image/svg+xml" href={`${basePath}/favicon.svg`} />
+        <link rel="shortcut icon" href={`${basePath}/favicon.ico`} />
+        <link rel="apple-touch-icon" sizes="192x192" href={`${basePath}/icon-192.png`} />
+      </head>
       <body className={GeistSans.className}>{children}</body>
       {/* Google Analytics - va folosi ID-ul din .env.local */}
       {process.env.NEXT_PUBLIC_GA_ID && (
