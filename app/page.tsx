@@ -373,37 +373,8 @@ export default function FastingTracker() {
             </Card>
           </div>
 
-          {/* Stop Button Section - Only when fasting */}
-          {fastingStartTime && (
-            <div className='lg:col-span-3 flex justify-center mb-4'>
-              <StopFastingDialog
-                onConfirmStop={stopFasting}
-                fastingStartTime={fastingStartTime}
-                elapsedTime={elapsedTime}
-              />
-            </div>
-          )}
-
-          {/* History Button Section */}
-          <div className='lg:col-span-3 flex justify-center mb-6'>
-            <Link href='/history'>
-              <Button variant='outline' size='lg' className='px-6 py-2'>
-                📊 Vezi Istoricul Complet
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile Phases Section - Only visible on mobile */}
-          <MobileFastingPhases
-            phases={FASTING_PHASES}
-            currentPhaseIndex={FASTING_PHASES.findIndex(
-              (phase) => phase.durationHours === currentPhase.durationHours
-            )}
-            elapsedHours={elapsedTime / (1000 * 60 * 60)}
-          />
-
-          {/* Sidebar - Phase Timeline */}
-          <div className='space-y-6'>
+          {/* Sidebar - Phase Timeline - Only visible on desktop */}
+          <div className='hidden lg:block space-y-6'>
             {/* Next Phases Card */}
             {fastingStartTime && (
               <Card>
@@ -651,6 +622,40 @@ export default function FastingTracker() {
               </Card>
             )}
           </div>
+        </div>
+
+        {/* Action Buttons Section - Outside of grid */}
+        <div className='mt-6 space-y-4'>
+          {/* Stop Button Section - Only when fasting */}
+          {fastingStartTime && (
+            <div className='flex justify-center'>
+              <StopFastingDialog
+                onConfirmStop={stopFasting}
+                fastingStartTime={fastingStartTime}
+                elapsedTime={elapsedTime}
+              />
+            </div>
+          )}
+
+          {/* History Button Section */}
+          <div className='flex justify-center'>
+            <Link href='/history'>
+              <Button variant='outline' size='lg' className='px-6 py-2'>
+                📊 Vezi Istoricul Complet
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile Phases Section - Only visible on mobile */}
+        <div className='lg:hidden mt-6'>
+          <MobileFastingPhases
+            phases={FASTING_PHASES}
+            currentPhaseIndex={FASTING_PHASES.findIndex(
+              (phase) => phase.durationHours === currentPhase.durationHours
+            )}
+            elapsedHours={elapsedTime / (1000 * 60 * 60)}
+          />
         </div>
       </div>
     </div>

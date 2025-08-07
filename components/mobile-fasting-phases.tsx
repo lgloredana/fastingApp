@@ -58,7 +58,7 @@ export function MobileFastingPhases({
       case 'completed':
         return 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800';
       case 'current':
-        return 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800';
+        return 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800';
       default:
         return 'bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700';
     }
@@ -116,7 +116,17 @@ export function MobileFastingPhases({
                     </div>
                     {/* Show title only when NOT expanded */}
                     {!isExpanded && (
-                      <h3 className='font-semibold text-xs leading-tight text-left truncate'>
+                      <h3
+                        className={cn(
+                          'font-semibold text-xs leading-tight text-left truncate',
+                          status === 'current' &&
+                            'text-green-700 dark:text-green-300',
+                          status === 'completed' &&
+                            'text-green-600 dark:text-green-400',
+                          status === 'upcoming' &&
+                            'text-gray-600 dark:text-gray-400'
+                        )}
+                      >
                         {phase.title}
                       </h3>
                     )}
@@ -135,7 +145,17 @@ export function MobileFastingPhases({
                 <div className='px-3 pb-3'>
                   <div className='mt-2 pt-2 border-t border-gray-200 dark:border-gray-600'>
                     {/* Full title when expanded */}
-                    <h4 className='font-semibold text-sm text-gray-900 dark:text-gray-100 mb-3 pl-2'>
+                    <h4
+                      className={cn(
+                        'font-semibold text-sm mb-3 pl-2',
+                        status === 'current' &&
+                          'text-green-700 dark:text-green-300',
+                        status === 'completed' &&
+                          'text-green-600 dark:text-green-400',
+                        status === 'upcoming' &&
+                          'text-gray-700 dark:text-gray-300'
+                      )}
+                    >
                       {phase.title}
                     </h4>
                     <div className='text-xs text-gray-700 dark:text-gray-300 space-y-1.5 pl-4'>
