@@ -372,9 +372,18 @@ export default function FastingTracker() {
               <CardContent className='space-y-8'>
                 {/* Timer Display */}
                 <div className='text-center'>
-                  <p className='text-readable-xl text-muted-foreground mb-2'>
-                    Timp scurs:
-                  </p>
+                  <div className='flex items-center justify-center gap-4 mb-2'>
+                    <p className='text-readable-xl text-muted-foreground'>
+                      Timp scurs:
+                    </p>
+                    {fastingStartTime && (
+                      <StopFastingDialog
+                        onConfirmStop={stopFasting}
+                        fastingStartTime={fastingStartTime}
+                        elapsedTime={elapsedTime}
+                      />
+                    )}
+                  </div>
                   <p className='text-6xl md:text-7xl font-extrabold tracking-tight text-primary mb-4'>
                     {formatTime(elapsedTime)}
                   </p>
@@ -807,17 +816,6 @@ export default function FastingTracker() {
 
         {/* Action Buttons Section - Outside of grid */}
         <div className='mt-6 space-y-4'>
-          {/* Stop Button Section - Only when fasting */}
-          {fastingStartTime && (
-            <div className='flex justify-center'>
-              <StopFastingDialog
-                onConfirmStop={stopFasting}
-                fastingStartTime={fastingStartTime}
-                elapsedTime={elapsedTime}
-              />
-            </div>
-          )}
-
           {/* History Button Section */}
           <div className='flex justify-center'>
             <Link href='/history'>
