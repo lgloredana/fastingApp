@@ -55,7 +55,24 @@ export function StopFastingDialog({
         <Button
           variant='outline'
           size='default'
-          className='sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-auto'
+          className='sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-auto'
+          style={{
+            background:
+              'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)',
+            borderColor: '#C5E8DD',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background =
+              'linear-gradient(135deg, #48b895 0%, #3a9d7a 50%, #2d7a5f 100%)';
+            e.currentTarget.style.borderColor = '#48b895';
+            e.currentTarget.style.color = '#ffffff';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background =
+              'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)';
+            e.currentTarget.style.borderColor = '#C5E8DD';
+            e.currentTarget.style.color = '#14532d';
+          }}
         >
           <div className='flex items-center gap-4'>
             <UtensilsCrossed className='!h-12 !w-12 flex-shrink-0' />

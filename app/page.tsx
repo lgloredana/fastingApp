@@ -473,9 +473,35 @@ export default function FastingTracker() {
                     <Button
                       onClick={startFasting}
                       size='lg'
-                      className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold bg-green-600 hover:bg-green-700 text-white border-green-600 hover:border-green-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px]'
+                      className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-[80px]'
+                      style={{
+                        background:
+                          'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)',
+                        borderColor: '#C5E8DD',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          'linear-gradient(135deg, #48b895 0%, #3a9d7a 50%, #2d7a5f 100%)';
+                        e.currentTarget.style.borderColor = '#48b895';
+                        e.currentTarget.style.color = '#ffffff';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background =
+                          'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)';
+                        e.currentTarget.style.borderColor = '#C5E8DD';
+                        e.currentTarget.style.color = '#14532d';
+                      }}
                     >
-                      Începe Pauza Alimentara
+                      <div className='flex items-center gap-4'>
+                        <span className='hidden sm:inline'>
+                          Începe Pauza Alimentara
+                        </span>
+                        <span className='sm:hidden flex flex-col text-center leading-tight'>
+                          <span>Începe</span>
+                          <span>Pauza</span>
+                          <span>Alimentara</span>
+                        </span>
+                      </div>
                     </Button>
                   ) : (
                     <div className='text-center space-y-4'>
