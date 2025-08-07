@@ -82,8 +82,13 @@ export function UpdateStartTimeDialog({
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
-        <DialogHeader>
-          <DialogTitle className='flex items-center gap-2'>
+        <DialogHeader className='text-center '>
+          <DialogTitle
+            className='flex items-start gap-2 text-white text-base sm:text-lg leading-tight -mx-3 sm:-mx-4 -mt-3 sm:-mt-4 px-3 sm:px-4 py-2 sm:py-3 rounded-t-lg mb-1 sm:mb-2'
+            style={{
+              background: '#4cba98',
+            }}
+          >
             <Clock className='h-5 w-5' />
             Actualizează Ora de Început a Pauzei Alimentare
           </DialogTitle>
@@ -137,9 +142,9 @@ export function UpdateStartTimeDialog({
           </div>
         </div>
 
-        <DialogFooter>
+        <DialogFooter className='flex justify-center text-center gap-3'>
           <Button
-            variant='outline'
+            variant='destructive'
             onClick={handleCancel}
             className='rounded-full'
             style={{ borderRadius: '50px' }}
@@ -148,8 +153,11 @@ export function UpdateStartTimeDialog({
           </Button>
           <Button
             onClick={handleSubmit}
-            className='rounded-full'
-            style={{ borderRadius: '50px' }}
+            className='rounded-full  text-white'
+            style={{
+              borderRadius: '50px',
+              background: '#4cba98',
+            }}
           >
             Actualizează Ora de Start
           </Button>

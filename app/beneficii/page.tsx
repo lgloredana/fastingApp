@@ -171,13 +171,15 @@ export default function BeneficiiPage() {
                 <h2 className='text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2'>
                   {currentBenefit.title}
                 </h2>
-                <p className='text-lg text-gray-700 dark:text-gray-300 font-medium'>
+                <p className='text-lg font-semibold text-gray-700 dark:text-gray-300 font-medium'>
                   {currentBenefit.subtitle}
                 </p>
               </div>
 
               <div className='prose prose-lg max-w-none text-gray-700 dark:text-gray-300 leading-relaxed'>
-                <p className='text-base md:text-lg'>{currentBenefit.content}</p>
+                <p className='text-xl font-semibold md:text-xl'>
+                  {currentBenefit.content}
+                </p>
                 {currentBenefit.reference && (
                   <p className='text-sm text-gray-500 dark:text-gray-400 italic mt-4'>
                     {currentBenefit.reference}
