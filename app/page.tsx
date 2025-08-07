@@ -394,21 +394,30 @@ export default function FastingTracker() {
 
                 {/* Current Phase */}
                 <div className='text-center space-y-4'>
-                  <p className='text-readable-xl text-muted-foreground mb-2'>
-                    Starea curentă:
-                  </p>
-                  <h2
-                    className='text-readable-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
-                    style={{ color: currentPhase.color }}
+                  <div
+                    className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
+                    style={{ borderColor: currentPhase.color }}
                   >
-                    {currentPhase.title}
-                  </h2>
-                  <div className='text-readable-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
-                    {currentPhase.description.split('\n').map((line, index) => (
-                      <p key={index} className='mb-2 last:mb-0'>
-                        {line}
+                    <div className='text-center space-y-2'>
+                      <p className='text-readable-xl text-muted-foreground mb-2'>
+                        Starea curentă:
                       </p>
-                    ))}
+                      <h2
+                        className='text-readable-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4 transition-colors duration-500'
+                        style={{ color: currentPhase.color }}
+                      >
+                        {currentPhase.title}
+                      </h2>
+                      <div className='text-readable-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                        {currentPhase.description
+                          .split('\n')
+                          .map((line, index) => (
+                            <p key={index} className='mb-2 last:mb-0'>
+                              {line}
+                            </p>
+                          ))}
+                      </div>
+                    </div>
                   </div>
 
                   {/* Next Phase Info */}

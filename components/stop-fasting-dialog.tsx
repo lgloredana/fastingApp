@@ -54,8 +54,8 @@ export function StopFastingDialog({
       <DialogTrigger asChild>
         <Button
           variant='outline'
-          size='lg'
-          className='w-full sm:w-auto px-12 py-8 gap-4 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px]'
+          size='default'
+          className='sm:w-auto px-12 py-8 gap-4 text-3xl md:text-4xl font-bold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[80px] sm:min-h-auto'
         >
           <UtensilsCrossed className='!h-12 !w-12' />
           Oprește Pauza Alimentara
