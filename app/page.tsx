@@ -578,38 +578,29 @@ export default function FastingTracker() {
             </button>
 
             {isPhasesCardExpanded && (
-              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300 lg:hidden'>
                 <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
                   <p>
-                    Explorează toate fazele pauzei alimentare și beneficiile
-                    fiecărei etape.
+                    Descoperă cum se dezvoltă corpul tău prin diferitele etape
+                    ale pauzei alimentare, de la digestie la autofagie și
+                    regenerare celulară.
                   </p>
-                  <div className='space-y-3 max-h-[400px] overflow-y-auto'>
-                    {FASTING_PHASES.map((phase, index) => (
-                      <div
-                        key={index}
-                        className='bg-white/10 backdrop-blur-sm rounded-lg p-3'
-                      >
-                        <div className='flex items-center gap-2 mb-2'>
-                          <div
-                            className='w-3 h-3 rounded-full flex-shrink-0'
-                            style={{ backgroundColor: phase.color }}
-                          />
-                          <h4 className='font-semibold text-white text-sm'>
-                            {phase.title}
-                          </h4>
-                        </div>
-                        <p className='text-white/90 text-xs leading-relaxed pl-5'>
-                          {phase.description}
-                        </p>
-                        {phase.encouragement && (
-                          <p className='text-white/80 text-xs italic mt-2 pl-5'>
-                            💪 {phase.encouragement}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => {
+                      const phasesSection = document.getElementById(
+                        'mobile-phases-container'
+                      );
+                      if (phasesSection) {
+                        phasesSection.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start',
+                        });
+                      }
+                    }}
+                    className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
+                  >
+                    Vezi fazele →
+                  </button>
                 </div>
               </div>
             )}
@@ -1159,7 +1150,7 @@ export default function FastingTracker() {
         <div className='mt-6 space-y-4'></div>
 
         {/* Mobile Phases Section - Only visible on mobile */}
-        <div className='lg:hidden mt-6'>
+        <div id='mobile-phases-container' className='lg:hidden mt-6'>
           <MobileFastingPhases
             phases={FASTING_PHASES}
             currentPhaseIndex={FASTING_PHASES.findIndex(

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp, Clock, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { trackMobilePhaseExpand } from '@/lib/analytics';
 
@@ -80,9 +80,9 @@ export function MobileFastingPhases({
     <Card className='lg:hidden'>
       {' '}
       {/* Only show on mobile */}
-      <CardHeader className='pb-3'>
-        <CardTitle className='lg:text-lg font-semibold flex items-center gap-2 text-base'>
-          <Info className='h-4 w-4' />
+      <CardHeader className='py-4 px-6 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-t-xl'>
+        <CardTitle className='lg:text-lg font-semibold flex items-center gap-2 text-base text-white'>
+          <Clock className='h-6 w-6 text-white' />
           Fazele Pauzei Alimentare
         </CardTitle>
       </CardHeader>
