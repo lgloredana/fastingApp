@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
+  AlertCircle,
+  AlertTriangle,
   ChevronDown,
   ChevronUp,
   Stethoscope,
@@ -408,7 +410,7 @@ export default function FastingTracker() {
             >
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                  <Info className='h-6 w-6 text-white flex-shrink-0' />
+                  <AlertTriangle className='h-6 w-6 text-white flex-shrink-0' />
                   <h3 className='text-lg font-bold text-white'>
                     Informații importante despre pauzele alimentare
                   </h3>
@@ -439,6 +441,17 @@ export default function FastingTracker() {
                     suplimentare, dar și riscuri, în funcție de starea de
                     sănătate și nevoile tale.
                   </p>
+                  <p>
+                    <strong>
+                      Pe toată durata pauzei este esențial să consumi lichide:
+                    </strong>
+                  </p>
+                  <ul className='text-white/95 space-y-1 pl-4 list-disc'>
+                    <li>apă simplă</li>
+                    <li>apă cu o felie de fruct (ex.: lămâie, portocală)</li>
+                    <li>ceai neîndulcit</li>
+                    <li>cafea simplă (fără zahăr sau lapte)</li>
+                  </ul>
                   <p>
                     În plus, este important să ai o alimentație echilibrată în
                     ferestrele de mâncare: include legume, surse de proteine
