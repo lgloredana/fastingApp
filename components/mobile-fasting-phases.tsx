@@ -203,12 +203,6 @@ export function MobileFastingPhases({
             </div>
           );
         })}
-
-        <div className='mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-center'>
-          <p className='text-sm font-semibold text-blue-700 dark:text-blue-300'>
-            💡 Tap pentru detalii
-          </p>
-        </div>
       </CardContent>
     </Card>
   );

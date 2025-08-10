@@ -385,20 +385,23 @@ export default function FastingTracker() {
                 {/* Current Phase */}
                 <div className='text-center space-y-4'>
                   <div
-                    className='font-xl font-semibold mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
-                    style={{ borderColor: currentPhase.color }}
+                    className='mt-6 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl'
+                    style={{
+                      background: `linear-gradient(135deg, ${currentPhase.color}dd, ${currentPhase.color})`,
+                      border: `2px solid ${currentPhase.color}`,
+                    }}
                   >
-                    <div className='text-center space-y-2'>
-                      <p className='text-xl font-semibold text-muted-foreground mb-2'>
+                    <div className='text-center space-y-4'>
+                      <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
+                        <Stethoscope className='h-8 w-8 text-white' />
+                      </div>
+                      <p className='text-lg font-semibold text-white/90 mb-2'>
                         Starea curentă:
                       </p>
-                      <h2
-                        className='text-xl font-semibold text-center max-w-2xl mx-auto px-4 transition-colors duration-500'
-                        style={{ color: currentPhase.color }}
-                      >
+                      <h2 className='text-2xl font-bold text-white text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
                         {currentPhase.title}
                       </h2>
-                      <div className='text-xl font-semibold text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+                      <div className='text-base font-medium text-white/95 max-w-2xl mx-auto leading-relaxed bg-white/10 backdrop-blur-sm rounded-lg p-4'>
                         {currentPhase.description
                           .split('\n')
                           .map((line, index) => (
@@ -432,28 +435,36 @@ export default function FastingTracker() {
 
                           return (
                             <div
-                              className='mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800'
-                              style={{ borderColor: nextPhase.color }}
+                              className='mt-6 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl'
+                              style={{
+                                background: `linear-gradient(135deg, ${nextPhase.color}dd, ${nextPhase.color})`,
+                                border: `2px solid ${nextPhase.color}`,
+                              }}
                             >
-                              <div className='text-xl font-semibold text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
-                                <p className='text-xl font-semibold'>
-                                  🎯 Următoarea fază
+                              <div className='text-center space-y-4'>
+                                <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
+                                  <span className='text-2xl'>🎯</span>
+                                </div>
+                                <p className='text-lg font-semibold text-white/90 mb-2'>
+                                  Următoarea fază
                                 </p>
-                                <h2
-                                  className='text-xl font-semibold text-center px-4 transition-colors duration-500'
-                                  style={{ color: nextPhase.color }}
-                                >
+                                <h2 className='text-2xl font-bold text-white text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
                                   {nextPhase.title}
                                 </h2>
-                                <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-readable-sm '>
-                                  <span>
-                                    În {Math.floor(hoursUntilNext)}h{' '}
-                                    {Math.floor((hoursUntilNext % 1) * 60)}min
-                                  </span>
-                                  <span className='hidden sm:inline'>•</span>
-                                  <span>
-                                    la {safeFormatDate(nextPhaseTime, 'HH:mm')}
-                                  </span>
+                                <div className='bg-white/10 backdrop-blur-sm rounded-lg p-4'>
+                                  <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-base font-medium text-white/95'>
+                                    <span>
+                                      În {Math.floor(hoursUntilNext)}h{' '}
+                                      {Math.floor((hoursUntilNext % 1) * 60)}min
+                                    </span>
+                                    <span className='hidden sm:inline text-white/70'>
+                                      •
+                                    </span>
+                                    <span>
+                                      la{' '}
+                                      {safeFormatDate(nextPhaseTime, 'HH:mm')}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
