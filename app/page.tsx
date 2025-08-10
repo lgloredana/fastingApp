@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import {
   ChevronDown,
   ChevronUp,
@@ -17,7 +18,7 @@ import {
 } from '@/lib/analytics';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Info } from 'lucide-react';
+import { Info, X, History, Clock } from 'lucide-react';
 import {
   startFastingSession,
   endFastingSession,
@@ -52,6 +53,7 @@ interface FastingPhase {
   description: string;
   durationHours: number; // Added duration in hours for calculation
   color: string; // Color for this phase
+  encouragement?: string; // Optional motivational message
 }
 
 const FASTING_PHASES: FastingPhase[] = [
@@ -61,6 +63,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Corpul digeră glucoza din mâncare si e folosită pentru energie. Rezervele rapide de glucoză din ficat și mușchi se reîncarcă. Te simți bine, fără foame. E liniște metabolică.',
     color: '#FFA726', // Portocaliu cald - digestie activă
+    encouragement: 'Ai început. Rămâi constant/ă și prezent/ă.',
   },
   {
     durationHours: 4,
@@ -68,6 +71,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Corpul începe să scoată energie din depozite, funcționează pe baterii interne.',
     color: '#FDD835', // Galben-muștar - tranziție
+    encouragement: 'Tranziția a început. Ține direcția!',
   },
   {
     durationHours: 5,
@@ -75,13 +79,15 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'O ușoară foame și scădere de energie, motorul începe să schimbe combustibilul.',
     color: '#FDD835', // Galben-muștar - tranziție
+    encouragement: 'Schimbarea e în curs. Respira și continuă.',
   },
   {
     durationHours: 8,
     title: 'După 8 ore: Începe arderea grăsimilor',
     description:
-      'Începe arderea grăsimilor, grelina atinge vârf maxim (trece după 20-30 min), primul prag metabolic important.',
+      'Începe arderea grăsimilor, grelina (hormonul foamei) atinge vârf maxim (trece după 20-30 min), primul prag metabolic important.',
     color: '#FB8C00', // Chihlimbar - orange închis
+    encouragement: 'Primul prag important. Ești mai puternic/ă decât crezi.',
   },
   {
     durationHours: 12,
@@ -89,6 +95,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Grăsimea devine principala sursă de energie, creierul începe să meargă pe mod eco: cetone.',
     color: '#FB8C00', // Chihlimbar - orange închis
+    encouragement: 'Motorul tău merge pe mod eficient. Bravo!',
   },
   {
     durationHours: 16,
@@ -96,6 +103,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Autofagia debutează, arderea grăsimilor este la maxim, corpul intră în faza de curățare interioară.',
     color: '#42A5F5', // Albastru mediu - autofagie + cetoză
+    encouragement: 'Curățarea internă a început. Menține ritmul!',
   },
   {
     durationHours: 18,
@@ -103,6 +111,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Autofagia se intensifică, grăsimile sunt arse la intensitate maximă, se simte o claritate mentală sau ușoară euforie, reparații interioare serioase, corpul face curat.',
     color: '#42A5F5', // Albastru mediu - autofagie + cetoză
+    encouragement: 'Claritate și energie. Bucură-te de moment!',
   },
   {
     durationHours: 24,
@@ -110,6 +119,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Stare de echilibru metabolic profund, inflamația sistematică scade, se curăță structuri implicate în îmbătrânire și boli cronice, nivel maxim de autofagie.',
     color: '#3949AB', // Indigo închis - autofagie profundă
+    encouragement: 'Echilibru profund. Corpul îți mulțumește.',
   },
   {
     durationHours: 36,
@@ -117,6 +127,7 @@ const FASTING_PHASES: FastingPhase[] = [
     description:
       'Autofagia e profundă, corpul începe regenerarea: tulpini celulare în intestin și sistemul imunitar sunt stimulate, cetonele domină complet: claritate, energie lină, puțină foame, curățare + reconstrucție (resetarea sistemului).',
     color: '#7E57C2', // Violet profund - regenerare completă
+    encouragement: 'Regenerare completă. Inspiri putere și disciplină.',
   },
 ];
 
@@ -175,6 +186,10 @@ export default function FastingTracker() {
     averageFastingTime: 0,
     longestFast: 0,
   });
+  const [isHealthAlertExpanded, setIsHealthAlertExpanded] = useState(true);
+  const [isBenefitsCardExpanded, setIsBenefitsCardExpanded] = useState(false);
+  const [isHistoryCardExpanded, setIsHistoryCardExpanded] = useState(false);
+  const [isPhasesCardExpanded, setIsPhasesCardExpanded] = useState(false);
 
   // Handle hydration
   useEffect(() => {
@@ -350,6 +365,228 @@ export default function FastingTracker() {
           </div>
         </div>
 
+        {/* Health Alert Card */}
+        <div className='mb-6 mx-4'>
+          <div className='bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg relative transition-all duration-300'>
+            <button
+              onClick={() => setIsHealthAlertExpanded(!isHealthAlertExpanded)}
+              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+              aria-label={
+                isHealthAlertExpanded
+                  ? 'Compactează alerta'
+                  : 'Expandează alerta'
+              }
+            >
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <Info className='h-6 w-6 text-white flex-shrink-0' />
+                  <h3 className='text-lg font-bold text-white'>
+                    Informații importante despre pauzele alimentare
+                  </h3>
+                </div>
+                <ChevronDown
+                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                    isHealthAlertExpanded ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+            </button>
+
+            {isHealthAlertExpanded && (
+              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                  <p>
+                    <strong>
+                      Pauzele alimentare sunt benefice atunci când sunt adaptate
+                      corpului tău.
+                    </strong>
+                  </p>
+                  <p>
+                    Pauza clasică de peste noapte are în jur de 12 ore și este,
+                    de regulă, sigură pentru majoritatea oamenilor.
+                  </p>
+                  <p>
+                    Orice pauză mai lungă de 12 ore poate aduce beneficii
+                    suplimentare, dar și riscuri, în funcție de starea de
+                    sănătate și nevoile tale.
+                  </p>
+                  <p>
+                    În plus, este important să ai o alimentație echilibrată în
+                    ferestrele de mâncare: include legume, surse de proteine
+                    (carne, pește, ouă) și carbohidrați complecși în cantități
+                    moderate (cum ar fi pâinea integrală).
+                  </p>
+                  <p>
+                    <strong>
+                      Ascultă-ți corpul, oprește pauza dacă apar simptome
+                      neplăcute și nu te expune înfometării.
+                    </strong>
+                  </p>
+                  <p>
+                    <strong>
+                      Dacă ai probleme medicale sau iei tratamente, consultă
+                      medicul înainte de a prelungi pauza.
+                    </strong>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Action Cards - Same style as Health Alert */}
+        <div className='space-y-4 mx-4 mb-6'>
+          {/* Benefits Card */}
+          <div className='bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg relative transition-all duration-300'>
+            <button
+              onClick={() => setIsBenefitsCardExpanded(!isBenefitsCardExpanded)}
+              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+              aria-label={
+                isBenefitsCardExpanded
+                  ? 'Compactează cardul'
+                  : 'Expandează cardul'
+              }
+            >
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <Info className='h-6 w-6 text-white flex-shrink-0' />
+                  <h3 className='text-lg font-bold text-white'>
+                    Vezi De Ce e Benefică Pauza Alimentară
+                  </h3>
+                </div>
+                <ChevronDown
+                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                    isBenefitsCardExpanded ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+            </button>
+
+            {isBenefitsCardExpanded && (
+              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                  <p>
+                    Descoperă beneficiile științifice ale pauzelor alimentare și
+                    cum acestea pot îmbunătăți sănătatea ta.
+                  </p>
+                  <Link href='/beneficii'>
+                    <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                      Citește mai mult
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* History Card */}
+          <div className='bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-xl shadow-lg relative transition-all duration-300'>
+            <button
+              onClick={() => setIsHistoryCardExpanded(!isHistoryCardExpanded)}
+              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+              aria-label={
+                isHistoryCardExpanded
+                  ? 'Compactează cardul'
+                  : 'Expandează cardul'
+              }
+            >
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <History className='h-6 w-6 text-white flex-shrink-0' />
+                  <h3 className='text-lg font-bold text-white'>
+                    Vezi Istoricul Complet
+                  </h3>
+                </div>
+                <ChevronDown
+                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                    isHistoryCardExpanded ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+            </button>
+
+            {isHistoryCardExpanded && (
+              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                  <p>
+                    Urmărește progresul tău cu o vedere detaliată asupra tuturor
+                    sesiunilor de pauză alimentară.
+                  </p>
+                  <Link href='/history'>
+                    <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                      Vezi istoricul
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Phases Card */}
+          <div className='bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-xl shadow-lg relative transition-all duration-300'>
+            <button
+              onClick={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
+              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+              aria-label={
+                isPhasesCardExpanded
+                  ? 'Compactează cardul'
+                  : 'Expandează cardul'
+              }
+            >
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <Clock className='h-6 w-6 text-white flex-shrink-0' />
+                  <h3 className='text-lg font-bold text-white'>
+                    Fazele Pauzei Alimentare
+                  </h3>
+                </div>
+                <ChevronDown
+                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                    isPhasesCardExpanded ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+            </button>
+
+            {isPhasesCardExpanded && (
+              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                  <p>
+                    Explorează toate fazele pauzei alimentare și beneficiile
+                    fiecărei etape.
+                  </p>
+                  <div className='space-y-3 max-h-[400px] overflow-y-auto'>
+                    {FASTING_PHASES.map((phase, index) => (
+                      <div
+                        key={index}
+                        className='bg-white/10 backdrop-blur-sm rounded-lg p-3'
+                      >
+                        <div className='flex items-center gap-2 mb-2'>
+                          <div
+                            className='w-3 h-3 rounded-full flex-shrink-0'
+                            style={{ backgroundColor: phase.color }}
+                          />
+                          <h4 className='font-semibold text-white text-sm'>
+                            {phase.title}
+                          </h4>
+                        </div>
+                        <p className='text-white/90 text-xs leading-relaxed pl-5'>
+                          {phase.description}
+                        </p>
+                        {phase.encouragement && (
+                          <p className='text-white/80 text-xs italic mt-2 pl-5'>
+                            💪 {phase.encouragement}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Main Content Grid */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
           {/* Current Status - Main Card */}
@@ -395,13 +632,13 @@ export default function FastingTracker() {
                       <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
                         <Stethoscope className='h-8 w-8 text-white' />
                       </div>
-                      <p className='text-lg font-semibold text-white/90 mb-2'>
+                      <p className='text-lg font-semibold text-black mb-2'>
                         Starea curentă:
                       </p>
-                      <h2 className='text-2xl font-bold text-white text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
+                      <h2 className='text-2xl font-bold text-black text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
                         {currentPhase.title}
                       </h2>
-                      <div className='text-base font-medium text-white/95 max-w-2xl mx-auto leading-relaxed bg-white/10 backdrop-blur-sm rounded-lg p-4'>
+                      <div className='text-base font-medium text-black max-w-2xl mx-auto leading-relaxed bg-white/10 backdrop-blur-sm rounded-lg p-4'>
                         {currentPhase.description
                           .split('\n')
                           .map((line, index) => (
@@ -410,6 +647,17 @@ export default function FastingTracker() {
                             </p>
                           ))}
                       </div>
+
+                      {fastingStartTime && currentPhase.encouragement && (
+                        <div className='mt-4 p-4 bg-white/20 backdrop-blur-sm rounded-lg border-2 border-white/30'>
+                          <div className='flex items-center gap-3 justify-center'>
+                            <span className='text-2xl'>💪</span>
+                            <p className='text-lg font-bold text-black text-center'>
+                              {currentPhase.encouragement}
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -445,19 +693,19 @@ export default function FastingTracker() {
                                 <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
                                   <span className='text-2xl'>🎯</span>
                                 </div>
-                                <p className='text-lg font-semibold text-white/90 mb-2'>
+                                <p className='text-lg font-semibold text-black mb-2'>
                                   Următoarea fază
                                 </p>
-                                <h2 className='text-2xl font-bold text-white text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
+                                <h2 className='text-2xl font-bold text-black text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
                                   {nextPhase.title}
                                 </h2>
                                 <div className='bg-white/10 backdrop-blur-sm rounded-lg p-4'>
-                                  <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-base font-medium text-white/95'>
+                                  <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-base font-medium text-black'>
                                     <span>
                                       În {Math.floor(hoursUntilNext)}h{' '}
                                       {Math.floor((hoursUntilNext % 1) * 60)}min
                                     </span>
-                                    <span className='hidden sm:inline text-white/70'>
+                                    <span className='hidden sm:inline text-black/70'>
                                       •
                                     </span>
                                     <span>
@@ -473,22 +721,6 @@ export default function FastingTracker() {
                       }
                       return null;
                     })()}
-                </div>
-
-                {/* Info Button */}
-                <div className='flex justify-center'>
-                  <Link href='/beneficii'>
-                    <Button
-                      variant='outline'
-                      className='gap-2 rounded-full text-green-700 border-green-700 hover:bg-green-50 hover:border-green-300 transition-all duration-300'
-                      style={{ borderRadius: '50px' }}
-                    >
-                      <Info className='h-4 w-4 flex-shrink-0' />
-                      <span className='text-sm text-semibold font-medium'>
-                        Vezi De Ce e Benefică Pauza Alimentară.
-                      </span>
-                    </Button>
-                  </Link>
                 </div>
 
                 {/* Action Buttons */}
@@ -533,13 +765,9 @@ export default function FastingTracker() {
                     </Button>
                   ) : (
                     <div className='text-center space-y-4'>
-                      <p className='text-xl font-semibold text-muted-foreground'>
-                        Sesiunea de pauza alimentara este activă
-                      </p>
-
                       {/* Allowed drinks image */}
                       <div className='flex justify-center mb-4'>
-                        <div className='relative w-full max-w-2xl h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[28rem] overflow-hidden rounded-lg shadow-lg'>
+                        <div className='relative w-full max-w-2xl h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[28rem] overflow-hidden rounded-lg shadow-lg'>
                           <Image
                             src={`${
                               process.env.NODE_ENV === 'production'
@@ -550,7 +778,7 @@ export default function FastingTracker() {
                             fill
                             className='object-cover'
                             style={{
-                              objectPosition: 'center 60%',
+                              objectPosition: 'center 70%',
                             }}
                             sizes='(max-width: 1700px) 100vw, 100vp'
                             priority={false}
@@ -899,20 +1127,7 @@ export default function FastingTracker() {
         </div>
 
         {/* Action Buttons Section - Outside of grid */}
-        <div className='mt-6 space-y-4'>
-          {/* History Button Section */}
-          <div className='flex justify-center'>
-            <Link href='/history'>
-              <Button
-                variant='outline'
-                size='lg'
-                className='px-6 py-3 text-lg font-semibold'
-              >
-                📊 Vezi Istoricul Complet
-              </Button>
-            </Link>
-          </div>
-        </div>
+        <div className='mt-6 space-y-4'></div>
 
         {/* Mobile Phases Section - Only visible on mobile */}
         <div className='lg:hidden mt-6'>
