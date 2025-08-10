@@ -194,7 +194,36 @@ export default function FastingTracker() {
   // Handle hydration
   useEffect(() => {
     setMounted(true);
+
+    // Check if health alert was dismissed recently (within 24 hours)
+    const healthAlertDismissed = localStorage.getItem('healthAlertDismissed');
+    if (healthAlertDismissed) {
+      const dismissTime = parseInt(healthAlertDismissed);
+      const now = Date.now();
+      const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+      if (now - dismissTime < twentyFourHours) {
+        setIsHealthAlertExpanded(false);
+      } else {
+        // Remove expired dismissal
+        localStorage.removeItem('healthAlertDismissed');
+      }
+    }
   }, []);
+
+  // Handle health alert collapse with localStorage
+  const handleHealthAlertToggle = () => {
+    const newState = !isHealthAlertExpanded;
+    setIsHealthAlertExpanded(newState);
+
+    // If collapsing, save the dismiss time
+    if (!newState) {
+      localStorage.setItem('healthAlertDismissed', Date.now().toString());
+    } else {
+      // If expanding, remove the dismiss record
+      localStorage.removeItem('healthAlertDismissed');
+    }
+  };
 
   // Load data from storage on component mount
   useEffect(() => {
@@ -369,7 +398,7 @@ export default function FastingTracker() {
         <div className='mb-6 mx-4'>
           <div className='bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg relative transition-all duration-300'>
             <button
-              onClick={() => setIsHealthAlertExpanded(!isHealthAlertExpanded)}
+              onClick={handleHealthAlertToggle}
               className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
               aria-label={
                 isHealthAlertExpanded
