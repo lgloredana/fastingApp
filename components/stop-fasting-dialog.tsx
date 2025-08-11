@@ -14,24 +14,13 @@ import {
 import { AlertTriangle, UtensilsCrossed, Stethoscope } from 'lucide-react';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
+import { TimerDisplay } from './timer-display';
 
 interface StopFastingDialogProps {
   onConfirmStop: () => void;
   fastingStartTime: number;
   elapsedTime: number;
 }
-
-const formatTime = (milliseconds: number): string => {
-  const totalSeconds = Math.floor(milliseconds / 1000);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
-    2,
-    '0'
-  )}:${String(seconds).padStart(2, '0')}`;
-};
 
 export function StopFastingDialog({
   onConfirmStop,
@@ -113,20 +102,15 @@ export function StopFastingDialog({
 
         <div className='py-3 sm:py-4'>
           <div className='space-y-2 sm:space-y-3 p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-            <div className='text-center mb-3'>
-              <p className='text-xs sm:text-sm text-muted-foreground mb-1'>
-                Sesiunea Curentă
-              </p>
-              <p className='text-lg sm:text-xl md:text-2xl font-bold text-primary tabular-nums'>
-                {formatTime(elapsedTime)}
-              </p>
-            </div>
+            <TimerDisplay elapsedTime={elapsedTime} variant='dialog' />
 
             <div className='space-y-1 text-xs sm:text-sm'>
               <div className='flex items-center gap-1'>
                 <span className='text-muted-foreground'>Început:</span>
                 <span className='font-medium tabular-nums'>
-                  {format(fastingStartTime, 'HH:mm, dd MMM', { locale: ro })}
+                  {format(new Date(fastingStartTime), 'HH:mm, dd MMM', {
+                    locale: ro,
+                  })}
                 </span>
               </div>
               <div className='flex items-center gap-1'>

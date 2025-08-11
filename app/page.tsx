@@ -21,6 +21,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { Info, X, History, Clock } from 'lucide-react';
+import { TimerDisplay } from '@/components/timer-display';
 import {
   startFastingSession,
   endFastingSession,
@@ -652,26 +653,14 @@ export default function FastingTracker() {
                 }}
               >
                 {/* Timer Display */}
-                <div data-testid='timerDisplay' className='text-center'>
-                  <p className='text-xl font-semibold text-muted-foreground mb-2'>
-                    Timp scurs:
-                  </p>
-                  <p className='text-6xl md:text-7xl font-extrabold tracking-tight text-primary mb-4'>
-                    {formatTime(elapsedTime)}
-                  </p>
-                  {fastingStartTime && (
-                    <div className='text-center'>
-                      <p className='text-xl font-semibold text-muted-foreground mb-2'>
-                        Început :{' '}
-                        {safeFormatDate(fastingStartTime, 'HH:mm, dd MMM')}{' '}
-                        <UpdateStartTimeDialog
-                          currentStartTime={fastingStartTime}
-                          onUpdateStartTime={handleUpdateStartTime}
-                        />{' '}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <TimerDisplay
+                  elapsedTime={elapsedTime}
+                  fastingStartTime={
+                    fastingStartTime ? new Date(fastingStartTime) : undefined
+                  }
+                  variant='main'
+                  onUpdateStartTime={handleUpdateStartTime}
+                />
 
                 {/* Current Phase */}
                 <div
@@ -883,6 +872,22 @@ export default function FastingTracker() {
                     </div>
                   )}
                 </div>
+
+                {/* Timer Display under Stop Button - Mobile Only */}
+                {fastingStartTime && (
+                  <div className='mt-6 sm:hidden'>
+                    <TimerDisplay
+                      elapsedTime={elapsedTime}
+                      fastingStartTime={
+                        fastingStartTime
+                          ? new Date(fastingStartTime)
+                          : undefined
+                      }
+                      variant='main'
+                      onUpdateStartTime={handleUpdateStartTime}
+                    />
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
