@@ -21,7 +21,18 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Info, X, History, Clock, Volume2, Pause, Play } from 'lucide-react';
+import {
+  Info,
+  X,
+  History,
+  Clock,
+  Volume2,
+  Pause,
+  Play,
+  Bell,
+  BellOff,
+  Menu,
+} from 'lucide-react';
 import { TimerDisplay } from '@/components/timer-display';
 import {
   startFastingSession,
@@ -40,8 +51,12 @@ import { MobileFastingPhases } from '@/components/mobile-fasting-phases';
 import { DrinksCarousel } from '@/components/drinks-carousel';
 import { InfoContainer } from '@/components/info-container';
 import { useVoiceReader } from '@/hooks/use-voice-reader';
+import { useNotifications } from '@/hooks/use-notifications';
+import { usePhaseNotifications } from '@/hooks/use-phase-notifications';
 import { RecentHistoryCard } from '@/components/recent-history-card';
 import { UserSwitcher } from '@/components/user-switcher';
+import { NotificationTestPanel } from '@/components/notification-test-panel';
+import { PhaseTestPanel } from '@/components/phase-test-panel';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -210,11 +225,22 @@ export default function FastingTracker() {
   const [isHealthAlertExpanded, setIsHealthAlertExpanded] = useState(true);
   const [isBenefitsCardExpanded, setIsBenefitsCardExpanded] = useState(false);
   const [isPhasesCardExpanded, setIsPhasesCardExpanded] = useState(false);
+  const [isActionsExpanded, setIsActionsExpanded] = useState(false);
 
   // Voice reading for current phase
   const { toggle, isReading, isPaused, isSupported, stop } = useVoiceReader({
     rate: 0.8,
     lang: 'ro-RO',
+  });
+
+  // Notifications hooks
+  const notifications = useNotifications();
+
+  // Phase notifications hook
+  usePhaseNotifications({
+    currentPhase,
+    fastingStartTime,
+    isActive: !!currentSession,
   });
 
   // Generate voice text for current phase
@@ -576,103 +602,162 @@ export default function FastingTracker() {
             </InfoContainer>
           </div>
 
-          {/* Action Cards - Same style as Health Alert */}
-          <div data-testid='actionCards' className='space-y-2'>
-            {/* Benefits Card */}
-            <InfoContainer
-              title='Vezi De Ce e Benefică Pauza Alimentară'
-              isExpanded={isBenefitsCardExpanded}
-              onToggle={() =>
-                setIsBenefitsCardExpanded(!isBenefitsCardExpanded)
-              }
-              variant='info'
-              icon={<Info className='h-6 w-6 text-white flex-shrink-0' />}
-              className='shadow-lg'
-              enableVoiceReading={true}
-              voiceText='Vezi De Ce e Benefică Pauza Alimentară. Descoperă beneficiile științifice ale pauzelor alimentare și cum acestea pot îmbunătăți sănătatea ta.'
-            >
-              <p>
-                Descoperă beneficiile științifice ale pauzelor alimentare și cum
-                acestea pot îmbunătăți sănătatea ta.
-              </p>
-              <Link href='/beneficii'>
-                <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                  Citește mai mult
-                </Button>
-              </Link>
-            </InfoContainer>
-
-            {/* History Card - Direct Navigation */}
-            <button
-              onClick={() => {
-                // Track analytics for history navigation
-                if (typeof window !== 'undefined' && window.gtag) {
-                  window.gtag('event', 'navigate_to_history', {
-                    event_category: 'navigation',
-                    event_label: 'history_card_click',
-                  });
+          {/* Actions Container */}
+          <InfoContainer
+            title='Acțiuni Rapide'
+            isExpanded={isActionsExpanded}
+            onToggle={() => setIsActionsExpanded(!isActionsExpanded)}
+            variant='info'
+            icon={<Menu className='h-6 w-6 text-white flex-shrink-0' />}
+            className='shadow-lg'
+            enableVoiceReading={true}
+            voiceText='Acțiuni Rapide. Acces rapid la beneficii, istoric, faze și setări de notificări pentru a-ți personaliza experiența de post.'
+          >
+            <div data-testid='actionCards' className='space-y-3'>
+              {/* Benefits Card */}
+              <InfoContainer
+                title='Vezi De Ce e Benefică Pauza Alimentară'
+                isExpanded={isBenefitsCardExpanded}
+                onToggle={() =>
+                  setIsBenefitsCardExpanded(!isBenefitsCardExpanded)
                 }
-                router.push('/history');
-              }}
-              className='w-full text-left shadow-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white cursor-pointer hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-[1.02] rounded-xl overflow-hidden p-4'
-            >
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-3'>
-                  <History className='h-6 w-6 text-white flex-shrink-0' />
-                  <h3 className='text-lg font-bold'>Vezi Istoricul Complet</h3>
-                </div>
-                <div className='text-purple-200'>
-                  <svg
-                    className='h-4 w-4'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M9 5l7 7-7 7'
-                    />
-                  </svg>
-                </div>
-              </div>
-            </button>
+                variant='info'
+                icon={<Info className='h-6 w-6 text-white flex-shrink-0' />}
+                className='shadow-lg'
+                enableVoiceReading={true}
+                voiceText='Vezi De Ce e Benefică Pauza Alimentară. Descoperă beneficiile științifice ale pauzelor alimentare și cum acestea pot îmbunătăți sănătatea ta.'
+              >
+                <p>
+                  Descoperă beneficiile științifice ale pauzelor alimentare și
+                  cum acestea pot îmbunătăți sănătatea ta.
+                </p>
+                <Link href='/beneficii'>
+                  <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                    Citește mai mult
+                  </Button>
+                </Link>
+              </InfoContainer>
 
-            {/* Phases Card */}
-            <InfoContainer
-              title='Fazele Pauzei Alimentare'
-              isExpanded={isPhasesCardExpanded}
-              onToggle={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
-              variant='warning'
-              icon={<Clock className='h-6 w-6 text-white flex-shrink-0' />}
-              className='shadow-lg lg:hidden'
-              enableVoiceReading={true}
-              voiceText='Fazele Pauzei Alimentare. Descoperă cum se dezvoltă corpul tău prin diferitele etape ale pauzei alimentare, de la digestie la autofagie și regenerare celulară.'
-            >
-              <p>
-                Descoperă cum se dezvoltă corpul tău prin diferitele etape ale
-                pauzei alimentare, de la digestie la autofagie și regenerare
-                celulară.
-              </p>
+              {/* History Card - Direct Navigation */}
               <button
                 onClick={() => {
-                  const phasesSection = document.getElementById(
-                    'mobile-phases-container'
-                  );
-                  if (phasesSection) {
-                    phasesSection.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start',
+                  // Track analytics for history navigation
+                  if (typeof window !== 'undefined' && window.gtag) {
+                    window.gtag('event', 'navigate_to_history', {
+                      event_category: 'navigation',
+                      event_label: 'history_card_click',
                     });
                   }
+                  router.push('/history');
                 }}
-                className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
+                className='w-full text-left shadow-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white cursor-pointer hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-[1.02] rounded-xl overflow-hidden p-4'
               >
-                Vezi fazele →
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <History className='h-6 w-6 text-white flex-shrink-0' />
+                    <h3 className='text-lg font-bold'>
+                      Vezi Istoricul Complet
+                    </h3>
+                  </div>
+                  <div className='text-purple-200'>
+                    <svg
+                      className='h-4 w-4'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M9 5l7 7-7 7'
+                      />
+                    </svg>
+                  </div>
+                </div>
               </button>
-            </InfoContainer>
-          </div>
+
+              {/* Phases Card */}
+              <InfoContainer
+                title='Fazele Pauzei Alimentare'
+                isExpanded={isPhasesCardExpanded}
+                onToggle={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
+                variant='warning'
+                icon={<Clock className='h-6 w-6 text-white flex-shrink-0' />}
+                className='shadow-lg lg:hidden'
+                enableVoiceReading={true}
+                voiceText='Fazele Pauzei Alimentare. Descoperă cum se dezvoltă corpul tău prin diferitele etape ale pauzei alimentare, de la digestie la autofagie și regenerare celulară.'
+              >
+                <p>
+                  Descoperă cum se dezvoltă corpul tău prin diferitele etape ale
+                  pauzei alimentare, de la digestie la autofagie și regenerare
+                  celulară.
+                </p>
+                <button
+                  onClick={() => {
+                    const phasesSection = document.getElementById(
+                      'mobile-phases-container'
+                    );
+                    if (phasesSection) {
+                      phasesSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      });
+                    }
+                  }}
+                  className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
+                >
+                  Vezi fazele →
+                </button>
+              </InfoContainer>
+
+              {/* Notifications Card */}
+              {notifications.isSupported && (
+                <button
+                  onClick={() => {
+                    if (notifications.permission === 'granted') {
+                      notifications.setIsEnabled(!notifications.isEnabled);
+                    } else {
+                      notifications.requestPermission();
+                    }
+                  }}
+                  className='w-full text-left shadow-lg bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 text-white cursor-pointer hover:from-yellow-500 hover:to-yellow-600 dark:hover:from-yellow-600 dark:hover:to-yellow-700 transition-all duration-200 transform hover:scale-[1.02] rounded-xl overflow-hidden p-4'
+                >
+                  <div className='flex items-center justify-between'>
+                    <div className='flex items-center gap-3'>
+                      {notifications.isEnabled &&
+                      notifications.permission === 'granted' ? (
+                        <Bell className='h-6 w-6 text-white flex-shrink-0' />
+                      ) : (
+                        <BellOff className='h-6 w-6 text-white flex-shrink-0' />
+                      )}
+                      <div>
+                        <h3 className='text-lg font-bold'>Notificări</h3>
+                        <p className='text-sm opacity-90'>
+                          {notifications.isEnabled &&
+                          notifications.permission === 'granted'
+                            ? 'Active - Vei primi notificări pentru faze'
+                            : 'Inactiv - Apasă pentru a activa'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className='text-yellow-200'>
+                      {notifications.isEnabled &&
+                      notifications.permission === 'granted' ? (
+                        <span className='text-sm font-medium bg-white/20 px-2 py-1 rounded'>
+                          ON
+                        </span>
+                      ) : (
+                        <span className='text-sm font-medium bg-white/20 px-2 py-1 rounded'>
+                          OFF
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              )}
+            </div>
+          </InfoContainer>
         </div>
 
         {/* Main Content Grid */}
@@ -724,23 +809,57 @@ export default function FastingTracker() {
                         >
                           Starea curentă:
                         </p>
-                        {isSupported && (
-                          <button
-                            onClick={() => toggle(getCurrentPhaseVoiceText())}
-                            className='p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200'
-                            aria-label={
-                              isReading
-                                ? 'Oprește citirea fazei curente'
-                                : 'Citește faza curentă cu vocea'
-                            }
-                          >
-                            {isReading ? (
-                              <Pause className='h-5 w-5 text-white' />
-                            ) : (
-                              <Volume2 className='h-5 w-5 text-white' />
-                            )}
-                          </button>
-                        )}
+                        <div className='flex items-center gap-2'>
+                          {isSupported && (
+                            <button
+                              onClick={() => toggle(getCurrentPhaseVoiceText())}
+                              className='p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200'
+                              aria-label={
+                                isReading
+                                  ? 'Oprește citirea fazei curente'
+                                  : 'Citește faza curentă cu vocea'
+                              }
+                            >
+                              {isReading ? (
+                                <Pause className='h-5 w-5 text-white' />
+                              ) : (
+                                <Volume2 className='h-5 w-5 text-white' />
+                              )}
+                            </button>
+                          )}
+                          {notifications.isSupported && (
+                            <button
+                              onClick={() => {
+                                if (notifications.permission === 'granted') {
+                                  notifications.setIsEnabled(
+                                    !notifications.isEnabled
+                                  );
+                                } else {
+                                  notifications.requestPermission();
+                                }
+                              }}
+                              className={`p-2 rounded-full transition-colors duration-200 ${
+                                notifications.isEnabled &&
+                                notifications.permission === 'granted'
+                                  ? 'bg-yellow-500/20 hover:bg-yellow-500/30'
+                                  : 'bg-white/20 hover:bg-white/30'
+                              }`}
+                              aria-label={
+                                notifications.isEnabled &&
+                                notifications.permission === 'granted'
+                                  ? 'Dezactivează notificările pentru faze'
+                                  : 'Activează notificările pentru faze'
+                              }
+                            >
+                              {notifications.isEnabled &&
+                              notifications.permission === 'granted' ? (
+                                <Bell className='h-5 w-5 text-white' />
+                              ) : (
+                                <BellOff className='h-5 w-5 text-white' />
+                              )}
+                            </button>
+                          )}
+                        </div>
                       </div>
                       <h2
                         className='text-2xl font-bold text-center max-w-2xl mx-auto px-4 transition-all duration-500'
@@ -1228,6 +1347,10 @@ export default function FastingTracker() {
           />
         </div>
       </div>
+
+      {/* Test Panels - Development Only */}
+      <NotificationTestPanel />
+      <PhaseTestPanel onSessionChange={() => window.location.reload()} />
     </div>
   );
 }

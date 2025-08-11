@@ -20,7 +20,14 @@ interface InfoContainerProps {
   onToggle: () => void;
   icon?: ReactNode;
   className?: string;
-  variant?: 'default' | 'warning' | 'info' | 'success' | 'emerald' | 'purple';
+  variant?:
+    | 'default'
+    | 'warning'
+    | 'info'
+    | 'success'
+    | 'emerald'
+    | 'purple'
+    | 'notification';
   enableVoiceReading?: boolean;
   voiceText?: string;
 }
@@ -36,6 +43,8 @@ const variantStyles = {
     'bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 text-white',
   purple:
     'bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white',
+  notification:
+    'bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 text-white',
 };
 
 export function InfoContainer({
