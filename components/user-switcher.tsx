@@ -36,6 +36,7 @@ import {
   setActiveUser,
   createUser,
   deleteUser,
+  updateUser,
   type User as UserType,
 } from '@/lib/user-storage';
 import {
@@ -54,6 +55,9 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
   const [activeUser, setActiveUserState] = useState<UserType | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newUserName, setNewUserName] = useState('');
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<UserType | null>(null);
+  const [editUserName, setEditUserName] = useState('');
 
   const loadUsers = () => {
     const allUsers = getAllUsers();
@@ -97,6 +101,27 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
         loadUsers();
         onUserChange?.();
       }
+    }
+  };
+
+  const handleEditUser = (user: UserType) => {
+    setEditingUser(user);
+    setEditUserName(user.name);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleUpdateUser = () => {
+    if (!editingUser || !editUserName.trim()) return;
+
+    const updatedUser = updateUser(editingUser.id, {
+      name: editUserName.trim(),
+    });
+    if (updatedUser) {
+      loadUsers();
+      onUserChange?.();
+      setIsEditDialogOpen(false);
+      setEditingUser(null);
+      setEditUserName('');
     }
   };
 
@@ -148,14 +173,22 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               {users.map((user) => (
-                <DropdownMenuItem
-                  key={user.id}
-                  onClick={() => handleDeleteUser(user)}
-                  className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20'
-                >
-                  <Trash2 className='h-4 w-4 mr-2' />
-                  Șterge "{user.name}"
-                </DropdownMenuItem>
+                <div key={user.id}>
+                  <DropdownMenuItem
+                    onClick={() => handleEditUser(user)}
+                    className='text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                  >
+                    <Edit3 className='h-4 w-4 mr-2' />
+                    Editează "{user.name}"
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleDeleteUser(user)}
+                    className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20'
+                  >
+                    <Trash2 className='h-4 w-4 mr-2' />
+                    Șterge "{user.name}"
+                  </DropdownMenuItem>
+                </div>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -220,6 +253,54 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
             <Button onClick={handleAddUser} disabled={!newUserName.trim()}>
               <Plus className='h-4 w-4 mr-2' />
               Adaugă Persoana
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit User Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className='sm:max-w-md'>
+          <DialogHeader>
+            <DialogTitle>Editează Numele Utilizatorului</DialogTitle>
+            <DialogDescription>
+              Modifică numele pentru "{editingUser?.name}".
+            </DialogDescription>
+          </DialogHeader>
+          <div className='grid gap-4 py-4'>
+            <div className='grid grid-cols-4 items-center gap-4'>
+              <Label htmlFor='edit-name' className='text-right'>
+                Nume
+              </Label>
+              <Input
+                id='edit-name'
+                value={editUserName}
+                onChange={(e) => setEditUserName(e.target.value)}
+                className='col-span-3'
+                placeholder='Introdu numele nou...'
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleUpdateUser();
+                  }
+                }}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => setIsEditDialogOpen(false)}
+            >
+              Anulează
+            </Button>
+            <Button
+              type='button'
+              onClick={handleUpdateUser}
+              disabled={!editUserName.trim()}
+            >
+              <UserCheck className='h-4 w-4 mr-2' />
+              Salvează Modificările
             </Button>
           </DialogFooter>
         </DialogContent>
