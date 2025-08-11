@@ -103,22 +103,32 @@ export function DrinksCarousel() {
 
   return (
     <div className='w-full mb-4'>
-      <div className='relative w-full h-96 sm:h-[28rem] md:h-[32rem] lg:h-[36rem] xl:h-[40rem] overflow-hidden rounded-lg shadow-lg bg-gray-200'>
+      <div
+        className='relative w-full h-96 sm:h-[28rem] md:h-[32rem] lg:h-[36rem] xl:h-[40rem] overflow-hidden rounded-lg shadow-lg bg-gray-200'
+        style={{ touchAction: 'manipulation' }}
+      >
         <Carousel
           setApi={setApi}
-          className='w-full h-full touch-pan-x'
+          className='w-full h-full'
           opts={{
             align: 'start',
             loop: true,
             dragFree: false,
             containScroll: 'trimSnaps',
             slidesToScroll: 1,
+            dragThreshold: 10,
           }}
         >
-          <CarouselContent className='h-full flex touch-pan-x'>
+          <CarouselContent
+            className='h-full flex'
+            style={{ touchAction: 'pan-y pan-x' }}
+          >
             {drinkImages.map((image, index) => (
               <CarouselItem key={index} className='h-full'>
-                <div className='relative h-full w-full bg-gray-100 min-h-[24rem] sm:min-h-[28rem] md:min-h-[32rem] lg:min-h-[36rem] xl:min-h-[40rem]'>
+                <div
+                  className='relative h-full w-full bg-gray-100 min-h-[24rem] sm:min-h-[28rem] md:min-h-[32rem] lg:min-h-[36rem] xl:min-h-[40rem]'
+                  style={{ touchAction: 'pan-y pan-x' }}
+                >
                   <Image
                     src={getImageSrc(image.src)}
                     alt={image.alt}
