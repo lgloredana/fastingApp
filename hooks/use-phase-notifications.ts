@@ -32,18 +32,53 @@ export function usePhaseNotifications({
 
   // Monitor phase changes and send notifications
   useEffect(() => {
-    if (!isActive || !currentPhase || !fastingStartTime || !isEnabled) {
+    console.log('🔔 Phase Notification Debug:', {
+      isActive,
+      currentPhase: currentPhase?.id,
+      fastingStartTime: fastingStartTime
+        ? new Date(fastingStartTime).toLocaleString()
+        : null,
+      isEnabled,
+      lastNotifiedPhase: lastNotifiedPhaseRef.current,
+    });
+
+    if (!isActive) {
+      console.log('❌ Fasting is not active - no notifications');
+      return;
+    }
+
+    if (!currentPhase) {
+      console.log('❌ No current phase - no notifications');
+      return;
+    }
+
+    if (!fastingStartTime) {
+      console.log('❌ No fasting start time - no notifications');
+      return;
+    }
+
+    if (!isEnabled) {
+      console.log('❌ Notifications disabled - no notifications');
       return;
     }
 
     // If this is a new phase and we haven't notified about it yet
-    if (currentPhase.id !== lastNotifiedPhaseRef.current) {
+    if (currentPhase.id && currentPhase.id !== lastNotifiedPhaseRef.current) {
+      console.log(
+        `🔔 Phase changed from ${lastNotifiedPhaseRef.current} to ${currentPhase.id}`
+      );
+
       // Don't notify for the first phase (0-4 hours) immediately
       if (currentPhase.id !== 'phase-1') {
+        console.log('✅ Sending phase notification...');
         sendPhaseNotification(currentPhase);
+      } else {
+        console.log('⏭️ Skipping first phase notification');
       }
 
       lastNotifiedPhaseRef.current = currentPhase.id;
+    } else if (!currentPhase.id) {
+      console.log('❌ Current phase has no ID - cannot send notification');
     }
 
     // Schedule upcoming phase notifications
@@ -51,29 +86,47 @@ export function usePhaseNotifications({
   }, [currentPhase, fastingStartTime, isActive, isEnabled, sendNotification]);
 
   const sendPhaseNotification = (phase: FastingPhase) => {
+    if (!phase || !phase.id) {
+      console.error('❌ Cannot send notification: Invalid phase', phase);
+      return;
+    }
+
+    console.log('🔔 Sending notification for phase:', phase.id);
     const activeUser = getActiveUser();
     const userName = activeUser?.name || 'Utilizator';
 
     const phaseMessages = {
       'phase-2': {
-        title: '🍯 Glicogenul se consumă!',
-        body: `${userName}: Corpul tău folosește rezervele de glicogen. Ești pe drumul cel bun!`,
+        title: '🍯 Tranziția energetică!',
+        body: `${userName}: Corpul tău începe să scoată energie din depozite. Ține direcția!`,
       },
       'phase-3': {
-        title: '🔥 Arderea grăsimilor a început!',
-        body: `${userName}: Felicitări! Corpul tău a început să ardă grăsimi pentru energie.`,
+        title: '🔥 Schimbarea combustibilului!',
+        body: `${userName}: Motorul începe să schimbe combustibilul. Respira și continuă!`,
       },
       'phase-4': {
-        title: '🧬 Autofagia se activează!',
-        body: `${userName}: Excelent! Procesul de autofagie și cetoza încep să se activeze.`,
+        title: '🔥 Arderea grăsimilor a început!',
+        body: `${userName}: Primul prag important! Ești mai puternic/ă decât crezi!`,
       },
       'phase-5': {
-        title: '⚡ Autofagie profundă!',
-        body: `${userName}: Incredibil! Ești în autofagie profundă și echilibru metabolic optimal.`,
+        title: '🧬 Grăsimea ca sursă principală!',
+        body: `${userName}: Motorul tău merge pe mod eficient. Bravo!`,
       },
       'phase-6': {
+        title: '⚡ Autofagia debutează!',
+        body: `${userName}: Curățarea internă a început. Menține ritmul!`,
+      },
+      'phase-7': {
+        title: '🌟 Autofagie intensă!',
+        body: `${userName}: Claritate și energie. Bucură-te de moment!`,
+      },
+      'phase-8': {
+        title: '✨ Echilibru profund!',
+        body: `${userName}: Echilibru profund. Corpul îți mulțumește!`,
+      },
+      'phase-9': {
         title: '🌟 Regenerare completă!',
-        body: `${userName}: Uimitor! Corpul tău este în proces de regenerare și resetare metabolică.`,
+        body: `${userName}: Regenerare completă. Inspiri putere și disciplină!`,
       },
     };
 

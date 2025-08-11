@@ -74,6 +74,7 @@ const formatTime = (milliseconds: number): string => {
 };
 
 interface FastingPhase {
+  id: string; // Unique identifier for notifications
   title: string;
   description: string;
   durationHours: number; // Added duration in hours for calculation
@@ -84,6 +85,7 @@ interface FastingPhase {
 
 const FASTING_PHASES: FastingPhase[] = [
   {
+    id: 'phase-1',
     durationHours: 0,
     title: '0–4 ore după ultima masă',
     description:
@@ -93,6 +95,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Ai început. Rămâi constant/ă !',
   },
   {
+    id: 'phase-2',
     durationHours: 4,
     title: 'După 4 ore: Tranziția energetică',
     description:
@@ -102,6 +105,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Tranziția a început. Ține direcția!',
   },
   {
+    id: 'phase-3',
     durationHours: 5,
     title: 'După 5 ore: Schimbarea combustibilului',
     description:
@@ -111,6 +115,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Schimbarea e în curs. Respira și continuă.',
   },
   {
+    id: 'phase-4',
     durationHours: 8,
     title: 'După 8 ore: Începe arderea grăsimilor',
     description:
@@ -120,6 +125,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Primul prag important. Ești mai puternic/ă decât crezi.',
   },
   {
+    id: 'phase-5',
     durationHours: 12,
     title: 'După 12 ore: Grăsimea ca sursă principală',
     description:
@@ -129,6 +135,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Motorul tău merge pe mod eficient. Bravo!',
   },
   {
+    id: 'phase-6',
     durationHours: 16,
     title: 'După 16 ore: Debutează autofagia',
     description:
@@ -138,6 +145,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Curățarea internă a început. Menține ritmul!',
   },
   {
+    id: 'phase-7',
     durationHours: 18,
     title: 'După 18 ore: Autofagie intensă',
     description:
@@ -147,6 +155,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Claritate și energie. Bucură-te de moment!',
   },
   {
+    id: 'phase-8',
     durationHours: 24,
     title: 'După 24 ore: Echilibru profund',
     description:
@@ -156,6 +165,7 @@ const FASTING_PHASES: FastingPhase[] = [
     encouragement: 'Echilibru profund. Corpul îți mulțumește.',
   },
   {
+    id: 'phase-9',
     durationHours: 36,
     title: 'După 36-48 ore: Regenerare și resetare',
     description:
@@ -631,7 +641,7 @@ export default function FastingTracker() {
             icon={<Menu className='h-6 w-6 text-white flex-shrink-0' />}
             className='shadow-lg'
             enableVoiceReading={true}
-            voiceText='Acțiuni Rapide. Acces rapid la beneficii, istoric, faze și setări de notificări pentru a-ți personaliza experiența de post.'
+            voiceText='Acțiuni Rapide. Acces rapid la beneficii, istoric, faze și setări de notificări pentru a-ți personaliza experiența de pauza alimentara.'
           >
             <div data-testid='actionCards' className='space-y-3'>
               {/* Benefits Card */}

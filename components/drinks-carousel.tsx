@@ -51,7 +51,17 @@ const drinkImages: DrinkImage[] = [
   {
     src: '/paine.png',
     alt: 'Paine',
-    caption: 'Alimente recomandate în perioada de alimentare',
+    caption: 'Paine',
+  },
+  {
+    src: '/dovlecei.png',
+    alt: 'Dovlecei',
+    caption: 'Dovlecei',
+  },
+  {
+    src: '/ardeiGras.png',
+    alt: 'Ardei gras',
+    caption: 'Ardei gras',
   },
 ];
 

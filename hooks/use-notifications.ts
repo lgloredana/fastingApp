@@ -72,12 +72,37 @@ export function useNotifications(): UseNotificationsReturn {
   // Send notification
   const sendNotification = useCallback(
     (options: NotificationOptions) => {
-      if (!isSupported || !isEnabled || permission !== 'granted') {
-        console.log('Notifications disabled or not permitted');
+      // Enhanced debugging
+      console.log('🔔 Notification Debug Info:', {
+        isSupported,
+        isEnabled,
+        permission,
+        title: options.title,
+        body: options.body,
+      });
+
+      if (!isSupported) {
+        console.error('❌ Notifications are not supported in this browser');
+        alert('Notificările nu sunt suportate în acest browser!');
+        return;
+      }
+
+      if (!isEnabled) {
+        console.error('❌ Notifications are disabled by user');
+        alert('Notificările sunt dezactivate! Activează-le din setări.');
+        return;
+      }
+
+      if (permission !== 'granted') {
+        console.error('❌ Notification permission not granted:', permission);
+        alert(
+          `Permisiunea pentru notificări: ${permission}. Te rog să o accepți!`
+        );
         return;
       }
 
       try {
+        console.log('✅ Creating notification...');
         const notification = new Notification(options.title, {
           body: options.body,
           icon: options.icon || '/icon-192.png',
@@ -86,6 +111,8 @@ export function useNotifications(): UseNotificationsReturn {
           requireInteraction: options.requireInteraction || false,
           silent: false,
         });
+
+        console.log('✅ Notification created successfully!');
 
         // Auto-close after 10 seconds if not requiring interaction
         if (!options.requireInteraction) {
@@ -96,13 +123,23 @@ export function useNotifications(): UseNotificationsReturn {
 
         // Handle notification click
         notification.onclick = () => {
+          console.log('Notification clicked');
           window.focus();
           notification.close();
         };
 
-        console.log('Notification sent:', options.title);
+        notification.onshow = () => {
+          console.log('✅ Notification is showing');
+        };
+
+        notification.onerror = (error) => {
+          console.error('❌ Notification error:', error);
+        };
+
+        console.log('✅ Notification sent:', options.title);
       } catch (error) {
-        console.error('Error sending notification:', error);
+        console.error('❌ Error sending notification:', error);
+        alert(`Eroare la trimiterea notificării: ${error}`);
       }
     },
     [isSupported, isEnabled, permission]
