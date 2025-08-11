@@ -38,6 +38,16 @@ const drinkImages: DrinkImage[] = [
     alt: 'Salată și alimente',
     caption: 'Alimente recomandate în perioada de alimentare',
   },
+  {
+    src: '/pastaiVerzi.png',
+    alt: 'Pastai verzi',
+    caption: 'Alimente recomandate în perioada de alimentare',
+  },
+  {
+    src: '/paine.png',
+    alt: 'Paine',
+    caption: 'Alimente recomandate în perioada de alimentare',
+  },
 ];
 
 export function DrinksCarousel() {
