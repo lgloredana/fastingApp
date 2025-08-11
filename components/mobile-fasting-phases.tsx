@@ -77,7 +77,7 @@ export function MobileFastingPhases({
   };
 
   return (
-    <Card className='lg:hidden'>
+    <Card className='lg:hidden pt-0'>
       {' '}
       {/* Only show on mobile */}
       <CardHeader className='py-4 px-6 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-t-xl'>

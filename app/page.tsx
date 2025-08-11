@@ -624,12 +624,18 @@ export default function FastingTracker() {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
           {/* Current Status - Main Card */}
           <div className='lg:col-span-2'>
-            <Card className='h-full relative overflow-hidden'>
+            <Card className='h-full relative overflow-hidden p-0'>
               <div
                 className='absolute top-0 left-0 right-0 h-1 transition-colors duration-500'
                 style={{ backgroundColor: currentPhase.color }}
               />
-              <CardContent className='space-y-8'>
+              <CardContent
+                data-testid='cardContentTime'
+                className='space-y-8 py-10'
+                style={{
+                  background: `linear-gradient(135deg, ${currentPhase.color}40`,
+                }}
+              >
                 {/* Timer Display */}
                 <div className='text-center'>
                   <p className='text-xl font-semibold text-muted-foreground mb-2'>
@@ -1163,7 +1169,7 @@ export default function FastingTracker() {
         <div className='mt-6 space-y-4'></div>
 
         {/* Mobile Phases Section - Only visible on mobile */}
-        <div id='mobile-phases-container' className='lg:hidden mt-6'>
+        <div id='mobile-phases-container' className='lg:hidden'>
           <MobileFastingPhases
             phases={FASTING_PHASES}
             currentPhaseIndex={FASTING_PHASES.findIndex(
