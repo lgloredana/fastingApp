@@ -172,7 +172,7 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
         </Select>
 
         {/* User Management Dropdown */}
-        {users.length > 1 && (
+        {users.length > 0 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' size='sm' className='h-9 w-9 p-0'>
@@ -189,13 +189,15 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
                     <Edit3 className='h-4 w-4 mr-2' />
                     Editează "{user.name}"
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleDeleteUser(user)}
-                    className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20'
-                  >
-                    <Trash2 className='h-4 w-4 mr-2' />
-                    Șterge "{user.name}"
-                  </DropdownMenuItem>
+                  {users.length > 1 && (
+                    <DropdownMenuItem
+                      onClick={() => handleDeleteUser(user)}
+                      className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20'
+                    >
+                      <Trash2 className='h-4 w-4 mr-2' />
+                      Șterge "{user.name}"
+                    </DropdownMenuItem>
+                  )}
                 </div>
               ))}
             </DropdownMenuContent>
