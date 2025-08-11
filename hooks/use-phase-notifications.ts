@@ -98,35 +98,35 @@ export function usePhaseNotifications({
     const phaseMessages = {
       'phase-2': {
         title: '🍯 Tranziția energetică!',
-        body: `${userName}: Corpul tău începe să scoată energie din depozite. Ține direcția!`,
+        body: `${userName}, corpul tău începe să scoată energie din depozite. Ține direcția!`,
       },
       'phase-3': {
         title: '🔥 Schimbarea combustibilului!',
-        body: `${userName}: Motorul începe să schimbe combustibilul. Respira și continuă!`,
+        body: `${userName}, motorul începe să schimbe combustibilul. Respira și continuă!`,
       },
       'phase-4': {
         title: '🔥 Arderea grăsimilor a început!',
-        body: `${userName}: Primul prag important! Ești mai puternic/ă decât crezi!`,
+        body: `${userName}, primul prag important! Ești mai puternic/ă decât crezi!`,
       },
       'phase-5': {
         title: '🧬 Grăsimea ca sursă principală!',
-        body: `${userName}: Motorul tău merge pe mod eficient. Bravo!`,
+        body: `${userName}, motorul tău merge pe mod eficient. Bravo!`,
       },
       'phase-6': {
         title: '⚡ Autofagia debutează!',
-        body: `${userName}: Curățarea internă a început. Menține ritmul!`,
+        body: `${userName}, curățarea internă a început. Menține ritmul!`,
       },
       'phase-7': {
         title: '🌟 Autofagie intensă!',
-        body: `${userName}: Claritate și energie. Bucură-te de moment!`,
+        body: `${userName}, claritate și energie. Bucură-te de moment!`,
       },
       'phase-8': {
         title: '✨ Echilibru profund!',
-        body: `${userName}: Echilibru profund. Corpul îți mulțumește!`,
+        body: `${userName}, echilibru profund. Corpul îți mulțumește!`,
       },
       'phase-9': {
         title: '🌟 Regenerare completă!',
-        body: `${userName}: Regenerare completă. Inspiri putere și disciplină!`,
+        body: `${userName}, regenerare completă. Inspiri putere și disciplină!`,
       },
     };
 
@@ -176,7 +176,7 @@ export function usePhaseNotifications({
 
               sendNotification({
                 title: '⏰ Aproape de următoarea fază!',
-                body: `${userName}: În 5 minute vei intra în faza: ${name}`,
+                body: `${userName}, în 5 minute vei intra în faza: ${name}`,
                 tag: `pre-phase-${phaseId}-${activeUser?.id || 'default'}`,
                 requireInteraction: false,
               });

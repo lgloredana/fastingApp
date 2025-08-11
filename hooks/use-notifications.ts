@@ -191,21 +191,40 @@ export function useNotifications(): UseNotificationsReturn {
           const visualNotification = document.createElement('div');
           visualNotification.style.cssText = `
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
             background: #4CAF50;
             color: white;
             padding: 15px 20px;
-            border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             z-index: 10000;
-            max-width: 90vw;
             text-align: center;
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             line-height: 1.4;
+            animation: slideDown 0.3s ease-out;
           `;
+
+          // Add animation styles
+          if (!document.getElementById('notification-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'notification-styles';
+            styles.textContent = `
+              @keyframes slideDown {
+                from {
+                  transform: translateY(-100%);
+                  opacity: 0;
+                }
+                to {
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+              }
+            `;
+            document.head.appendChild(styles);
+          }
 
           visualNotification.innerHTML = `
             <div style="font-weight: bold; margin-bottom: 5px;">${options.title}</div>

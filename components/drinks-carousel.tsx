@@ -74,6 +74,11 @@ const drinkImages: DrinkImage[] = [
     alt: 'Rosie',
     caption: 'Rosie',
   },
+  {
+    src: '/peste2.png',
+    alt: 'Peste',
+    caption: 'Peste',
+  },
 ];
 
 export function DrinksCarousel() {

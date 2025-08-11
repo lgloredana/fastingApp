@@ -58,7 +58,7 @@ export function NotificationTestPanel() {
 
     sendNotification({
       title: notification.title,
-      body: `${userName}: ${notification.body}`,
+      body: `${userName}, ${notification.body}`,
       tag: `test-${notification.id}-${activeUser?.id || 'default'}`,
       requireInteraction: true,
     });
@@ -75,7 +75,7 @@ export function NotificationTestPanel() {
 
     sendNotification({
       title: '⏰ Aproape de următoarea fază!',
-      body: `${userName}: În 5 minute vei intra în faza: Arderea Grăsimilor`,
+      body: `${userName}, în 5 minute vei intra în faza: Arderea Grăsimilor`,
       tag: `test-pre-notification-${activeUser?.id || 'default'}`,
       requireInteraction: false,
     });
