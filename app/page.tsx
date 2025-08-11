@@ -36,6 +36,7 @@ import { UpdateStartTimeDialog } from '@/components/update-start-time-dialog';
 import { StopFastingDialog } from '@/components/stop-fasting-dialog';
 import { MobileFastingPhases } from '@/components/mobile-fasting-phases';
 import { DrinksCarousel } from '@/components/drinks-carousel';
+import { InfoContainer } from '@/components/info-container';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -412,130 +413,87 @@ export default function FastingTracker() {
         <div className='space-y-2 mx-4 mb-6'>
           {/* Health Alert Card */}
           <div data-testid='healthAlertCard'>
-            <div className='bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg relative transition-all duration-300'>
-              <button
-                onClick={handleHealthAlertToggle}
-                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-                aria-label={
-                  isHealthAlertExpanded
-                    ? 'Compactează alerta'
-                    : 'Expandează alerta'
-                }
-              >
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center gap-3'>
-                    <AlertTriangle className='h-6 w-6 text-white flex-shrink-0' />
-                    <h3 className='text-lg font-bold text-white'>
-                      Informații importante despre pauzele alimentare
-                    </h3>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                      isHealthAlertExpanded ? 'rotate-180' : ''
-                    }`}
-                  />
-                </div>
-              </button>
-
-              {isHealthAlertExpanded && (
-                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
-                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                    <p>
-                      <strong>
-                        Pauzele alimentare sunt benefice atunci când sunt
-                        adaptate corpului tău.
-                      </strong>
-                    </p>
-                    <p>
-                      Pauza clasică de peste noapte are în jur de 12 ore și
-                      este, de regulă, sigură pentru majoritatea oamenilor.
-                    </p>
-                    <p>
-                      Orice pauză mai lungă de 12 ore poate aduce beneficii
-                      suplimentare, dar și riscuri, în funcție de starea de
-                      sănătate și nevoile tale.
-                    </p>
-                    <p>
-                      <strong>
-                        Pe toată durata pauzei este esențial să consumi lichide:
-                      </strong>
-                    </p>
-                    <ul className='text-white/95 space-y-1 pl-4 list-disc'>
-                      <li>apă simplă</li>
-                      <li>apă cu o felie de fruct (ex.: lămâie, portocală)</li>
-                      <li>ceai neîndulcit</li>
-                      <li>cafea simplă (fără zahăr sau lapte)</li>
-                    </ul>
-                    <p>
-                      În plus, este important să ai o alimentație echilibrată în
-                      ferestrele de mâncare: include legume, surse de proteine
-                      (carne, pește, ouă) și carbohidrați complecși în cantități
-                      moderate (cum ar fi pâinea integrală).
-                    </p>
-                    <p>
-                      <strong>
-                        Ascultă-ți corpul, oprește pauza dacă apar simptome
-                        neplăcute și nu te expune înfometării.
-                      </strong>
-                    </p>
-                    <p>
-                      <strong>
-                        Dacă ai probleme medicale sau iei tratamente, consultă
-                        medicul înainte de a prelungi pauza.
-                      </strong>
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
+            <InfoContainer
+              title='Informații importante despre pauzele alimentare'
+              isExpanded={isHealthAlertExpanded}
+              onToggle={handleHealthAlertToggle}
+              variant='emerald'
+              className='shadow-lg'
+              enableVoiceReading={true}
+              voiceText='Informații importante despre pauzele alimentare. Pauzele alimentare sunt benefice atunci când sunt adaptate corpului tău. Pauza clasică de peste noapte are în jur de 12 ore și este, de regulă, sigură pentru majoritatea oamenilor. Orice pauză mai lungă de 12 ore poate aduce beneficii suplimentare, dar și riscuri, în funcție de starea de sănătate și nevoile tale. Pe toată durata pauzei este esențial să consumi lichide: apă simplă, apă cu o felie de fruct, ceai neîndulcit, cafea simplă fără zahăr sau lapte. În plus, este important să ai o alimentație echilibrată în ferestrele de mâncare: include legume, surse de proteine și carbohidrați complecși în cantități moderate. Ascultă-ți corpul, oprește pauza dacă apar simptome neplăcute și nu te expune înfometării. Dacă ai probleme medicale sau iei tratamente, consultă medicul înainte de a prelungi pauza.'
+            >
+              <p>
+                <strong>
+                  Pauzele alimentare sunt benefice atunci când sunt adaptate
+                  corpului tău.
+                </strong>
+              </p>
+              <p>
+                Pauza clasică de peste noapte are în jur de 12 ore și este, de
+                regulă, sigură pentru majoritatea oamenilor.
+              </p>
+              <p>
+                Orice pauză mai lungă de 12 ore poate aduce beneficii
+                suplimentare, dar și riscuri, în funcție de starea de sănătate
+                și nevoile tale.
+              </p>
+              <p>
+                <strong>
+                  Pe toată durata pauzei este esențial să consumi lichide:
+                </strong>
+              </p>
+              <ul className='space-y-1 pl-4 list-disc'>
+                <li>apă simplă</li>
+                <li>apă cu o felie de fruct (ex.: lămâie, portocală)</li>
+                <li>ceai neîndulcit</li>
+                <li>cafea simplă (fără zahăr sau lapte)</li>
+              </ul>
+              <p>
+                În plus, este important să ai o alimentație echilibrată în
+                ferestrele de mâncare: include legume, surse de proteine (carne,
+                pește, ouă) și carbohidrați complecși în cantități moderate (cum
+                ar fi pâinea integrală).
+              </p>
+              <p>
+                <strong>
+                  Ascultă-ți corpul, oprește pauza dacă apar simptome neplăcute
+                  și nu te expune înfometării.
+                </strong>
+              </p>
+              <p>
+                <strong>
+                  Dacă ai probleme medicale sau iei tratamente, consultă medicul
+                  înainte de a prelungi pauza.
+                </strong>
+              </p>
+            </InfoContainer>
           </div>
 
           {/* Action Cards - Same style as Health Alert */}
           <div data-testid='actionCards' className='space-y-2'>
             {/* Benefits Card */}
-            <div className='bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg relative transition-all duration-300'>
-              <button
-                onClick={() =>
-                  setIsBenefitsCardExpanded(!isBenefitsCardExpanded)
-                }
-                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-                aria-label={
-                  isBenefitsCardExpanded
-                    ? 'Compactează cardul'
-                    : 'Expandează cardul'
-                }
-              >
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center gap-3'>
-                    <Info className='h-6 w-6 text-white flex-shrink-0' />
-                    <h3 className='text-lg font-bold text-white'>
-                      Vezi De Ce e Benefică Pauza Alimentară
-                    </h3>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                      isBenefitsCardExpanded ? 'rotate-180' : ''
-                    }`}
-                  />
-                </div>
-              </button>
-
-              {isBenefitsCardExpanded && (
-                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
-                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                    <p>
-                      Descoperă beneficiile științifice ale pauzelor alimentare
-                      și cum acestea pot îmbunătăți sănătatea ta.
-                    </p>
-                    <Link href='/beneficii'>
-                      <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                        Citește mai mult
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+            <InfoContainer
+              title='Vezi De Ce e Benefică Pauza Alimentară'
+              isExpanded={isBenefitsCardExpanded}
+              onToggle={() =>
+                setIsBenefitsCardExpanded(!isBenefitsCardExpanded)
+              }
+              variant='info'
+              icon={<Info className='h-6 w-6 text-white flex-shrink-0' />}
+              className='shadow-lg'
+              enableVoiceReading={true}
+              voiceText='Vezi De Ce e Benefică Pauza Alimentară. Descoperă beneficiile științifice ale pauzelor alimentare și cum acestea pot îmbunătăți sănătatea ta.'
+            >
+              <p>
+                Descoperă beneficiile științifice ale pauzelor alimentare și cum
+                acestea pot îmbunătăți sănătatea ta.
+              </p>
+              <Link href='/beneficii'>
+                <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                  Citește mai mult
+                </Button>
+              </Link>
+            </InfoContainer>
 
             {/* History Card */}
             <div className='bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-xl shadow-lg relative transition-all duration-300'>
