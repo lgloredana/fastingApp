@@ -55,6 +55,7 @@ interface FastingPhase {
   description: string;
   durationHours: number; // Added duration in hours for calculation
   color: string; // Color for this phase
+  textColor: string; // Text color for this phase
   encouragement?: string; // Optional motivational message
 }
 
@@ -64,15 +65,17 @@ const FASTING_PHASES: FastingPhase[] = [
     title: '0–4 ore după ultima masă',
     description:
       'Corpul digeră glucoza din mâncare si e folosită pentru energie. Rezervele rapide de glucoză din ficat și mușchi se reîncarcă. Te simți bine, fără foame. E liniște metabolică.',
-    color: '#FFA726', // Portocaliu cald - digestie activă
-    encouragement: 'Ai început. Rămâi constant/ă și prezent/ă.',
+    color: '#66BB6A',
+    textColor: '#000000', // White text for blue background
+    encouragement: 'Ai început. Rămâi constant/ă !',
   },
   {
     durationHours: 4,
     title: 'După 4 ore: Tranziția energetică',
     description:
       'Corpul începe să scoată energie din depozite, funcționează pe baterii interne.',
-    color: '#FDD835', // Galben-muștar - tranziție
+    color: '#9CCC65',
+    textColor: '#000000', // Black text for yellow background
     encouragement: 'Tranziția a început. Ține direcția!',
   },
   {
@@ -80,7 +83,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 5 ore: Schimbarea combustibilului',
     description:
       'O ușoară foame și scădere de energie, motorul începe să schimbe combustibilul.',
-    color: '#FDD835', // Galben-muștar - tranziție
+    color: '#FFEB3B',
+    textColor: '#000000', // Black text for yellow background
     encouragement: 'Schimbarea e în curs. Respira și continuă.',
   },
   {
@@ -88,7 +92,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 8 ore: Începe arderea grăsimilor',
     description:
       'Începe arderea grăsimilor, grelina (hormonul foamei) atinge vârf maxim (trece după 20-30 min), primul prag metabolic important.',
-    color: '#FB8C00', // Chihlimbar - orange închis
+    color: '#FF9800',
+    textColor: '#FFFFFF', // White text for blue background
     encouragement: 'Primul prag important. Ești mai puternic/ă decât crezi.',
   },
   {
@@ -96,7 +101,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 12 ore: Grăsimea ca sursă principală',
     description:
       'Grăsimea devine principala sursă de energie, creierul începe să meargă pe mod eco: cetone.',
-    color: '#FB8C00', // Chihlimbar - orange închis
+    color: '#FF5722',
+    textColor: '#FFFFFF', // White text for blue background
     encouragement: 'Motorul tău merge pe mod eficient. Bravo!',
   },
   {
@@ -104,7 +110,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 16 ore: Debutează autofagia',
     description:
       'Autofagia debutează, arderea grăsimilor este la maxim, corpul intră în faza de curățare interioară.',
-    color: '#42A5F5', // Albastru mediu - autofagie + cetoză
+    color: '#42A5F5',
+    textColor: '#000000', // Black text for amber background
     encouragement: 'Curățarea internă a început. Menține ritmul!',
   },
   {
@@ -112,7 +119,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 18 ore: Autofagie intensă',
     description:
       'Autofagia se intensifică, grăsimile sunt arse la intensitate maximă, se simte o claritate mentală sau ușoară euforie, reparații interioare serioase, corpul face curat.',
-    color: '#42A5F5', // Albastru mediu - autofagie + cetoză
+    color: '#2196F3',
+    textColor: '#FFFFFF', // White text for blue background
     encouragement: 'Claritate și energie. Bucură-te de moment!',
   },
   {
@@ -120,7 +128,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 24 ore: Echilibru profund',
     description:
       'Stare de echilibru metabolic profund, inflamația sistematică scade, se curăță structuri implicate în îmbătrânire și boli cronice, nivel maxim de autofagie.',
-    color: '#3949AB', // Indigo închis - autofagie profundă
+    color: '#3949AB',
+    textColor: '#FFFFFF', // White text for dark indigo background
     encouragement: 'Echilibru profund. Corpul îți mulțumește.',
   },
   {
@@ -128,7 +137,8 @@ const FASTING_PHASES: FastingPhase[] = [
     title: 'După 36-48 ore: Regenerare și resetare',
     description:
       'Autofagia e profundă, corpul începe regenerarea: tulpini celulare în intestin și sistemul imunitar sunt stimulate, cetonele domină complet: claritate, energie lină, puțină foame, curățare + reconstrucție (resetarea sistemului).',
-    color: '#7E57C2', // Violet profund - regenerare completă
+    color: '#8E24AA',
+    textColor: '#FFFFFF', // White text for purple background
     encouragement: 'Regenerare completă. Inspiri putere și disciplină.',
   },
 ];
@@ -659,7 +669,10 @@ export default function FastingTracker() {
                 </div>
 
                 {/* Current Phase */}
-                <div className='text-center space-y-4'>
+                <div
+                  data-testid='currentPahseContainer'
+                  className='text-center space-y-4'
+                >
                   <div
                     className='mt-6 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl'
                     style={{
@@ -671,13 +684,23 @@ export default function FastingTracker() {
                       <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
                         <Stethoscope className='h-8 w-8 text-white' />
                       </div>
-                      <p className='text-lg font-semibold text-black mb-2'>
+                      <p
+                        className='text-lg font-semibold mb-2'
+                        style={{ color: currentPhase.textColor }}
+                      >
                         Starea curentă:
                       </p>
-                      <h2 className='text-2xl font-bold text-black text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
+                      <h2
+                        className='text-2xl font-bold text-center max-w-2xl mx-auto px-4 transition-all duration-500'
+                        style={{ color: currentPhase.textColor }}
+                      >
                         {currentPhase.title}
                       </h2>
-                      <div className='text-base font-medium text-black max-w-2xl mx-auto leading-relaxed bg-white/10 backdrop-blur-sm rounded-lg p-4'>
+                      <div
+                        data-testid='descriptionContainer'
+                        className='text-base font-medium max-w-2xl mx-auto leading-relaxed bg-white/10 backdrop-blur-sm rounded-lg p-4'
+                        style={{ color: currentPhase.textColor }}
+                      >
                         {currentPhase.description
                           .split('\n')
                           .map((line, index) => (
@@ -688,10 +711,16 @@ export default function FastingTracker() {
                       </div>
 
                       {fastingStartTime && currentPhase.encouragement && (
-                        <div className='mt-4 p-4 bg-white/20 backdrop-blur-sm rounded-lg border-2 border-white/30'>
+                        <div
+                          data-testid='encouragementContainer'
+                          className='mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-lg'
+                        >
                           <div className='flex items-center gap-3 justify-center'>
                             <span className='text-2xl'>💪</span>
-                            <p className='text-lg font-bold text-black text-center'>
+                            <p
+                              className='text-lg font-bold text-center'
+                              style={{ color: currentPhase.textColor }}
+                            >
                               {currentPhase.encouragement}
                             </p>
                           </div>
@@ -722,6 +751,7 @@ export default function FastingTracker() {
 
                           return (
                             <div
+                              data-testid='nextPhaseContainer'
                               className='mt-6 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl'
                               style={{
                                 background: `linear-gradient(135deg, ${nextPhase.color}dd, ${nextPhase.color})`,
@@ -732,19 +762,28 @@ export default function FastingTracker() {
                                 <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
                                   <span className='text-2xl'>🎯</span>
                                 </div>
-                                <p className='text-lg font-semibold text-black mb-2'>
+                                <p
+                                  className='text-lg font-semibold mb-2'
+                                  style={{ color: nextPhase.textColor }}
+                                >
                                   Următoarea fază
                                 </p>
-                                <h2 className='text-2xl font-bold text-black text-center max-w-2xl mx-auto px-4 transition-all duration-500'>
+                                <h2
+                                  className='text-2xl font-bold text-center max-w-2xl mx-auto px-4 transition-all duration-500'
+                                  style={{ color: nextPhase.textColor }}
+                                >
                                   {nextPhase.title}
                                 </h2>
                                 <div className='bg-white/10 backdrop-blur-sm rounded-lg p-4'>
-                                  <div className='flex flex-col sm:flex-row justify-center items-center gap-2 text-base font-medium text-black'>
+                                  <div
+                                    className='flex flex-col sm:flex-row justify-center items-center gap-2 text-base font-medium'
+                                    style={{ color: nextPhase.textColor }}
+                                  >
                                     <span>
                                       În {Math.floor(hoursUntilNext)}h{' '}
                                       {Math.floor((hoursUntilNext % 1) * 60)}min
                                     </span>
-                                    <span className='hidden sm:inline text-black/70'>
+                                    <span className='hidden sm:inline opacity-70'>
                                       •
                                     </span>
                                     <span>
