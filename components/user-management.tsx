@@ -21,14 +21,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
-  User, 
-  Plus, 
-  UserCheck, 
-  Clock, 
+import {
+  User,
+  Plus,
+  UserCheck,
+  Clock,
   Calendar,
   Trash2,
-  Edit3 
+  Edit3,
 } from 'lucide-react';
 import {
   getAllUsers,
@@ -110,7 +110,11 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
       return;
     }
 
-    if (confirm('Ești sigur că vrei să ștergi acest utilizator? Toate datele sale vor fi pierdute.')) {
+    if (
+      confirm(
+        'Ești sigur că vrei să ștergi acest utilizator? Toate datele sale vor fi pierdute.'
+      )
+    ) {
       deleteUser(userId);
       loadUsers();
       onUserChange?.();
@@ -132,15 +136,15 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
+        <div className='flex items-center justify-between'>
+          <CardTitle className='flex items-center gap-2'>
+            <User className='h-5 w-5' />
             Gestionare Utilizatori
           </CardTitle>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="gap-2">
-                <Plus className="h-4 w-4" />
+              <Button size='sm' className='gap-2'>
+                <Plus className='h-4 w-4' />
                 Adaugă Utilizator
               </Button>
             </DialogTrigger>
@@ -151,29 +155,32 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
                   Creează un nou profil pentru urmărirea postului.
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Nume *</Label>
+              <div className='grid gap-4 py-4'>
+                <div className='grid gap-2'>
+                  <Label htmlFor='name'>Nume *</Label>
                   <Input
-                    id="name"
+                    id='name'
                     value={newUserName}
                     onChange={(e) => setNewUserName(e.target.value)}
-                    placeholder="Numele utilizatorului"
+                    placeholder='Numele utilizatorului'
                   />
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email (opțional)</Label>
+                <div className='grid gap-2'>
+                  <Label htmlFor='email'>Email (opțional)</Label>
                   <Input
-                    id="email"
-                    type="email"
+                    id='email'
+                    type='email'
                     value={newUserEmail}
                     onChange={(e) => setNewUserEmail(e.target.value)}
-                    placeholder="email@exemplu.com"
+                    placeholder='email@exemplu.com'
                   />
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                <Button
+                  variant='outline'
+                  onClick={() => setIsAddDialogOpen(false)}
+                >
                   Anulează
                 </Button>
                 <Button onClick={handleAddUser} disabled={!newUserName.trim()}>
@@ -185,25 +192,25 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {/* Active User Selection */}
           <div>
-            <Label className="text-sm font-medium">Utilizator Activ</Label>
+            <Label className='text-sm font-medium'>Utilizator Activ</Label>
             <Select
               value={activeUser?.id || ''}
               onValueChange={handleSwitchUser}
             >
-              <SelectTrigger className="w-full mt-1">
-                <SelectValue placeholder="Selectează utilizatorul" />
+              <SelectTrigger className='w-full mt-1'>
+                <SelectValue placeholder='Selectează utilizatorul' />
               </SelectTrigger>
               <SelectContent>
                 {users.map((user) => (
                   <SelectItem key={user.id} value={user.id}>
-                    <div className="flex items-center gap-2">
-                      <UserCheck className="h-4 w-4" />
+                    <div className='flex items-center gap-2'>
+                      <UserCheck className='h-4 w-4' />
                       {user.name}
                       {user.hasActiveSession && (
-                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                        <span className='text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full'>
                           Activ
                         </span>
                       )}
@@ -215,9 +222,9 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
           </div>
 
           {/* Users List */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Toți Utilizatorii</Label>
-            <div className="grid gap-2">
+          <div className='space-y-2'>
+            <Label className='text-sm font-medium'>Toți Utilizatorii</Label>
+            <div className='grid gap-2'>
               {users.map((user) => (
                 <div
                   key={user.id}
@@ -227,51 +234,53 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
                       : 'bg-gray-50 dark:bg-gray-800'
                   }`}
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium">{user.name}</h4>
+                  <div className='flex-1'>
+                    <div className='flex items-center gap-2'>
+                      <h4 className='font-medium'>{user.name}</h4>
                       {activeUser?.id === user.id && (
-                        <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                        <span className='text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full'>
                           Activ
                         </span>
                       )}
                       {user.hasActiveSession && (
-                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                        <span className='text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full'>
                           Post în desfășurare
                         </span>
                       )}
                     </div>
                     {user.email && (
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
+                      <p className='text-sm text-muted-foreground'>
+                        {user.email}
+                      </p>
                     )}
-                    <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
+                    <div className='flex items-center gap-4 mt-1 text-xs text-muted-foreground'>
+                      <div className='flex items-center gap-1'>
+                        <Calendar className='h-3 w-3' />
                         {user.totalSessions} sesiuni
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
+                      <div className='flex items-center gap-1'>
+                        <Clock className='h-3 w-3' />
                         {formatTime(user.totalFastingTime)}
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className='flex items-center gap-1'>
                     <Button
-                      variant="ghost"
-                      size="sm"
+                      variant='ghost'
+                      size='sm'
                       onClick={() => openEditDialog(user)}
-                      className="h-8 w-8 p-0"
+                      className='h-8 w-8 p-0'
                     >
-                      <Edit3 className="h-3 w-3" />
+                      <Edit3 className='h-3 w-3' />
                     </Button>
                     {users.length > 1 && (
                       <Button
-                        variant="ghost"
-                        size="sm"
+                        variant='ghost'
+                        size='sm'
                         onClick={() => handleDeleteUser(user.id)}
-                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                        className='h-8 w-8 p-0 text-red-500 hover:text-red-700'
                       >
-                        <Trash2 className="h-3 w-3" />
+                        <Trash2 className='h-3 w-3' />
                       </Button>
                     )}
                   </div>
@@ -290,29 +299,32 @@ export function UserManagement({ onUserChange }: UserManagementProps) {
                 Modifică informațiile utilizatorului.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="edit-name">Nume *</Label>
+            <div className='grid gap-4 py-4'>
+              <div className='grid gap-2'>
+                <Label htmlFor='edit-name'>Nume *</Label>
                 <Input
-                  id="edit-name"
+                  id='edit-name'
                   value={newUserName}
                   onChange={(e) => setNewUserName(e.target.value)}
-                  placeholder="Numele utilizatorului"
+                  placeholder='Numele utilizatorului'
                 />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="edit-email">Email (opțional)</Label>
+              <div className='grid gap-2'>
+                <Label htmlFor='edit-email'>Email (opțional)</Label>
                 <Input
-                  id="edit-email"
-                  type="email"
+                  id='edit-email'
+                  type='email'
                   value={newUserEmail}
                   onChange={(e) => setNewUserEmail(e.target.value)}
-                  placeholder="email@exemplu.com"
+                  placeholder='email@exemplu.com'
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              <Button
+                variant='outline'
+                onClick={() => setIsEditDialogOpen(false)}
+              >
                 Anulează
               </Button>
               <Button onClick={handleEditUser} disabled={!newUserName.trim()}>

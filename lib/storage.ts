@@ -55,7 +55,6 @@ export const readFastingData = async (): Promise<FastingData> => {
     return JSON.parse(data);
   } catch (error) {
     // If file doesn't exist or is corrupted, return default data
-    console.log('No existing data found, creating new data file');
     const defaultData = getDefaultData();
     await saveFastingData(defaultData);
     return defaultData;
@@ -70,7 +69,6 @@ export const saveFastingData = async (data: FastingData): Promise<void> => {
     await ensureDataDir();
     await fs.writeFile(dataFile, JSON.stringify(data, null, 2), 'utf-8');
   } catch (error) {
-    console.error('Error saving fasting data:', error);
     throw error;
   }
 };

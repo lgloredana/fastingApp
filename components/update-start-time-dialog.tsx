@@ -16,10 +16,11 @@ import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { Clock, Edit3 } from 'lucide-react';
+import { ValidationAlertDialog } from '@/components/validation-alert-dialog';
 
 interface UpdateStartTimeDialogProps {
   currentStartTime: number;
-  onUpdateStartTime: (newStartTime: number) => void;
+  onUpdateStartTime: (newStartTime: Date) => void;
 }
 
 export function UpdateStartTimeDialog({
@@ -28,44 +29,137 @@ export function UpdateStartTimeDialog({
 }: UpdateStartTimeDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
-    format(currentStartTime, 'yyyy-MM-dd')
+    format(new Date(currentStartTime), 'yyyy-MM-dd')
   );
   const [selectedTime, setSelectedTime] = useState(
-    format(currentStartTime, 'HH:mm')
+    format(new Date(currentStartTime), 'HH:mm')
   );
+  const [validationDialog, setValidationDialog] = useState<{
+    isOpen: boolean;
+    type: 'future-time' | 'invalid-format' | 'old-time';
+    selectedDateTime?: string;
+  }>({
+    isOpen: false,
+    type: 'future-time',
+  });
 
   const handleSubmit = () => {
     try {
+      // Validate inputs first
+      if (!selectedDate || !selectedTime) {
+        setValidationDialog({
+          isOpen: true,
+          type: 'invalid-format',
+        });
+        return;
+      }
+
       // Combine date and time into a timestamp
-      const newStartTime = new Date(
-        `${selectedDate}T${selectedTime}`
-      ).getTime();
+      const dateTimeString = `${selectedDate}T${selectedTime}`;
+      const newDate = new Date(dateTimeString);
+
+      // Check if the date is valid
+      if (isNaN(newDate.getTime())) {
+        console.error('Invalid date created:', dateTimeString, newDate);
+        setValidationDialog({
+          isOpen: true,
+          type: 'invalid-format',
+        });
+        return;
+      }
+
+      const newStartTime = newDate.getTime();
+
+      const selectedDateTime = format(newDate, 'EEEE, dd MMMM yyyy, HH:mm', {
+        locale: ro,
+      });
 
       // Validate that the new start time is not in the future
       if (newStartTime > Date.now()) {
-        alert('Start time cannot be in the future!');
+        setValidationDialog({
+          isOpen: true,
+          type: 'future-time',
+          selectedDateTime,
+        });
         return;
       }
 
       // Validate that the new start time is reasonable (not more than 7 days ago)
       const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
       if (newStartTime < sevenDaysAgo) {
-        if (!confirm('The start time is more than 7 days ago. Are you sure?')) {
-          return;
-        }
+        setValidationDialog({
+          isOpen: true,
+          type: 'old-time',
+          selectedDateTime,
+        });
+        return;
       }
 
-      onUpdateStartTime(newStartTime);
-      setIsOpen(false);
+      // If we get here, the time is valid
+      handleConfirmUpdate(newDate);
     } catch (error) {
-      alert('Format de dată/oră invalid');
+      console.error('Error in handleSubmit:', error, {
+        selectedDate,
+        selectedTime,
+      });
+      setValidationDialog({
+        isOpen: true,
+        type: 'invalid-format',
+      });
+    }
+  };
+
+  const handleConfirmUpdate = (newDate: Date) => {
+    onUpdateStartTime(newDate);
+    setIsOpen(false);
+  };
+
+  const handleConfirmOldTime = () => {
+    try {
+      // Validate inputs first
+      if (!selectedDate || !selectedTime) {
+        setValidationDialog({
+          isOpen: true,
+          type: 'invalid-format',
+        });
+        return;
+      }
+
+      const dateTimeString = `${selectedDate}T${selectedTime}`;
+      const newDate = new Date(dateTimeString);
+
+      // Check if the date is valid
+      if (isNaN(newDate.getTime())) {
+        console.error(
+          'Invalid date created in confirmOldTime:',
+          dateTimeString,
+          newDate
+        );
+        setValidationDialog({
+          isOpen: true,
+          type: 'invalid-format',
+        });
+        return;
+      }
+
+      setValidationDialog({ ...validationDialog, isOpen: false });
+      handleConfirmUpdate(newDate);
+    } catch (error) {
+      console.error('Error in handleConfirmOldTime:', error, {
+        selectedDate,
+        selectedTime,
+      });
+      setValidationDialog({
+        isOpen: true,
+        type: 'invalid-format',
+      });
     }
   };
 
   const handleCancel = () => {
     // Reset to current values
-    setSelectedDate(format(currentStartTime, 'yyyy-MM-dd'));
-    setSelectedTime(format(currentStartTime, 'HH:mm'));
+    setSelectedDate(format(new Date(currentStartTime), 'yyyy-MM-dd'));
+    setSelectedTime(format(new Date(currentStartTime), 'HH:mm'));
     setIsOpen(false);
   };
 
@@ -102,7 +196,7 @@ export function UpdateStartTimeDialog({
           <div className='space-y-2'>
             <Label htmlFor='current-time'>Ora Curentă de Start</Label>
             <div className='p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
-              {format(currentStartTime, 'EEEE, dd MMMM yyyy, HH:mm', {
+              {format(new Date(currentStartTime), 'EEEE, dd MMMM yyyy, HH:mm', {
                 locale: ro,
               })}
             </div>
@@ -133,11 +227,25 @@ export function UpdateStartTimeDialog({
           <div className='space-y-2'>
             <Label>Previzualizare Nouă Oră de Start</Label>
             <div className='p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-sm'>
-              {format(
-                new Date(`${selectedDate}T${selectedTime}`),
-                'EEEE, dd MMMM yyyy, HH:mm',
-                { locale: ro }
-              )}
+              {(() => {
+                try {
+                  const previewDate = new Date(
+                    `${selectedDate}T${selectedTime}`
+                  );
+                  if (isNaN(previewDate.getTime())) {
+                    return 'Format invalid';
+                  }
+                  return format(previewDate, 'EEEE, dd MMMM yyyy, HH:mm', {
+                    locale: ro,
+                  });
+                } catch (error) {
+                  console.error('Preview error:', error, {
+                    selectedDate,
+                    selectedTime,
+                  });
+                  return 'Format invalid';
+                }
+              })()}
             </div>
           </div>
         </div>
@@ -163,6 +271,21 @@ export function UpdateStartTimeDialog({
           </Button>
         </DialogFooter>
       </DialogContent>
+
+      {/* Validation Alert Dialog */}
+      <ValidationAlertDialog
+        isOpen={validationDialog.isOpen}
+        onClose={() =>
+          setValidationDialog({ ...validationDialog, isOpen: false })
+        }
+        onConfirm={
+          validationDialog.type === 'old-time'
+            ? handleConfirmOldTime
+            : undefined
+        }
+        type={validationDialog.type}
+        selectedDateTime={validationDialog.selectedDateTime}
+      />
     </Dialog>
   );
 }

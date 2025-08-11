@@ -63,9 +63,6 @@ export function DrinksCarousel() {
     const fullSrc = `${
       process.env.NODE_ENV === 'production' ? '/fastingApp' : ''
     }${src}`;
-    console.log(
-      `Environment: ${process.env.NODE_ENV}, Original: ${src}, Generated: ${fullSrc}`
-    );
     return fullSrc;
   };
 
@@ -80,15 +77,6 @@ export function DrinksCarousel() {
     onSelect();
     api.on('select', onSelect);
     api.on('reInit', onSelect);
-
-    // Debug touch events
-    api.on('pointerDown', () => {
-      console.log('Touch/drag started');
-    });
-
-    api.on('pointerUp', () => {
-      console.log('Touch/drag ended');
-    });
 
     return () => {
       api.off('select', onSelect);
@@ -141,18 +129,6 @@ export function DrinksCarousel() {
                     className='object-cover object-bottom sm:object-bottom md:object-bottom'
                     sizes='(max-width: 1700px) 100vw, 100vw'
                     priority={index === 0}
-                    onError={(e) => {
-                      console.error(
-                        'Image failed to load:',
-                        getImageSrc(image.src)
-                      );
-                    }}
-                    onLoad={() => {
-                      console.log(
-                        'Image loaded successfully:',
-                        getImageSrc(image.src)
-                      );
-                    }}
                   />
 
                   <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 z-10'>

@@ -1168,7 +1168,7 @@ export default function FastingTracker() {
               <CardContent className='space-y-3'>
                 <div className='space-y-2'>
                   <div className='flex justify-between text-sm'>
-                    <span>Sesiuni Totale:</span>
+                    <span>Total Sesiuni:</span>
                     <span className='font-medium'>
                       {fastingStats.totalSessions}
                     </span>

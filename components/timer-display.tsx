@@ -27,7 +27,6 @@ const safeFormatDate = (date: Date | null, formatString: string): string => {
   try {
     return format(date, formatString, { locale: ro });
   } catch (error) {
-    console.error('Date formatting error:', error);
     return '';
   }
 };

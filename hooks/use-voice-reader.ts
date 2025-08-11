@@ -33,10 +33,6 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       const loadVoices = () => {
         const voices = speechSynthesis.getVoices();
-        console.log(
-          'Available voices:',
-          voices.map((v) => `${v.name} (${v.lang})`)
-        );
 
         const romanianVoices = voices.filter(
           (voice) =>
@@ -44,17 +40,6 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
             voice.lang.includes('RO') ||
             voice.name.toLowerCase().includes('romanian')
         );
-
-        if (romanianVoices.length > 0) {
-          console.log(
-            'Romanian voices found:',
-            romanianVoices.map((v) => `${v.name} (${v.lang})`)
-          );
-        } else {
-          console.log(
-            'No Romanian voices available. The system will try to use ro-RO language setting.'
-          );
-        }
       };
 
       // Load voices immediately if available
@@ -92,19 +77,6 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
           voice.name.toLowerCase().includes('romania')
       );
 
-      if (romanianVoice) {
-        utterance.voice = romanianVoice;
-        console.log(
-          'Using Romanian voice:',
-          romanianVoice.name,
-          romanianVoice.lang
-        );
-      } else {
-        console.log('No Romanian voice found, using default with ro-RO lang');
-        // Force Romanian language even without specific voice
-        utterance.lang = 'ro-RO';
-      }
-
       utterance.onstart = () => {
         setIsReading(true);
         setIsPaused(false);
@@ -117,7 +89,6 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
       };
 
       utterance.onerror = (event) => {
-        console.error('Speech synthesis error:', event.error);
         setIsReading(false);
         setIsPaused(false);
         utteranceRef.current = null;

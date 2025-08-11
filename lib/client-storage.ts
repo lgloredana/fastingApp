@@ -1,5 +1,9 @@
 // Client-side storage utilities for fasting data (browser-compatible)
-import { getActiveUser, initializeDefaultUser, getAllUsers } from './user-storage';
+import {
+  getActiveUser,
+  initializeDefaultUser,
+  getAllUsers,
+} from './user-storage';
 
 export interface FastingSession {
   id: string;
@@ -60,7 +64,6 @@ export const readFastingData = (): FastingData => {
     }
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading fasting data:', error);
     return getDefaultData();
   }
 };
@@ -78,7 +81,6 @@ export const readFastingDataForUser = (userId: string): FastingData => {
     }
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading fasting data for user:', error);
     return getDefaultData();
   }
 };
@@ -93,13 +95,15 @@ export const saveFastingData = (data: FastingData): void => {
     const user = getCurrentUser();
     localStorage.setItem(getUserStorageKey(user.id), JSON.stringify(data));
   } catch (error) {
-    console.error('Error saving fasting data:', error);
     throw error;
   }
 };
 
 // Save fasting data for specific user
-export const saveFastingDataForUser = (userId: string, data: FastingData): void => {
+export const saveFastingDataForUser = (
+  userId: string,
+  data: FastingData
+): void => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -107,7 +111,6 @@ export const saveFastingDataForUser = (userId: string, data: FastingData): void 
   try {
     localStorage.setItem(getUserStorageKey(userId), JSON.stringify(data));
   } catch (error) {
-    console.error('Error saving fasting data for user:', error);
     throw error;
   }
 };
@@ -306,7 +309,7 @@ export const clearAllDataForUser = (userId: string): void => {
 // Get all users with their fasting data summary
 export const getAllUsersWithData = () => {
   const users = getAllUsers();
-  return users.map(user => {
+  return users.map((user) => {
     const data = readFastingDataForUser(user.id);
     return {
       ...user,

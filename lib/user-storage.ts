@@ -35,7 +35,6 @@ export const readUserData = (): UserData => {
     }
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading user data:', error);
     return getDefaultUserData();
   }
 };
@@ -49,7 +48,6 @@ export const saveUserData = (data: UserData): void => {
   try {
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(data));
   } catch (error) {
-    console.error('Error saving user data:', error);
     throw error;
   }
 };
@@ -188,10 +186,8 @@ export const initializeDefaultUser = (): User => {
 
           // Remove old data to avoid confusion
           localStorage.removeItem('fasting-app-data');
-
-          console.log('Migrated existing fasting data to Utilizator Principal');
         } catch (error) {
-          console.error('Error migrating old fasting data:', error);
+          // Do nothing
         }
       }
     }
