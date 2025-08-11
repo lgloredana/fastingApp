@@ -763,31 +763,33 @@ export default function FastingTracker() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className='flex justify-center gap-4'>
+                <div data-testid='actionButtons' className='flex w-full gap-4'>
                   {!fastingStartTime ? (
                     <Button
+                      data-testid='startButton'
                       onClick={startFasting}
-                      size='lg'
-                      className='w-full sm:w-auto px-12 py-8 text-3xl md:text-4xl font-bold text-green-900 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[130px] sm:min-h-[80px] rounded-full'
+                      variant='outline'
+                      size='default'
+                      className='w-full px-8 py-6 text-2xl md:text-3xl font-bold text-white shadow-xl hover:shadow-2xl transition-all duration-300 min-h-[140px] sm:min-h-[120px] rounded-2xl border-2 transform hover:-translate-y-1 active:translate-y-0'
                       style={{
                         background:
-                          'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)',
-                        borderColor: '#C5E8DD',
-                        borderRadius: '65px',
+                          'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)',
+                        borderColor: '#ffffff',
+                        borderRadius: '16px',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
-                          'linear-gradient(135deg, #48b895 0%, #3a9d7a 50%, #2d7a5f 100%)';
-                        e.currentTarget.style.borderColor = '#48b895';
-                        e.currentTarget.style.color = '#ffffff';
-                        e.currentTarget.style.borderRadius = '65px';
+                          'linear-gradient(135deg, #047857 0%, #065f46 50%, #064e3b 100%)';
+                        e.currentTarget.style.borderColor = '#ffffff';
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.borderRadius = '16px';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background =
-                          'linear-gradient(135deg, #C5E8DD 0%, #A5D6A7 50%, #48b895 100%)';
-                        e.currentTarget.style.borderColor = '#C5E8DD';
-                        e.currentTarget.style.color = '#14532d';
-                        e.currentTarget.style.borderRadius = '65px';
+                          'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)';
+                        e.currentTarget.style.borderColor = '#ffffff';
+                        e.currentTarget.style.transform = 'translateY(0px)';
+                        e.currentTarget.style.borderRadius = '16px';
                       }}
                     >
                       <div className='flex items-center gap-4'>
@@ -803,7 +805,7 @@ export default function FastingTracker() {
                       </div>
                     </Button>
                   ) : (
-                    <div className='text-center space-y-4'>
+                    <div className='w-full space-y-4'>
                       {/* Allowed drinks image */}
                       <div className='flex justify-center mb-4'>
                         <div className='relative w-full max-w-2xl h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[28rem] overflow-hidden rounded-lg shadow-lg'>
