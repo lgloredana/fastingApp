@@ -45,6 +45,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { DeleteUserConfirmationDialog } from '@/components/delete-user-confirmation-dialog';
 
 interface UserSwitcherProps {
   onUserChange?: () => void;
@@ -58,6 +59,8 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<UserType | null>(null);
   const [editUserName, setEditUserName] = useState('');
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<UserType | null>(null);
 
   const loadUsers = () => {
     const allUsers = getAllUsers();
@@ -87,20 +90,25 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
     }
   };
 
-  const handleDeleteUser = (userToDelete: UserType) => {
+  const handleDeleteUser = (user: UserType) => {
     if (users.length <= 1) {
       alert('Nu poți șterge ultimul utilizator!');
       return;
     }
 
-    const confirmMessage = `Ești sigur că vrei să ștergi utilizatorul "${userToDelete.name}"?\n\nToate datele sale de post vor fi pierdute permanent.`;
+    setUserToDelete(user);
+    setIsDeleteDialogOpen(true);
+  };
 
-    if (confirm(confirmMessage)) {
-      const success = deleteUser(userToDelete.id);
-      if (success) {
-        loadUsers();
-        onUserChange?.();
-      }
+  const handleConfirmDelete = () => {
+    if (!userToDelete) return;
+
+    const success = deleteUser(userToDelete.id);
+    if (success) {
+      loadUsers();
+      onUserChange?.();
+      setIsDeleteDialogOpen(false);
+      setUserToDelete(null);
     }
   };
 
@@ -305,6 +313,14 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Delete User Confirmation Dialog */}
+      <DeleteUserConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        user={userToDelete}
+      />
     </div>
   );
 }
