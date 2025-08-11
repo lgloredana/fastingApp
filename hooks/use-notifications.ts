@@ -115,10 +115,48 @@ export function useNotifications(): UseNotificationsReturn {
           let registration = await navigator.serviceWorker.getRegistration();
           if (!registration) {
             console.log('📱 Registering service worker...');
-            registration = await navigator.serviceWorker.register('/sw.js', {
-              scope: '/',
-            });
+
+            // Create inline service worker to avoid 404 issues on GitHub Pages
+            const swCode = `
+              // Simple Service Worker for Mobile Notifications
+              self.addEventListener('install', (event) => {
+                console.log('Service Worker: Installed');
+                self.skipWaiting();
+              });
+
+              self.addEventListener('activate', (event) => {
+                console.log('Service Worker: Activated');
+                event.waitUntil(self.clients.claim());
+              });
+
+              self.addEventListener('notificationclick', (event) => {
+                console.log('Service Worker: Notification clicked', event);
+                event.notification.close();
+                
+                event.waitUntil(
+                  self.clients.matchAll({ type: 'window' }).then((clients) => {
+                    for (const client of clients) {
+                      if (client.url.includes(self.location.origin) && 'focus' in client) {
+                        return client.focus();
+                      }
+                    }
+                    if (self.clients.openWindow) {
+                      return self.clients.openWindow('/');
+                    }
+                  })
+                );
+              });
+            `;
+
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+
+            console.log('📱 Registering inline service worker...');
+            registration = await navigator.serviceWorker.register(swUrl);
             await navigator.serviceWorker.ready;
+
+            // Clean up the blob URL
+            URL.revokeObjectURL(swUrl);
           }
 
           // Use service worker notification (mobile-compatible)
