@@ -20,7 +20,7 @@ interface InfoContainerProps {
   onToggle: () => void;
   icon?: ReactNode;
   className?: string;
-  variant?: 'default' | 'warning' | 'info' | 'success' | 'emerald';
+  variant?: 'default' | 'warning' | 'info' | 'success' | 'emerald' | 'purple';
   enableVoiceReading?: boolean;
   voiceText?: string;
 }
@@ -34,6 +34,8 @@ const variantStyles = {
     'bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 text-white',
   emerald:
     'bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 text-white',
+  purple:
+    'bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white',
 };
 
 export function InfoContainer({
@@ -121,20 +123,10 @@ export function InfoContainer({
                   toggle(textToRead);
                 }}
                 className='h-8 w-8 p-0 hover:bg-white/10 text-white/80 hover:text-white'
-                aria-label={
-                  isReading
-                    ? isPaused
-                      ? 'Continuă citirea'
-                      : 'Întrerupe citirea'
-                    : 'Citește cu vocea'
-                }
+                aria-label={isReading ? 'Oprește citirea' : 'Citește cu vocea'}
               >
                 {isReading ? (
-                  isPaused ? (
-                    <Play className='h-4 w-4' />
-                  ) : (
-                    <Pause className='h-4 w-4' />
-                  )
+                  <Pause className='h-4 w-4' />
                 ) : (
                   <Volume2 className='h-4 w-4' />
                 )}

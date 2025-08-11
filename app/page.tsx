@@ -20,7 +20,7 @@ import {
 } from '@/lib/analytics';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Info, X, History, Clock } from 'lucide-react';
+import { Info, X, History, Clock, Volume2, Pause, Play } from 'lucide-react';
 import { TimerDisplay } from '@/components/timer-display';
 import {
   startFastingSession,
@@ -37,6 +37,7 @@ import { StopFastingDialog } from '@/components/stop-fasting-dialog';
 import { MobileFastingPhases } from '@/components/mobile-fasting-phases';
 import { DrinksCarousel } from '@/components/drinks-carousel';
 import { InfoContainer } from '@/components/info-container';
+import { useVoiceReader } from '@/hooks/use-voice-reader';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -206,6 +207,31 @@ export default function FastingTracker() {
   const [isHistoryCardExpanded, setIsHistoryCardExpanded] = useState(false);
   const [isPhasesCardExpanded, setIsPhasesCardExpanded] = useState(false);
 
+  // Voice reading for current phase
+  const { toggle, isReading, isPaused, isSupported, stop } = useVoiceReader({
+    rate: 0.8,
+    lang: 'ro-RO',
+  });
+
+  // Generate voice text for current phase
+  const getCurrentPhaseVoiceText = useCallback(() => {
+    let text = `Starea curentă: ${currentPhase.title}. ${currentPhase.description}`;
+
+    if (currentPhase.encouragement) {
+      text += ` ${currentPhase.encouragement}`;
+    }
+
+    if (fastingStartTime) {
+      const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+      const minutes = Math.floor(
+        (elapsedTime % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      text += ` Timp trecut: ${hours} ore și ${minutes} minute.`;
+    }
+
+    return text;
+  }, [currentPhase, elapsedTime, fastingStartTime]);
+
   // Handle hydration
   useEffect(() => {
     setMounted(true);
@@ -367,7 +393,8 @@ export default function FastingTracker() {
     }
   }, [currentPhase, fastingStartTime]);
 
-  const handleUpdateStartTime = useCallback((newStartTime: number) => {
+  const handleUpdateStartTime = useCallback((newTime: Date) => {
+    const newStartTime = newTime.getTime();
     const updatedSession = updateSessionStartTime(newStartTime);
     if (updatedSession) {
       setCurrentSession(updatedSession);
@@ -496,102 +523,60 @@ export default function FastingTracker() {
             </InfoContainer>
 
             {/* History Card */}
-            <div className='bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-xl shadow-lg relative transition-all duration-300'>
-              <button
-                onClick={() => setIsHistoryCardExpanded(!isHistoryCardExpanded)}
-                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-                aria-label={
-                  isHistoryCardExpanded
-                    ? 'Compactează cardul'
-                    : 'Expandează cardul'
-                }
-              >
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center gap-3'>
-                    <History className='h-6 w-6 text-white flex-shrink-0' />
-                    <h3 className='text-lg font-bold text-white'>
-                      Vezi Istoricul Complet
-                    </h3>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                      isHistoryCardExpanded ? 'rotate-180' : ''
-                    }`}
-                  />
-                </div>
-              </button>
-
-              {isHistoryCardExpanded && (
-                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
-                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                    <p>
-                      Urmărește progresul tău cu o vedere detaliată asupra
-                      tuturor sesiunilor de pauză alimentară.
-                    </p>
-                    <Link href='/history'>
-                      <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                        Vezi istoricul
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+            <InfoContainer
+              title='Vezi Istoricul Complet'
+              isExpanded={isHistoryCardExpanded}
+              onToggle={() => setIsHistoryCardExpanded(!isHistoryCardExpanded)}
+              variant='purple'
+              icon={<History className='h-6 w-6 text-white flex-shrink-0' />}
+              className='shadow-lg'
+              enableVoiceReading={true}
+              voiceText='Vezi Istoricul Complet. Urmărește progresul tău cu o vedere detaliată asupra tuturor sesiunilor de pauză alimentară.'
+            >
+              <p>
+                Urmărește progresul tău cu o vedere detaliată asupra tuturor
+                sesiunilor de pauză alimentară.
+              </p>
+              <Link href='/history'>
+                <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                  Vezi istoricul
+                </Button>
+              </Link>
+            </InfoContainer>
 
             {/* Phases Card */}
-            <div className='bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-xl shadow-lg relative transition-all duration-300'>
+            <InfoContainer
+              title='Fazele Pauzei Alimentare'
+              isExpanded={isPhasesCardExpanded}
+              onToggle={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
+              variant='warning'
+              icon={<Clock className='h-6 w-6 text-white flex-shrink-0' />}
+              className='shadow-lg lg:hidden'
+              enableVoiceReading={true}
+              voiceText='Fazele Pauzei Alimentare. Descoperă cum se dezvoltă corpul tău prin diferitele etape ale pauzei alimentare, de la digestie la autofagie și regenerare celulară.'
+            >
+              <p>
+                Descoperă cum se dezvoltă corpul tău prin diferitele etape ale
+                pauzei alimentare, de la digestie la autofagie și regenerare
+                celulară.
+              </p>
               <button
-                onClick={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
-                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-                aria-label={
-                  isPhasesCardExpanded
-                    ? 'Compactează cardul'
-                    : 'Expandează cardul'
-                }
+                onClick={() => {
+                  const phasesSection = document.getElementById(
+                    'mobile-phases-container'
+                  );
+                  if (phasesSection) {
+                    phasesSection.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }
+                }}
+                className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
               >
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center gap-3'>
-                    <Clock className='h-6 w-6 text-white flex-shrink-0' />
-                    <h3 className='text-lg font-bold text-white'>
-                      Fazele Pauzei Alimentare
-                    </h3>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                      isPhasesCardExpanded ? 'rotate-180' : ''
-                    }`}
-                  />
-                </div>
+                Vezi fazele →
               </button>
-
-              {isPhasesCardExpanded && (
-                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300 lg:hidden'>
-                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                    <p>
-                      Descoperă cum se dezvoltă corpul tău prin diferitele etape
-                      ale pauzei alimentare, de la digestie la autofagie și
-                      regenerare celulară.
-                    </p>
-                    <button
-                      onClick={() => {
-                        const phasesSection = document.getElementById(
-                          'mobile-phases-container'
-                        );
-                        if (phasesSection) {
-                          phasesSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                          });
-                        }
-                      }}
-                      className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
-                    >
-                      Vezi fazele →
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            </InfoContainer>
           </div>
         </div>
 
@@ -637,12 +622,31 @@ export default function FastingTracker() {
                       <div className='bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
                         <Stethoscope className='h-8 w-8 text-white' />
                       </div>
-                      <p
-                        className='text-lg font-semibold mb-2'
-                        style={{ color: currentPhase.textColor }}
-                      >
-                        Starea curentă:
-                      </p>
+                      <div className='flex items-center justify-center gap-3 mb-2'>
+                        <p
+                          className='text-lg font-semibold'
+                          style={{ color: currentPhase.textColor }}
+                        >
+                          Starea curentă:
+                        </p>
+                        {isSupported && (
+                          <button
+                            onClick={() => toggle(getCurrentPhaseVoiceText())}
+                            className='p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200'
+                            aria-label={
+                              isReading
+                                ? 'Oprește citirea fazei curente'
+                                : 'Citește faza curentă cu vocea'
+                            }
+                          >
+                            {isReading ? (
+                              <Pause className='h-5 w-5 text-white' />
+                            ) : (
+                              <Volume2 className='h-5 w-5 text-white' />
+                            )}
+                          </button>
+                        )}
+                      </div>
                       <h2
                         className='text-2xl font-bold text-center max-w-2xl mx-auto px-4 transition-all duration-500'
                         style={{ color: currentPhase.textColor }}

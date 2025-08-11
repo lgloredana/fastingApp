@@ -78,12 +78,16 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
   const pause = useCallback(() => {
     if (isSupported && isReading && !isPaused) {
       speechSynthesis.pause();
+      // Force state update in case onpause event doesn't fire
+      setTimeout(() => setIsPaused(true), 100);
     }
   }, [isSupported, isReading, isPaused]);
 
   const resume = useCallback(() => {
     if (isSupported && isReading && isPaused) {
       speechSynthesis.resume();
+      // Force state update in case onresume event doesn't fire
+      setTimeout(() => setIsPaused(false), 100);
     }
   }, [isSupported, isReading, isPaused]);
 
@@ -99,16 +103,13 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
   const toggle = useCallback(
     (text: string) => {
       if (isReading) {
-        if (isPaused) {
-          resume();
-        } else {
-          pause();
-        }
+        // Instead of pause/resume, use stop for more reliable state management
+        stop();
       } else {
         speak(text);
       }
     },
-    [isReading, isPaused, speak, pause, resume]
+    [isReading, speak, stop]
   );
 
   return {
