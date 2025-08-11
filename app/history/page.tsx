@@ -98,7 +98,7 @@ export default function HistoryPage() {
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-6'>
       <div className='max-w-4xl mx-auto'>
         {/* Header */}
-        <div className='flex items-center justify-between mb-8'>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4'>
           <div>
             <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>
               Istoricul Pauzei Alimentare
@@ -107,8 +107,14 @@ export default function HistoryPage() {
               Urmărește-ți progresul și vezi sesiunile trecute
             </p>
           </div>
-          <Link href='/'>
-            <Button variant='outline'>Înapoi la Monitor</Button>
+          <Link href='/' className='sm:flex-shrink-0'>
+            <Button
+              data-testid='back-to-monitor'
+              variant='outline'
+              className='w-full sm:w-auto'
+            >
+              Înapoi la Monitor
+            </Button>
           </Link>
         </div>
 
