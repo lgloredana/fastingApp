@@ -342,6 +342,33 @@ export default function FastingTracker() {
     }
   }, [currentSession]);
 
+  const stopFastingWithEndTime = useCallback(
+    (endTime: Date) => {
+      if (currentSession) {
+        // Calculate custom duration based on provided end time
+        const customDuration = endTime.getTime() - currentSession.startTime;
+
+        // End session with custom end time
+        const completedSession = endFastingSession(endTime.getTime());
+
+        // Track analytics event with custom duration
+        if (completedSession && customDuration > 0) {
+          trackFastingStop(customDuration);
+        }
+
+        setCurrentSession(null);
+        setFastingStartTime(null);
+
+        // Update history and stats
+        const history = getFastingHistory();
+        const stats = getFastingStats();
+        setFastingHistory(history);
+        setFastingStats(stats);
+      }
+    },
+    [currentSession]
+  );
+
   const toggleDesktopPhase = (index: number) => {
     setExpandedDesktopPhase(expandedDesktopPhase === index ? null : index);
   };
@@ -806,6 +833,7 @@ export default function FastingTracker() {
                       <DrinksCarousel />
                       <StopFastingDialog
                         onConfirmStop={stopFasting}
+                        onConfirmStopWithEndTime={stopFastingWithEndTime}
                         fastingStartTime={fastingStartTime}
                         elapsedTime={elapsedTime}
                       />

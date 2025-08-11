@@ -75,14 +75,17 @@ export const startFastingSession = (): FastingSession => {
 };
 
 // End the current fasting session
-export const endFastingSession = (notes?: string): FastingSession | null => {
+export const endFastingSession = (
+  customEndTime?: number,
+  notes?: string
+): FastingSession | null => {
   const data = readFastingData();
 
   if (!data.currentSession) {
     return null;
   }
 
-  const endTime = Date.now();
+  const endTime = customEndTime || Date.now();
   const duration = endTime - data.currentSession.startTime;
 
   const completedSession: FastingSession = {
