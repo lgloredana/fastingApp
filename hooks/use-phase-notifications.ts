@@ -17,7 +17,7 @@ export function usePhaseNotifications({
   isActive,
 }: UsePhaseNotificationsProps) {
   const { sendNotification, isEnabled } = useNotifications();
-  const lastNotifiedPhaseRef = useRef<string | null>(null);
+  const lastNotifiedPhaseRef = useRef<Record<string, string | null>>({});
   const notificationTimeoutsRef = useRef<Set<NodeJS.Timeout>>(new Set());
 
   // Clear all timeouts on cleanup
@@ -32,6 +32,10 @@ export function usePhaseNotifications({
 
   // Monitor phase changes and send notifications
   useEffect(() => {
+    const activeUser = getActiveUser();
+    const userId = activeUser?.id || 'default';
+    const lastNotifiedPhase = lastNotifiedPhaseRef.current[userId] || null;
+
     console.log('🔔 Phase Notification Debug:', {
       isActive,
       currentPhase: currentPhase?.id,
@@ -39,7 +43,9 @@ export function usePhaseNotifications({
         ? new Date(fastingStartTime).toLocaleString()
         : null,
       isEnabled,
-      lastNotifiedPhase: lastNotifiedPhaseRef.current,
+      userId,
+      userName: activeUser?.name || 'Utilizator',
+      lastNotifiedPhase,
     });
 
     if (!isActive) {
@@ -62,10 +68,12 @@ export function usePhaseNotifications({
       return;
     }
 
-    // If this is a new phase and we haven't notified about it yet
-    if (currentPhase.id && currentPhase.id !== lastNotifiedPhaseRef.current) {
+    // If this is a new phase and we haven't notified this user about it yet
+    if (currentPhase.id && currentPhase.id !== lastNotifiedPhase) {
       console.log(
-        `🔔 Phase changed from ${lastNotifiedPhaseRef.current} to ${currentPhase.id}`
+        `🔔 Phase changed for user ${
+          activeUser?.name || 'Utilizator'
+        } (${userId}) from ${lastNotifiedPhase} to ${currentPhase.id}`
       );
 
       // Don't notify for the first phase (0-4 hours) immediately
@@ -76,7 +84,8 @@ export function usePhaseNotifications({
         console.log('⏭️ Skipping first phase notification');
       }
 
-      lastNotifiedPhaseRef.current = currentPhase.id;
+      // Update the last notified phase for this specific user
+      lastNotifiedPhaseRef.current[userId] = currentPhase.id;
     } else if (!currentPhase.id) {
       console.log('❌ Current phase has no ID - cannot send notification');
     }
@@ -238,7 +247,18 @@ export function usePhaseNotifications({
   // Reset last notified phase when fasting stops
   useEffect(() => {
     if (!isActive) {
-      lastNotifiedPhaseRef.current = null;
+      const activeUser = getActiveUser();
+      const userId = activeUser?.id || 'default';
+
+      console.log(
+        `🔄 Resetting notifications for user ${
+          activeUser?.name || 'Utilizator'
+        } (${userId})`
+      );
+
+      // Reset only for the current user
+      lastNotifiedPhaseRef.current[userId] = null;
+
       // Clear all scheduled notifications
       notificationTimeoutsRef.current.forEach((timeout) => {
         clearTimeout(timeout);
@@ -246,4 +266,20 @@ export function usePhaseNotifications({
       notificationTimeoutsRef.current.clear();
     }
   }, [isActive]);
+
+  // Reset notification state when user switches (even if fasting is active)
+  useEffect(() => {
+    const activeUser = getActiveUser();
+    const userId = activeUser?.id || 'default';
+
+    // If this user hasn't been tracked before, initialize them
+    if (!(userId in lastNotifiedPhaseRef.current)) {
+      console.log(
+        `👤 New user detected: ${
+          activeUser?.name || 'Utilizator'
+        } (${userId}) - initializing notifications`
+      );
+      lastNotifiedPhaseRef.current[userId] = null;
+    }
+  }, [currentPhase, fastingStartTime]); // Trigger when these change, which happens on user switch
 }
