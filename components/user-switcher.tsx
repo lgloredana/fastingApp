@@ -148,15 +148,21 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
   };
 
   return (
-    <div className='flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border shadow-sm'>
-      <div className='flex items-center gap-2'>
-        <Users className='h-5 w-5 text-primary' />
-        <span className='font-medium text-sm'>Urmăresc pentru:</span>
+    <div
+      data-testid='user-switcher'
+      className='flex items-center gap-1 sm:gap-3 p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-lg border shadow-sm'
+    >
+      <div className='flex items-center gap-1 sm:gap-2'>
+        <Users className='h-4 w-4 sm:h-5 sm:w-5 text-primary' />
+        <span className='font-medium text-xs sm:text-sm'>
+          <span className='hidden sm:inline'>Urmăresc pentru:</span>
+          <span className='sm:hidden'>Pentru:</span>
+        </span>
       </div>
 
       <div className='flex items-center gap-1'>
         <Select value={activeUser?.id || ''} onValueChange={handleSwitchUser}>
-          <SelectTrigger className='w-40'>
+          <SelectTrigger className='w-32 sm:w-40 text-xs sm:text-sm'>
             <SelectValue placeholder='Selectează' />
           </SelectTrigger>
           <SelectContent>
