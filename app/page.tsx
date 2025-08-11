@@ -406,227 +406,232 @@ export default function FastingTracker() {
           </div>
         </div>
 
-        {/* Health Alert Card */}
-        <div className='mb-6 mx-4'>
-          <div className='bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg relative transition-all duration-300'>
-            <button
-              onClick={handleHealthAlertToggle}
-              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-              aria-label={
-                isHealthAlertExpanded
-                  ? 'Compactează alerta'
-                  : 'Expandează alerta'
-              }
-            >
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-3'>
-                  <AlertTriangle className='h-6 w-6 text-white flex-shrink-0' />
-                  <h3 className='text-lg font-bold text-white'>
-                    Informații importante despre pauzele alimentare
-                  </h3>
+        {/* Cards Container with smaller gap */}
+        <div className='space-y-2 mx-4 mb-6'>
+          {/* Health Alert Card */}
+          <div data-testid='healthAlertCard'>
+            <div className='bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg relative transition-all duration-300'>
+              <button
+                onClick={handleHealthAlertToggle}
+                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+                aria-label={
+                  isHealthAlertExpanded
+                    ? 'Compactează alerta'
+                    : 'Expandează alerta'
+                }
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <AlertTriangle className='h-6 w-6 text-white flex-shrink-0' />
+                    <h3 className='text-lg font-bold text-white'>
+                      Informații importante despre pauzele alimentare
+                    </h3>
+                  </div>
+                  <ChevronDown
+                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                      isHealthAlertExpanded ? 'rotate-180' : ''
+                    }`}
+                  />
                 </div>
-                <ChevronDown
-                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                    isHealthAlertExpanded ? 'rotate-180' : ''
-                  }`}
-                />
-              </div>
-            </button>
+              </button>
 
-            {isHealthAlertExpanded && (
-              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
-                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                  <p>
-                    <strong>
-                      Pauzele alimentare sunt benefice atunci când sunt adaptate
-                      corpului tău.
-                    </strong>
-                  </p>
-                  <p>
-                    Pauza clasică de peste noapte are în jur de 12 ore și este,
-                    de regulă, sigură pentru majoritatea oamenilor.
-                  </p>
-                  <p>
-                    Orice pauză mai lungă de 12 ore poate aduce beneficii
-                    suplimentare, dar și riscuri, în funcție de starea de
-                    sănătate și nevoile tale.
-                  </p>
-                  <p>
-                    <strong>
-                      Pe toată durata pauzei este esențial să consumi lichide:
-                    </strong>
-                  </p>
-                  <ul className='text-white/95 space-y-1 pl-4 list-disc'>
-                    <li>apă simplă</li>
-                    <li>apă cu o felie de fruct (ex.: lămâie, portocală)</li>
-                    <li>ceai neîndulcit</li>
-                    <li>cafea simplă (fără zahăr sau lapte)</li>
-                  </ul>
-                  <p>
-                    În plus, este important să ai o alimentație echilibrată în
-                    ferestrele de mâncare: include legume, surse de proteine
-                    (carne, pește, ouă) și carbohidrați complecși în cantități
-                    moderate (cum ar fi pâinea integrală).
-                  </p>
-                  <p>
-                    <strong>
-                      Ascultă-ți corpul, oprește pauza dacă apar simptome
-                      neplăcute și nu te expune înfometării.
-                    </strong>
-                  </p>
-                  <p>
-                    <strong>
-                      Dacă ai probleme medicale sau iei tratamente, consultă
-                      medicul înainte de a prelungi pauza.
-                    </strong>
-                  </p>
+              {isHealthAlertExpanded && (
+                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                    <p>
+                      <strong>
+                        Pauzele alimentare sunt benefice atunci când sunt
+                        adaptate corpului tău.
+                      </strong>
+                    </p>
+                    <p>
+                      Pauza clasică de peste noapte are în jur de 12 ore și
+                      este, de regulă, sigură pentru majoritatea oamenilor.
+                    </p>
+                    <p>
+                      Orice pauză mai lungă de 12 ore poate aduce beneficii
+                      suplimentare, dar și riscuri, în funcție de starea de
+                      sănătate și nevoile tale.
+                    </p>
+                    <p>
+                      <strong>
+                        Pe toată durata pauzei este esențial să consumi lichide:
+                      </strong>
+                    </p>
+                    <ul className='text-white/95 space-y-1 pl-4 list-disc'>
+                      <li>apă simplă</li>
+                      <li>apă cu o felie de fruct (ex.: lămâie, portocală)</li>
+                      <li>ceai neîndulcit</li>
+                      <li>cafea simplă (fără zahăr sau lapte)</li>
+                    </ul>
+                    <p>
+                      În plus, este important să ai o alimentație echilibrată în
+                      ferestrele de mâncare: include legume, surse de proteine
+                      (carne, pește, ouă) și carbohidrați complecși în cantități
+                      moderate (cum ar fi pâinea integrală).
+                    </p>
+                    <p>
+                      <strong>
+                        Ascultă-ți corpul, oprește pauza dacă apar simptome
+                        neplăcute și nu te expune înfometării.
+                      </strong>
+                    </p>
+                    <p>
+                      <strong>
+                        Dacă ai probleme medicale sau iei tratamente, consultă
+                        medicul înainte de a prelungi pauza.
+                      </strong>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Action Cards - Same style as Health Alert */}
-        <div className='space-y-4 mx-4 mb-6'>
-          {/* Benefits Card */}
-          <div className='bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg relative transition-all duration-300'>
-            <button
-              onClick={() => setIsBenefitsCardExpanded(!isBenefitsCardExpanded)}
-              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-              aria-label={
-                isBenefitsCardExpanded
-                  ? 'Compactează cardul'
-                  : 'Expandează cardul'
-              }
-            >
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-3'>
-                  <Info className='h-6 w-6 text-white flex-shrink-0' />
-                  <h3 className='text-lg font-bold text-white'>
-                    Vezi De Ce e Benefică Pauza Alimentară
-                  </h3>
-                </div>
-                <ChevronDown
-                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                    isBenefitsCardExpanded ? 'rotate-180' : ''
-                  }`}
-                />
-              </div>
-            </button>
-
-            {isBenefitsCardExpanded && (
-              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
-                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                  <p>
-                    Descoperă beneficiile științifice ale pauzelor alimentare și
-                    cum acestea pot îmbunătăți sănătatea ta.
-                  </p>
-                  <Link href='/beneficii'>
-                    <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                      Citește mai mult
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          {/* History Card */}
-          <div className='bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-xl shadow-lg relative transition-all duration-300'>
-            <button
-              onClick={() => setIsHistoryCardExpanded(!isHistoryCardExpanded)}
-              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-              aria-label={
-                isHistoryCardExpanded
-                  ? 'Compactează cardul'
-                  : 'Expandează cardul'
-              }
-            >
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-3'>
-                  <History className='h-6 w-6 text-white flex-shrink-0' />
-                  <h3 className='text-lg font-bold text-white'>
-                    Vezi Istoricul Complet
-                  </h3>
+          {/* Action Cards - Same style as Health Alert */}
+          <div data-testid='actionCards' className='space-y-2'>
+            {/* Benefits Card */}
+            <div className='bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg relative transition-all duration-300'>
+              <button
+                onClick={() =>
+                  setIsBenefitsCardExpanded(!isBenefitsCardExpanded)
+                }
+                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+                aria-label={
+                  isBenefitsCardExpanded
+                    ? 'Compactează cardul'
+                    : 'Expandează cardul'
+                }
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <Info className='h-6 w-6 text-white flex-shrink-0' />
+                    <h3 className='text-lg font-bold text-white'>
+                      Vezi De Ce e Benefică Pauza Alimentară
+                    </h3>
+                  </div>
+                  <ChevronDown
+                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                      isBenefitsCardExpanded ? 'rotate-180' : ''
+                    }`}
+                  />
                 </div>
-                <ChevronDown
-                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                    isHistoryCardExpanded ? 'rotate-180' : ''
-                  }`}
-                />
-              </div>
-            </button>
+              </button>
 
-            {isHistoryCardExpanded && (
-              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
-                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                  <p>
-                    Urmărește progresul tău cu o vedere detaliată asupra tuturor
-                    sesiunilor de pauză alimentară.
-                  </p>
-                  <Link href='/history'>
-                    <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                      Vezi istoricul
-                    </Button>
-                  </Link>
+              {isBenefitsCardExpanded && (
+                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                    <p>
+                      Descoperă beneficiile științifice ale pauzelor alimentare
+                      și cum acestea pot îmbunătăți sănătatea ta.
+                    </p>
+                    <Link href='/beneficii'>
+                      <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                        Citește mai mult
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          {/* Phases Card */}
-          <div className='bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-xl shadow-lg relative transition-all duration-300'>
-            <button
-              onClick={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
-              className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
-              aria-label={
-                isPhasesCardExpanded
-                  ? 'Compactează cardul'
-                  : 'Expandează cardul'
-              }
-            >
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-3'>
-                  <Clock className='h-6 w-6 text-white flex-shrink-0' />
-                  <h3 className='text-lg font-bold text-white'>
-                    Fazele Pauzei Alimentare
-                  </h3>
+            {/* History Card */}
+            <div className='bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-xl shadow-lg relative transition-all duration-300'>
+              <button
+                onClick={() => setIsHistoryCardExpanded(!isHistoryCardExpanded)}
+                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+                aria-label={
+                  isHistoryCardExpanded
+                    ? 'Compactează cardul'
+                    : 'Expandează cardul'
+                }
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <History className='h-6 w-6 text-white flex-shrink-0' />
+                    <h3 className='text-lg font-bold text-white'>
+                      Vezi Istoricul Complet
+                    </h3>
+                  </div>
+                  <ChevronDown
+                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                      isHistoryCardExpanded ? 'rotate-180' : ''
+                    }`}
+                  />
                 </div>
-                <ChevronDown
-                  className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
-                    isPhasesCardExpanded ? 'rotate-180' : ''
-                  }`}
-                />
-              </div>
-            </button>
+              </button>
 
-            {isPhasesCardExpanded && (
-              <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300 lg:hidden'>
-                <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
-                  <p>
-                    Descoperă cum se dezvoltă corpul tău prin diferitele etape
-                    ale pauzei alimentare, de la digestie la autofagie și
-                    regenerare celulară.
-                  </p>
-                  <button
-                    onClick={() => {
-                      const phasesSection = document.getElementById(
-                        'mobile-phases-container'
-                      );
-                      if (phasesSection) {
-                        phasesSection.scrollIntoView({
-                          behavior: 'smooth',
-                          block: 'start',
-                        });
-                      }
-                    }}
-                    className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
-                  >
-                    Vezi fazele →
-                  </button>
+              {isHistoryCardExpanded && (
+                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300'>
+                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                    <p>
+                      Urmărește progresul tău cu o vedere detaliată asupra
+                      tuturor sesiunilor de pauză alimentară.
+                    </p>
+                    <Link href='/history'>
+                      <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
+                        Vezi istoricul
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            {/* Phases Card */}
+            <div className='bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-xl shadow-lg relative transition-all duration-300'>
+              <button
+                onClick={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
+                className='w-full text-left p-4 hover:bg-white/5 transition-colors rounded-xl'
+                aria-label={
+                  isPhasesCardExpanded
+                    ? 'Compactează cardul'
+                    : 'Expandează cardul'
+                }
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <Clock className='h-6 w-6 text-white flex-shrink-0' />
+                    <h3 className='text-lg font-bold text-white'>
+                      Fazele Pauzei Alimentare
+                    </h3>
+                  </div>
+                  <ChevronDown
+                    className={`h-5 w-5 text-white/80 transition-transform duration-300 ${
+                      isPhasesCardExpanded ? 'rotate-180' : ''
+                    }`}
+                  />
+                </div>
+              </button>
+
+              {isPhasesCardExpanded && (
+                <div className='px-4 pb-4 animate-in slide-in-from-top-2 duration-300 lg:hidden'>
+                  <div className='text-white/95 space-y-3 leading-relaxed pl-9'>
+                    <p>
+                      Descoperă cum se dezvoltă corpul tău prin diferitele etape
+                      ale pauzei alimentare, de la digestie la autofagie și
+                      regenerare celulară.
+                    </p>
+                    <button
+                      onClick={() => {
+                        const phasesSection = document.getElementById(
+                          'mobile-phases-container'
+                        );
+                        if (phasesSection) {
+                          phasesSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                          });
+                        }
+                      }}
+                      className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
+                    >
+                      Vezi fazele →
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -647,7 +652,7 @@ export default function FastingTracker() {
                 }}
               >
                 {/* Timer Display */}
-                <div className='text-center'>
+                <div data-testid='timerDisplay' className='text-center'>
                   <p className='text-xl font-semibold text-muted-foreground mb-2'>
                     Timp scurs:
                   </p>
