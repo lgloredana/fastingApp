@@ -40,6 +40,7 @@ import { DrinksCarousel } from '@/components/drinks-carousel';
 import { InfoContainer } from '@/components/info-container';
 import { useVoiceReader } from '@/hooks/use-voice-reader';
 import { RecentHistoryCard } from '@/components/recent-history-card';
+import { UserSwitcher } from '@/components/user-switcher';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -383,6 +384,32 @@ export default function FastingTracker() {
     }
   }, []);
 
+  const handleUserChange = useCallback(() => {
+    // Reload all data when user changes
+    const loadData = () => {
+      const session = getCurrentSession();
+      const history = getFastingHistory();
+      const stats = getFastingStats();
+
+      setCurrentSession(session);
+      setFastingHistory(history);
+      setFastingStats(stats);
+
+      if (session) {
+        setFastingStartTime(session.startTime);
+        const elapsed = Date.now() - session.startTime;
+        setElapsedTime(elapsed);
+        setCurrentPhase(getFastingPhase(elapsed));
+      } else {
+        setFastingStartTime(null);
+        setElapsedTime(0);
+        setCurrentPhase(getFastingPhase(0));
+      }
+    };
+
+    loadData();
+  }, []);
+
   const toggleDesktopPhase = (index: number) => {
     setExpandedDesktopPhase(expandedDesktopPhase === index ? null : index);
   };
@@ -475,6 +502,11 @@ export default function FastingTracker() {
               Monitorul de Pauza Alimentara
             </h1>
           </div>
+        </div>
+
+        {/* User Switcher */}
+        <div className='mx-4 mb-4'>
+          <UserSwitcher onUserChange={handleUserChange} />
         </div>
 
         {/* Cards Container with smaller gap */}

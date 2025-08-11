@@ -1,4 +1,5 @@
 // Client-side storage utilities for fasting data (browser-compatible)
+import { getActiveUser, initializeDefaultUser, getAllUsers } from './user-storage';
 
 export interface FastingSession {
   id: string;
@@ -7,6 +8,7 @@ export interface FastingSession {
   duration?: number;
   notes?: string;
   createdAt: number;
+  userId: string; // Added userId to sessions
 }
 
 export interface FastingData {
@@ -16,7 +18,16 @@ export interface FastingData {
   totalFastingTime: number;
 }
 
+export interface UserFastingData {
+  [userId: string]: FastingData;
+}
+
 const STORAGE_KEY = 'fasting-app-data';
+
+// Get storage key for specific user
+const getUserStorageKey = (userId: string): string => {
+  return `${STORAGE_KEY}-${userId}`;
+};
 
 // Default data structure
 const getDefaultData = (): FastingData => ({
@@ -26,14 +37,24 @@ const getDefaultData = (): FastingData => ({
   totalFastingTime: 0,
 });
 
-// Read fasting data from localStorage
+// Get current active user or initialize default
+const getCurrentUser = () => {
+  let user = getActiveUser();
+  if (!user) {
+    user = initializeDefaultUser();
+  }
+  return user;
+};
+
+// Read fasting data from localStorage for current user
 export const readFastingData = (): FastingData => {
   if (typeof window === 'undefined') {
     return getDefaultData();
   }
 
   try {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const user = getCurrentUser();
+    const data = localStorage.getItem(getUserStorageKey(user.id));
     if (!data) {
       return getDefaultData();
     }
@@ -44,16 +65,49 @@ export const readFastingData = (): FastingData => {
   }
 };
 
-// Save fasting data to localStorage
+// Read fasting data for specific user
+export const readFastingDataForUser = (userId: string): FastingData => {
+  if (typeof window === 'undefined') {
+    return getDefaultData();
+  }
+
+  try {
+    const data = localStorage.getItem(getUserStorageKey(userId));
+    if (!data) {
+      return getDefaultData();
+    }
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading fasting data for user:', error);
+    return getDefaultData();
+  }
+};
+
+// Save fasting data to localStorage for current user
 export const saveFastingData = (data: FastingData): void => {
   if (typeof window === 'undefined') {
     return;
   }
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const user = getCurrentUser();
+    localStorage.setItem(getUserStorageKey(user.id), JSON.stringify(data));
   } catch (error) {
     console.error('Error saving fasting data:', error);
+    throw error;
+  }
+};
+
+// Save fasting data for specific user
+export const saveFastingDataForUser = (userId: string, data: FastingData): void => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    localStorage.setItem(getUserStorageKey(userId), JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving fasting data for user:', error);
     throw error;
   }
 };
@@ -61,11 +115,13 @@ export const saveFastingData = (data: FastingData): void => {
 // Start a new fasting session
 export const startFastingSession = (): FastingSession => {
   const data = readFastingData();
+  const user = getCurrentUser();
 
   const newSession: FastingSession = {
     id: `session-${Date.now()}`,
     startTime: Date.now(),
     createdAt: Date.now(),
+    userId: user.id,
   };
 
   data.currentSession = newSession;
@@ -80,6 +136,7 @@ export const endFastingSession = (
   notes?: string
 ): FastingSession | null => {
   const data = readFastingData();
+  const user = getCurrentUser();
 
   if (!data.currentSession) {
     return null;
@@ -93,6 +150,7 @@ export const endFastingSession = (
     endTime,
     duration,
     notes,
+    userId: user.id, // Ensure userId is set
   };
 
   // Add to sessions history
@@ -117,6 +175,7 @@ export const updateSessionStartTime = (
   newStartTime: number
 ): FastingSession | null => {
   const data = readFastingData();
+  const user = getCurrentUser();
 
   if (!data.currentSession) {
     return null;
@@ -125,6 +184,7 @@ export const updateSessionStartTime = (
   const updatedSession: FastingSession = {
     ...data.currentSession,
     startTime: newStartTime,
+    userId: user.id, // Ensure userId is set
   };
 
   data.currentSession = updatedSession;
@@ -228,9 +288,31 @@ export const deleteFastingSession = (sessionId: string): boolean => {
   return true;
 };
 
-// Clear all data
+// Clear all data for current user
 export const clearAllData = (): void => {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem(STORAGE_KEY);
+    const user = getCurrentUser();
+    localStorage.removeItem(getUserStorageKey(user.id));
   }
+};
+
+// Clear all data for specific user
+export const clearAllDataForUser = (userId: string): void => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(getUserStorageKey(userId));
+  }
+};
+
+// Get all users with their fasting data summary
+export const getAllUsersWithData = () => {
+  const users = getAllUsers();
+  return users.map(user => {
+    const data = readFastingDataForUser(user.id);
+    return {
+      ...user,
+      totalSessions: data.totalSessions,
+      totalFastingTime: data.totalFastingTime,
+      hasActiveSession: !!data.currentSession,
+    };
+  });
 };

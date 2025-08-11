@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import Link from 'next/link';
 import { RecentHistoryCard } from '@/components/recent-history-card';
+import { UserSwitcher } from '@/components/user-switcher';
 import {
   getFastingHistory,
   getFastingStats,
@@ -94,6 +95,14 @@ export default function HistoryPage() {
     }
   };
 
+  const handleUserChange = () => {
+    // Reload data when user changes
+    const fastingHistory = getFastingHistory();
+    const fastingStats = getFastingStats();
+    setHistory(fastingHistory);
+    setStats(fastingStats);
+  };
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-6'>
       <div className='max-w-4xl mx-auto'>
@@ -116,6 +125,11 @@ export default function HistoryPage() {
               Înapoi la Monitor
             </Button>
           </Link>
+        </div>
+
+        {/* User Switcher */}
+        <div className='mb-6'>
+          <UserSwitcher onUserChange={handleUserChange} />
         </div>
 
         {/* Statistics Overview */}
