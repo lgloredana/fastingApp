@@ -77,7 +77,10 @@ export function MobileFastingPhases({
   };
 
   return (
-    <Card className='lg:hidden pt-0'>
+    <Card
+      data-testid='mobile-fasting-phases'
+      className='lg:hidden pt-0 bg-orange-100'
+    >
       {' '}
       {/* Only show on mobile */}
       <CardHeader className='py-4 px-6 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-t-xl'>
