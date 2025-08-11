@@ -104,76 +104,12 @@ export function useNotifications(): UseNotificationsReturn {
       try {
         console.log('✅ Creating notification...');
 
-        // Check if we have a service worker (mobile requirement)
-        if (
-          'serviceWorker' in navigator &&
-          'showNotification' in ServiceWorkerRegistration.prototype
-        ) {
-          console.log('📱 Using Service Worker for mobile notifications');
+        // Try different notification approaches based on device capabilities
+        let notificationSent = false;
 
-          // Register a simple service worker if none exists
-          let registration = await navigator.serviceWorker.getRegistration();
-          if (!registration) {
-            console.log('📱 Registering service worker...');
-
-            // Create inline service worker to avoid 404 issues on GitHub Pages
-            const swCode = `
-              // Simple Service Worker for Mobile Notifications
-              self.addEventListener('install', (event) => {
-                console.log('Service Worker: Installed');
-                self.skipWaiting();
-              });
-
-              self.addEventListener('activate', (event) => {
-                console.log('Service Worker: Activated');
-                event.waitUntil(self.clients.claim());
-              });
-
-              self.addEventListener('notificationclick', (event) => {
-                console.log('Service Worker: Notification clicked', event);
-                event.notification.close();
-                
-                event.waitUntil(
-                  self.clients.matchAll({ type: 'window' }).then((clients) => {
-                    for (const client of clients) {
-                      if (client.url.includes(self.location.origin) && 'focus' in client) {
-                        return client.focus();
-                      }
-                    }
-                    if (self.clients.openWindow) {
-                      return self.clients.openWindow('/');
-                    }
-                  })
-                );
-              });
-            `;
-
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-
-            console.log('📱 Registering inline service worker...');
-            registration = await navigator.serviceWorker.register(swUrl);
-            await navigator.serviceWorker.ready;
-
-            // Clean up the blob URL
-            URL.revokeObjectURL(swUrl);
-          }
-
-          // Use service worker notification (mobile-compatible)
-          await registration.showNotification(options.title, {
-            body: options.body,
-            icon: options.icon || '/icon-192.png',
-            badge: options.badge || '/icon-192.png',
-            tag: options.tag || 'fasting-app',
-            requireInteraction: options.requireInteraction || false,
-            silent: false,
-            data: { url: window.location.href },
-          });
-
-          console.log('✅ Service Worker notification sent!');
-        } else {
-          // Fallback to regular notification (desktop)
-          console.log('🖥️ Using regular Notification API for desktop');
+        // First, try the standard Notification API (works on many mobile browsers now)
+        try {
+          console.log('🔔 Trying standard Notification API...');
           const notification = new Notification(options.title, {
             body: options.body,
             icon: options.icon || '/icon-192.png',
@@ -205,7 +141,94 @@ export function useNotifications(): UseNotificationsReturn {
             console.error('❌ Notification error:', error);
           };
 
-          console.log('✅ Desktop notification sent!');
+          console.log('✅ Standard notification sent!');
+          notificationSent = true;
+        } catch (standardError) {
+          console.log(
+            '⚠️ Standard Notification failed, trying alternatives...',
+            standardError
+          );
+
+          // If standard fails, try service worker approach (if available)
+          if (
+            'serviceWorker' in navigator &&
+            'showNotification' in ServiceWorkerRegistration.prototype
+          ) {
+            try {
+              console.log('📱 Trying Service Worker notifications...');
+
+              // Try to get existing registration first
+              let registration =
+                await navigator.serviceWorker.getRegistration();
+
+              if (registration && registration.active) {
+                console.log('📱 Using existing service worker');
+                await registration.showNotification(options.title, {
+                  body: options.body,
+                  icon: options.icon || '/icon-192.png',
+                  badge: options.badge || '/icon-192.png',
+                  tag: options.tag || 'fasting-app',
+                  requireInteraction: options.requireInteraction || false,
+                  silent: false,
+                });
+                console.log('✅ Service Worker notification sent!');
+                notificationSent = true;
+              }
+            } catch (swError) {
+              console.log(
+                '⚠️ Service Worker notification also failed:',
+                swError
+              );
+            }
+          }
+        }
+
+        // If all notification methods fail, show a visual alert instead
+        if (!notificationSent) {
+          console.log('📢 Showing visual alert as fallback');
+
+          // Create a custom visual notification
+          const visualNotification = document.createElement('div');
+          visualNotification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10000;
+            max-width: 90vw;
+            text-align: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+          `;
+
+          visualNotification.innerHTML = `
+            <div style="font-weight: bold; margin-bottom: 5px;">${options.title}</div>
+            <div>${options.body}</div>
+          `;
+
+          document.body.appendChild(visualNotification);
+
+          // Auto-remove after 8 seconds
+          setTimeout(() => {
+            if (visualNotification.parentNode) {
+              visualNotification.parentNode.removeChild(visualNotification);
+            }
+          }, 8000);
+
+          // Make it clickable to dismiss
+          visualNotification.onclick = () => {
+            if (visualNotification.parentNode) {
+              visualNotification.parentNode.removeChild(visualNotification);
+            }
+          };
+
+          console.log('✅ Visual notification shown!');
         }
 
         console.log('✅ Notification sent:', options.title);
