@@ -201,6 +201,33 @@ export const importFastingDataFromFile = (file: File): Promise<void> => {
   });
 };
 
+// Delete a specific session
+export const deleteFastingSession = (sessionId: string): boolean => {
+  const data = readFastingData();
+
+  const sessionIndex = data.sessions.findIndex(
+    (session) => session.id === sessionId
+  );
+
+  if (sessionIndex === -1) {
+    return false; // Session not found
+  }
+
+  const sessionToDelete = data.sessions[sessionIndex];
+
+  // Remove session from array
+  data.sessions.splice(sessionIndex, 1);
+
+  // Update statistics
+  data.totalSessions -= 1;
+  if (sessionToDelete.duration) {
+    data.totalFastingTime -= sessionToDelete.duration;
+  }
+
+  saveFastingData(data);
+  return true;
+};
+
 // Clear all data
 export const clearAllData = (): void => {
   if (typeof window !== 'undefined') {

@@ -6,11 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import Link from 'next/link';
+import { RecentHistoryCard } from '@/components/recent-history-card';
 import {
   getFastingHistory,
   getFastingStats,
   exportFastingDataAsFile,
   clearAllData,
+  deleteFastingSession,
   type FastingSession,
 } from '@/lib/client-storage';
 import {
@@ -77,6 +79,18 @@ export default function HistoryPage() {
 
       // Track analytics event
       trackDataClear();
+    }
+  };
+
+  const handleDeleteSession = (sessionId: string) => {
+    const success = deleteFastingSession(sessionId);
+
+    if (success) {
+      // Refresh data after deletion
+      const fastingHistory = getFastingHistory();
+      const fastingStats = getFastingStats();
+      setHistory(fastingHistory);
+      setStats(fastingStats);
     }
   };
 
@@ -148,69 +162,12 @@ export default function HistoryPage() {
         </div>
 
         {/* Sessions History */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Istoricul Sesiunilor</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {history.length === 0 ? (
-              <div className='text-center py-8 text-muted-foreground'>
-                <p>Nu există încă sesiuni de pauza alimentara înregistrate.</p>
-                <Link href='/'>
-                  <Button className='mt-4'>
-                    Începe Prima Ta Pauza Alimentara
-                  </Button>
-                </Link>
-              </div>
-            ) : (
-              <div className='space-y-3'>
-                {history.map((session) => (
-                  <div
-                    key={session.id}
-                    className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'
-                  >
-                    <div className='space-y-1'>
-                      <div className='font-medium'>
-                        {format(session.startTime, 'EEEE, dd MMMM yyyy', {
-                          locale: ro,
-                        })}
-                      </div>
-                      <div className='text-sm text-muted-foreground'>
-                        Început:{' '}
-                        {format(session.startTime, 'HH:mm', { locale: ro })}
-                        {session.endTime && (
-                          <span>
-                            {' '}
-                            • Terminat:{' '}
-                            {format(session.endTime, 'HH:mm', { locale: ro })}
-                          </span>
-                        )}
-                      </div>
-                      {session.notes && (
-                        <div className='text-sm text-muted-foreground'>
-                          Notes: {session.notes}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className='text-right'>
-                      <div className='text-2xl font-bold text-primary'>
-                        {session.duration
-                          ? formatTime(session.duration)
-                          : 'În Desfășurare'}
-                      </div>
-                      {session.duration && (
-                        <div className='text-sm text-muted-foreground'>
-                          {(session.duration / (1000 * 60 * 60)).toFixed(1)} ore
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <RecentHistoryCard
+          fastingHistory={history}
+          showAll={true}
+          title='Istoricul Sesiunilor'
+          onDeleteSession={handleDeleteSession}
+        />
       </div>
     </div>
   );

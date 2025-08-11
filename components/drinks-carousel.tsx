@@ -34,6 +34,11 @@ const drinkImages: DrinkImage[] = [
     caption: 'Alimente recomandate în perioada de alimentare',
   },
   {
+    src: '/morcovi.png',
+    alt: 'Morcovi',
+    caption: 'Morcovi',
+  },
+  {
     src: '/salata.png',
     alt: 'Salată și alimente',
     caption: 'Alimente recomandate în perioada de alimentare',

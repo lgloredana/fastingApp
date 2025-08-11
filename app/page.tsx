@@ -30,6 +30,7 @@ import {
   getFastingStats,
   exportFastingDataAsFile,
   updateSessionStartTime,
+  deleteFastingSession,
   type FastingSession,
 } from '@/lib/client-storage';
 import { UpdateStartTimeDialog } from '@/components/update-start-time-dialog';
@@ -38,6 +39,7 @@ import { MobileFastingPhases } from '@/components/mobile-fasting-phases';
 import { DrinksCarousel } from '@/components/drinks-carousel';
 import { InfoContainer } from '@/components/info-container';
 import { useVoiceReader } from '@/hooks/use-voice-reader';
+import { RecentHistoryCard } from '@/components/recent-history-card';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -368,6 +370,18 @@ export default function FastingTracker() {
     },
     [currentSession]
   );
+
+  const handleDeleteSession = useCallback((sessionId: string) => {
+    const success = deleteFastingSession(sessionId);
+
+    if (success) {
+      // Refresh data after deletion
+      const history = getFastingHistory();
+      const stats = getFastingStats();
+      setFastingHistory(history);
+      setFastingStats(stats);
+    }
+  }, []);
 
   const toggleDesktopPhase = (index: number) => {
     setExpandedDesktopPhase(expandedDesktopPhase === index ? null : index);
@@ -1139,48 +1153,10 @@ export default function FastingTracker() {
             </Card>
 
             {/* Recent History */}
-            {fastingHistory.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className='text-xl'>Sesiuni Recente</CardTitle>
-                </CardHeader>
-                <CardContent className='space-y-2'>
-                  {fastingHistory.slice(0, 3).map((session) => (
-                    <div
-                      key={session.id}
-                      className='p-2 bg-gray-50 dark:bg-gray-800 rounded-lg'
-                    >
-                      <div className='flex justify-between text-sm'>
-                        <span>
-                          {safeFormatDate(session.startTime, 'dd MMM')}
-                        </span>
-                        <span className='font-medium'>
-                          {session.duration
-                            ? formatTime(session.duration)
-                            : 'În Desfășurare'}
-                        </span>
-                      </div>
-                      {session.duration && (
-                        <div className='text-xs text-muted-foreground'>
-                          {(session.duration / (1000 * 60 * 60)).toFixed(1)}h
-                          fast
-                        </div>
-                      )}
-                    </div>
-                  ))}
-
-                  {fastingHistory.length > 3 && (
-                    <div className='text-center pt-2'>
-                      <Link href='/history'>
-                        <Button variant='ghost' size='sm' className='text-xs'>
-                          Vezi Toate {fastingHistory.length} Sesiunile
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+            <RecentHistoryCard
+              fastingHistory={fastingHistory}
+              onDeleteSession={handleDeleteSession}
+            />
           </div>
         </div>
 
