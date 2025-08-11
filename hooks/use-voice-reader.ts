@@ -28,6 +28,45 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
     setIsSupported(
       typeof window !== 'undefined' && 'speechSynthesis' in window
     );
+
+    // Load voices (sometimes they load asynchronously)
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const loadVoices = () => {
+        const voices = speechSynthesis.getVoices();
+        console.log(
+          'Available voices:',
+          voices.map((v) => `${v.name} (${v.lang})`)
+        );
+
+        const romanianVoices = voices.filter(
+          (voice) =>
+            voice.lang.startsWith('ro') ||
+            voice.lang.includes('RO') ||
+            voice.name.toLowerCase().includes('romanian')
+        );
+
+        if (romanianVoices.length > 0) {
+          console.log(
+            'Romanian voices found:',
+            romanianVoices.map((v) => `${v.name} (${v.lang})`)
+          );
+        } else {
+          console.log(
+            'No Romanian voices available. The system will try to use ro-RO language setting.'
+          );
+        }
+      };
+
+      // Load voices immediately if available
+      loadVoices();
+
+      // Also load voices when they become available (some browsers load them asynchronously)
+      speechSynthesis.addEventListener('voiceschanged', loadVoices);
+
+      return () => {
+        speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+      };
+    }
   }, []);
 
   const speak = useCallback(
@@ -42,6 +81,29 @@ export function useVoiceReader(options: VoiceReaderOptions = {}) {
       utterance.pitch = defaultOptions.pitch;
       utterance.volume = defaultOptions.volume;
       utterance.lang = defaultOptions.lang;
+
+      // Try to find a Romanian voice
+      const voices = speechSynthesis.getVoices();
+      const romanianVoice = voices.find(
+        (voice) =>
+          voice.lang.startsWith('ro') ||
+          voice.lang.includes('RO') ||
+          voice.name.toLowerCase().includes('romanian') ||
+          voice.name.toLowerCase().includes('romania')
+      );
+
+      if (romanianVoice) {
+        utterance.voice = romanianVoice;
+        console.log(
+          'Using Romanian voice:',
+          romanianVoice.name,
+          romanianVoice.lang
+        );
+      } else {
+        console.log('No Romanian voice found, using default with ro-RO lang');
+        // Force Romanian language even without specific voice
+        utterance.lang = 'ro-RO';
+      }
 
       utterance.onstart = () => {
         setIsReading(true);
