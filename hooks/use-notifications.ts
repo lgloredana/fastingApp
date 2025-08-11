@@ -71,7 +71,7 @@ export function useNotifications(): UseNotificationsReturn {
 
   // Send notification
   const sendNotification = useCallback(
-    (options: NotificationOptions) => {
+    async (options: NotificationOptions) => {
       // Enhanced debugging
       console.log('🔔 Notification Debug Info:', {
         isSupported,
@@ -103,43 +103,85 @@ export function useNotifications(): UseNotificationsReturn {
 
       try {
         console.log('✅ Creating notification...');
-        const notification = new Notification(options.title, {
-          body: options.body,
-          icon: options.icon || '/icon-192.png',
-          badge: options.badge || '/icon-192.png',
-          tag: options.tag || 'fasting-app',
-          requireInteraction: options.requireInteraction || false,
-          silent: false,
-        });
 
-        console.log('✅ Notification created successfully!');
+        // Check if we have a service worker (mobile requirement)
+        if (
+          'serviceWorker' in navigator &&
+          'showNotification' in ServiceWorkerRegistration.prototype
+        ) {
+          console.log('📱 Using Service Worker for mobile notifications');
 
-        // Auto-close after 10 seconds if not requiring interaction
-        if (!options.requireInteraction) {
-          setTimeout(() => {
+          // Register a simple service worker if none exists
+          let registration = await navigator.serviceWorker.getRegistration();
+          if (!registration) {
+            console.log('📱 Registering service worker...');
+            registration = await navigator.serviceWorker.register('/sw.js', {
+              scope: '/',
+            });
+            await navigator.serviceWorker.ready;
+          }
+
+          // Use service worker notification (mobile-compatible)
+          await registration.showNotification(options.title, {
+            body: options.body,
+            icon: options.icon || '/icon-192.png',
+            badge: options.badge || '/icon-192.png',
+            tag: options.tag || 'fasting-app',
+            requireInteraction: options.requireInteraction || false,
+            silent: false,
+            data: { url: window.location.href },
+          });
+
+          console.log('✅ Service Worker notification sent!');
+        } else {
+          // Fallback to regular notification (desktop)
+          console.log('🖥️ Using regular Notification API for desktop');
+          const notification = new Notification(options.title, {
+            body: options.body,
+            icon: options.icon || '/icon-192.png',
+            badge: options.badge || '/icon-192.png',
+            tag: options.tag || 'fasting-app',
+            requireInteraction: options.requireInteraction || false,
+            silent: false,
+          });
+
+          // Auto-close after 10 seconds if not requiring interaction
+          if (!options.requireInteraction) {
+            setTimeout(() => {
+              notification.close();
+            }, 10000);
+          }
+
+          // Handle notification click
+          notification.onclick = () => {
+            console.log('Notification clicked');
+            window.focus();
             notification.close();
-          }, 10000);
+          };
+
+          notification.onshow = () => {
+            console.log('✅ Notification is showing');
+          };
+
+          notification.onerror = (error) => {
+            console.error('❌ Notification error:', error);
+          };
+
+          console.log('✅ Desktop notification sent!');
         }
-
-        // Handle notification click
-        notification.onclick = () => {
-          console.log('Notification clicked');
-          window.focus();
-          notification.close();
-        };
-
-        notification.onshow = () => {
-          console.log('✅ Notification is showing');
-        };
-
-        notification.onerror = (error) => {
-          console.error('❌ Notification error:', error);
-        };
 
         console.log('✅ Notification sent:', options.title);
       } catch (error) {
         console.error('❌ Error sending notification:', error);
-        alert(`Eroare la trimiterea notificării: ${error}`);
+
+        // More user-friendly error message
+        if (error.message && error.message.includes('Illegal constructor')) {
+          alert(
+            'Notificările mobile necesită o configurație specială. Încearcă să adaugi aplicația pe ecranul principal!'
+          );
+        } else {
+          alert(`Eroare la trimiterea notificării: ${error.message}`);
+        }
       }
     },
     [isSupported, isEnabled, permission]

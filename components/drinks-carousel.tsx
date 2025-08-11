@@ -63,6 +63,17 @@ const drinkImages: DrinkImage[] = [
     alt: 'Ardei gras',
     caption: 'Ardei gras',
   },
+  {
+    src: '/peste.png',
+    alt: 'Peste',
+    caption: 'Peste',
+  },
+
+  {
+    src: '/rosie.png',
+    alt: 'Rosie',
+    caption: 'Rosie',
+  },
 ];
 
 export function DrinksCarousel() {
