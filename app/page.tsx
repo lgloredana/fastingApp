@@ -275,6 +275,12 @@ export default function FastingTracker() {
     if (!mounted) return;
 
     const loadData = () => {
+      // Initialize default user and migrate data if needed
+      if (typeof window !== 'undefined') {
+        const { initializeDefaultUser } = require('@/lib/user-storage');
+        initializeDefaultUser();
+      }
+
       const session = getCurrentSession();
       const history = getFastingHistory();
       const stats = getFastingStats();

@@ -20,14 +20,30 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Plus, UserCheck, Baby, Users } from 'lucide-react';
+import {
+  User,
+  Plus,
+  UserCheck,
+  Baby,
+  Users,
+  Trash2,
+  MoreVertical,
+  Edit3,
+} from 'lucide-react';
 import {
   getAllUsers,
   getActiveUser,
   setActiveUser,
   createUser,
+  deleteUser,
   type User as UserType,
 } from '@/lib/user-storage';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface UserSwitcherProps {
   onUserChange?: () => void;
@@ -67,6 +83,23 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
     }
   };
 
+  const handleDeleteUser = (userToDelete: UserType) => {
+    if (users.length <= 1) {
+      alert('Nu poți șterge ultimul utilizator!');
+      return;
+    }
+
+    const confirmMessage = `Ești sigur că vrei să ștergi utilizatorul "${userToDelete.name}"?\n\nToate datele sale de post vor fi pierdute permanent.`;
+
+    if (confirm(confirmMessage)) {
+      const success = deleteUser(userToDelete.id);
+      if (success) {
+        loadUsers();
+        onUserChange?.();
+      }
+    }
+  };
+
   const getUserIcon = (userName: string) => {
     const lowerName = userName.toLowerCase();
     if (
@@ -88,21 +121,46 @@ export function UserSwitcher({ onUserChange }: UserSwitcherProps) {
         <span className='font-medium text-sm'>Urmăresc pentru:</span>
       </div>
 
-      <Select value={activeUser?.id || ''} onValueChange={handleSwitchUser}>
-        <SelectTrigger className='w-40'>
-          <SelectValue placeholder='Selectează' />
-        </SelectTrigger>
-        <SelectContent>
-          {users.map((user) => (
-            <SelectItem key={user.id} value={user.id}>
-              <div className='flex items-center gap-2'>
-                {getUserIcon(user.name)}
-                {user.name}
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className='flex items-center gap-1'>
+        <Select value={activeUser?.id || ''} onValueChange={handleSwitchUser}>
+          <SelectTrigger className='w-40'>
+            <SelectValue placeholder='Selectează' />
+          </SelectTrigger>
+          <SelectContent>
+            {users.map((user) => (
+              <SelectItem key={user.id} value={user.id}>
+                <div className='flex items-center gap-2'>
+                  {getUserIcon(user.name)}
+                  {user.name}
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* User Management Dropdown */}
+        {users.length > 1 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' size='sm' className='h-9 w-9 p-0'>
+                <MoreVertical className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {users.map((user) => (
+                <DropdownMenuItem
+                  key={user.id}
+                  onClick={() => handleDeleteUser(user)}
+                  className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20'
+                >
+                  <Trash2 className='h-4 w-4 mr-2' />
+                  Șterge "{user.name}"
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
 
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogTrigger asChild>
