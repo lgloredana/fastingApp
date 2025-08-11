@@ -79,6 +79,11 @@ const drinkImages: DrinkImage[] = [
     alt: 'Peste',
     caption: 'Peste',
   },
+  {
+    src: '/pui.png',
+    alt: 'Pui',
+    caption: 'Pui',
+  },
 ];
 
 export function DrinksCarousel() {
