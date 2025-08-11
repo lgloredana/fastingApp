@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNotifications } from '@/hooks/use-notifications';
+import { getActiveUser } from '@/lib/user-storage';
 import { Bell, TestTube, Play, Zap } from 'lucide-react';
 
 export function NotificationTestPanel() {
@@ -52,10 +53,13 @@ export function NotificationTestPanel() {
       return;
     }
 
+    const activeUser = getActiveUser();
+    const userName = activeUser?.name || 'Utilizator';
+
     sendNotification({
       title: notification.title,
-      body: notification.body,
-      tag: `test-${notification.id}`,
+      body: `${userName}: ${notification.body}`,
+      tag: `test-${notification.id}-${activeUser?.id || 'default'}`,
       requireInteraction: true,
     });
   };
@@ -66,10 +70,13 @@ export function NotificationTestPanel() {
       return;
     }
 
+    const activeUser = getActiveUser();
+    const userName = activeUser?.name || 'Utilizator';
+
     sendNotification({
       title: '⏰ Aproape de următoarea fază!',
-      body: 'În 5 minute vei intra în faza: Arderea Grăsimilor',
-      tag: 'test-pre-notification',
+      body: `${userName}: În 5 minute vei intra în faza: Arderea Grăsimilor`,
+      tag: `test-pre-notification-${activeUser?.id || 'default'}`,
       requireInteraction: false,
     });
   };

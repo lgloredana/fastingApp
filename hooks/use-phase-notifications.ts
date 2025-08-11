@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useNotifications } from './use-notifications';
 import { FastingPhase } from '@/lib/fasting-phases';
+import { getActiveUser } from '@/lib/user-storage';
 
 interface UsePhaseNotificationsProps {
   currentPhase: FastingPhase | null;
@@ -50,26 +51,29 @@ export function usePhaseNotifications({
   }, [currentPhase, fastingStartTime, isActive, isEnabled, sendNotification]);
 
   const sendPhaseNotification = (phase: FastingPhase) => {
+    const activeUser = getActiveUser();
+    const userName = activeUser?.name || 'Utilizator';
+
     const phaseMessages = {
       'phase-2': {
         title: '🍯 Glicogenul se consumă!',
-        body: 'Corpul tău folosește rezervele de glicogen. Ești pe drumul cel bun!',
+        body: `${userName}: Corpul tău folosește rezervele de glicogen. Ești pe drumul cel bun!`,
       },
       'phase-3': {
         title: '🔥 Arderea grăsimilor a început!',
-        body: 'Felicitări! Corpul tău a început să ardă grăsimi pentru energie.',
+        body: `${userName}: Felicitări! Corpul tău a început să ardă grăsimi pentru energie.`,
       },
       'phase-4': {
         title: '🧬 Autofagia se activează!',
-        body: 'Excelent! Procesul de autofagie și cetoza încep să se activeze.',
+        body: `${userName}: Excelent! Procesul de autofagie și cetoza încep să se activeze.`,
       },
       'phase-5': {
         title: '⚡ Autofagie profundă!',
-        body: 'Incredibil! Ești în autofagie profundă și echilibru metabolic optimal.',
+        body: `${userName}: Incredibil! Ești în autofagie profundă și echilibru metabolic optimal.`,
       },
       'phase-6': {
         title: '🌟 Regenerare completă!',
-        body: 'Uimitor! Corpul tău este în proces de regenerare și resetare metabolică.',
+        body: `${userName}: Uimitor! Corpul tău este în proces de regenerare și resetare metabolică.`,
       },
     };
 
@@ -78,7 +82,7 @@ export function usePhaseNotifications({
       sendNotification({
         title: message.title,
         body: message.body,
-        tag: `fasting-phase-${phase.id}`,
+        tag: `fasting-phase-${phase.id}-${activeUser?.id || 'default'}`,
         requireInteraction: true,
       });
     }
@@ -114,10 +118,13 @@ export function usePhaseNotifications({
           const preNotificationTime = timeUntilTransition - 5 * 60 * 1000;
           if (preNotificationTime > 0) {
             setTimeout(() => {
+              const activeUser = getActiveUser();
+              const userName = activeUser?.name || 'Utilizator';
+
               sendNotification({
                 title: '⏰ Aproape de următoarea fază!',
-                body: `În 5 minute vei intra în faza: ${name}`,
-                tag: `pre-phase-${phaseId}`,
+                body: `${userName}: În 5 minute vei intra în faza: ${name}`,
+                tag: `pre-phase-${phaseId}-${activeUser?.id || 'default'}`,
                 requireInteraction: false,
               });
             }, preNotificationTime);

@@ -266,6 +266,26 @@ export default function FastingTracker() {
   useEffect(() => {
     setMounted(true);
 
+    // Suppress Chrome extension errors
+    if (
+      typeof window !== 'undefined' &&
+      window.chrome &&
+      window.chrome.runtime
+    ) {
+      const originalError = console.error;
+      console.error = (...args) => {
+        if (
+          args[0] &&
+          args[0].includes &&
+          args[0].includes('Could not establish connection')
+        ) {
+          // Suppress Chrome extension connection errors
+          return;
+        }
+        originalError.apply(console, args);
+      };
+    }
+
     // Check if health alert was dismissed recently (within 24 hours)
     const healthAlertDismissed = localStorage.getItem('healthAlertDismissed');
     if (healthAlertDismissed) {
@@ -615,32 +635,57 @@ export default function FastingTracker() {
           >
             <div data-testid='actionCards' className='space-y-3'>
               {/* Benefits Card */}
-              <InfoContainer
-                title='Vezi De Ce e Benefică Pauza Alimentară'
-                isExpanded={isBenefitsCardExpanded}
-                onToggle={() =>
-                  setIsBenefitsCardExpanded(!isBenefitsCardExpanded)
-                }
-                variant='info'
-                icon={<Info className='h-6 w-6 text-white flex-shrink-0' />}
-                className='shadow-lg'
-                enableVoiceReading={true}
-                voiceText='Vezi De Ce e Benefică Pauza Alimentară. Descoperă beneficiile științifice ale pauzelor alimentare și cum acestea pot îmbunătăți sănătatea ta.'
-              >
-                <p>
-                  Descoperă beneficiile științifice ale pauzelor alimentare și
-                  cum acestea pot îmbunătăți sănătatea ta.
-                </p>
-                <Link href='/beneficii'>
-                  <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                    Citește mai mult
-                  </Button>
-                </Link>
-              </InfoContainer>
+              <div className='shadow-lg bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 text-white rounded-xl overflow-hidden'>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsBenefitsCardExpanded(!isBenefitsCardExpanded);
+                  }}
+                  className='w-full text-left p-4 hover:bg-white/5 transition-colors'
+                >
+                  <div className='flex items-center justify-between'>
+                    <div className='flex items-center gap-3'>
+                      <Info className='h-6 w-6 text-white flex-shrink-0' />
+                      <h3 className='text-lg font-bold'>
+                        Vezi De Ce e Benefică Pauza Alimentară
+                      </h3>
+                    </div>
+                    <div
+                      className='h-5 w-5 opacity-80 transition-transform duration-300'
+                      style={{
+                        transform: isBenefitsCardExpanded
+                          ? 'rotate(180deg)'
+                          : 'rotate(0deg)',
+                      }}
+                    >
+                      ⌄
+                    </div>
+                  </div>
+                </button>
+                {isBenefitsCardExpanded && (
+                  <div className='px-4 pb-4'>
+                    <div className='space-y-3 leading-relaxed pl-9 opacity-95'>
+                      <p>
+                        Descoperă beneficiile științifice ale pauzelor
+                        alimentare și cum acestea pot îmbunătăți sănătatea ta.
+                      </p>
+                      <Link href='/beneficii'>
+                        <Button
+                          onClick={(e) => e.stopPropagation()}
+                          className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'
+                        >
+                          Citește mai mult
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* History Card - Direct Navigation */}
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event bubbling to parent InfoContainer
                   // Track analytics for history navigation
                   if (typeof window !== 'undefined' && window.gtag) {
                     window.gtag('event', 'navigate_to_history', {
@@ -678,43 +723,68 @@ export default function FastingTracker() {
               </button>
 
               {/* Phases Card */}
-              <InfoContainer
-                title='Fazele Pauzei Alimentare'
-                isExpanded={isPhasesCardExpanded}
-                onToggle={() => setIsPhasesCardExpanded(!isPhasesCardExpanded)}
-                variant='warning'
-                icon={<Clock className='h-6 w-6 text-white flex-shrink-0' />}
-                className='shadow-lg lg:hidden'
-                enableVoiceReading={true}
-                voiceText='Fazele Pauzei Alimentare. Descoperă cum se dezvoltă corpul tău prin diferitele etape ale pauzei alimentare, de la digestie la autofagie și regenerare celulară.'
-              >
-                <p>
-                  Descoperă cum se dezvoltă corpul tău prin diferitele etape ale
-                  pauzei alimentare, de la digestie la autofagie și regenerare
-                  celulară.
-                </p>
+              <div className='shadow-lg bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 text-white rounded-xl overflow-hidden lg:hidden'>
                 <button
-                  onClick={() => {
-                    const phasesSection = document.getElementById(
-                      'mobile-phases-container'
-                    );
-                    if (phasesSection) {
-                      phasesSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start',
-                      });
-                    }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsPhasesCardExpanded(!isPhasesCardExpanded);
                   }}
-                  className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
+                  className='w-full text-left p-4 hover:bg-white/5 transition-colors'
                 >
-                  Vezi fazele →
+                  <div className='flex items-center justify-between'>
+                    <div className='flex items-center gap-3'>
+                      <Clock className='h-6 w-6 text-white flex-shrink-0' />
+                      <h3 className='text-lg font-bold'>
+                        Fazele Pauzei Alimentare
+                      </h3>
+                    </div>
+                    <div
+                      className='h-5 w-5 opacity-80 transition-transform duration-300'
+                      style={{
+                        transform: isPhasesCardExpanded
+                          ? 'rotate(180deg)'
+                          : 'rotate(0deg)',
+                      }}
+                    >
+                      ⌄
+                    </div>
+                  </div>
                 </button>
-              </InfoContainer>
+                {isPhasesCardExpanded && (
+                  <div className='px-4 pb-4'>
+                    <div className='space-y-3 leading-relaxed pl-9 opacity-95'>
+                      <p>
+                        Descoperă cum se dezvoltă corpul tău prin diferitele
+                        etape ale pauzei alimentare, de la digestie la autofagie
+                        și regenerare celulară.
+                      </p>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const phasesSection = document.getElementById(
+                            'mobile-phases-container'
+                          );
+                          if (phasesSection) {
+                            phasesSection.scrollIntoView({
+                              behavior: 'smooth',
+                              block: 'start',
+                            });
+                          }
+                        }}
+                        className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-2 rounded-lg transition-colors duration-200 font-medium'
+                      >
+                        Vezi fazele →
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* Notifications Card */}
               {notifications.isSupported && (
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent event bubbling to parent InfoContainer
                     if (notifications.permission === 'granted') {
                       notifications.setIsEnabled(!notifications.isEnabled);
                     } else {
