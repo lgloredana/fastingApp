@@ -20,6 +20,7 @@ import {
 } from '@/lib/analytics';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Info, X, History, Clock, Volume2, Pause, Play } from 'lucide-react';
 import { TimerDisplay } from '@/components/timer-display';
 import {
@@ -186,6 +187,7 @@ const getPredictedPhaseTimes = (
 };
 
 export default function FastingTracker() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [fastingStartTime, setFastingStartTime] = useState<number | null>(null);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
@@ -207,7 +209,6 @@ export default function FastingTracker() {
   });
   const [isHealthAlertExpanded, setIsHealthAlertExpanded] = useState(true);
   const [isBenefitsCardExpanded, setIsBenefitsCardExpanded] = useState(false);
-  const [isHistoryCardExpanded, setIsHistoryCardExpanded] = useState(false);
   const [isPhasesCardExpanded, setIsPhasesCardExpanded] = useState(false);
 
   // Voice reading for current phase
@@ -595,27 +596,42 @@ export default function FastingTracker() {
               </Link>
             </InfoContainer>
 
-            {/* History Card */}
-            <InfoContainer
-              title='Vezi Istoricul Complet'
-              isExpanded={isHistoryCardExpanded}
-              onToggle={() => setIsHistoryCardExpanded(!isHistoryCardExpanded)}
-              variant='purple'
-              icon={<History className='h-6 w-6 text-white flex-shrink-0' />}
-              className='shadow-lg'
-              enableVoiceReading={true}
-              voiceText='Vezi Istoricul Complet. Urmărește progresul tău cu o vedere detaliată asupra tuturor sesiunilor de pauză alimentară.'
+            {/* History Card - Direct Navigation */}
+            <button
+              onClick={() => {
+                // Track analytics for history navigation
+                if (typeof window !== 'undefined' && window.gtag) {
+                  window.gtag('event', 'navigate_to_history', {
+                    event_category: 'navigation',
+                    event_label: 'history_card_click',
+                  });
+                }
+                router.push('/history');
+              }}
+              className='w-full text-left shadow-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white cursor-pointer hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-[1.02] rounded-xl overflow-hidden p-4'
             >
-              <p>
-                Urmărește progresul tău cu o vedere detaliată asupra tuturor
-                sesiunilor de pauză alimentară.
-              </p>
-              <Link href='/history'>
-                <Button className='mt-3 bg-white/20 hover:bg-white/30 text-white border-white/30'>
-                  Vezi istoricul
-                </Button>
-              </Link>
-            </InfoContainer>
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <History className='h-6 w-6 text-white flex-shrink-0' />
+                  <h3 className='text-lg font-bold'>Vezi Istoricul Complet</h3>
+                </div>
+                <div className='text-purple-200'>
+                  <svg
+                    className='h-4 w-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5l7 7-7 7'
+                    />
+                  </svg>
+                </div>
+              </div>
+            </button>
 
             {/* Phases Card */}
             <InfoContainer
