@@ -35,6 +35,7 @@ import {
 import { UpdateStartTimeDialog } from '@/components/update-start-time-dialog';
 import { StopFastingDialog } from '@/components/stop-fasting-dialog';
 import { MobileFastingPhases } from '@/components/mobile-fasting-phases';
+import { DrinksCarousel } from '@/components/drinks-carousel';
 
 /**
  * Helper function to format milliseconds into HH:MM:SS.
@@ -839,31 +840,8 @@ export default function FastingTracker() {
                     </Button>
                   ) : (
                     <div className='w-full space-y-4'>
-                      {/* Allowed drinks image */}
-                      <div className='flex justify-center mb-4'>
-                        <div className='relative w-full max-w-2xl h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[28rem] overflow-hidden rounded-lg shadow-lg'>
-                          <Image
-                            src={`${
-                              process.env.NODE_ENV === 'production'
-                                ? '/fastingApp'
-                                : ''
-                            }/bauturi3.png`}
-                            alt='Băuturi permise în timpul pauzei alimentare'
-                            fill
-                            className='object-cover'
-                            style={{
-                              objectPosition: 'center 70%',
-                            }}
-                            sizes='(max-width: 1700px) 100vw, 100vp'
-                            priority={false}
-                          />
-                          <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 z-10'>
-                            <p className='text-white text-sm font-medium text-center'>
-                              Băuturi permise în timpul pauzei alimentare
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                      {/* Drinks Carousel */}
+                      <DrinksCarousel />
                       <StopFastingDialog
                         onConfirmStop={stopFasting}
                         fastingStartTime={fastingStartTime}
