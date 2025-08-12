@@ -572,26 +572,27 @@ export default function FastingTracker() {
         </div>
 
         {/* Action Buttons Row */}
-        <div className='flex flex-wrap items-center justify-center gap-3 w-full mx-auto mb-4'>
+        <div className='grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-3 w-full mx-auto mb-4 px-4'>
           {/* Start Fasting Button */}
           <Button
+            data-testid='startFastingButton'
             onClick={startFasting}
             disabled={!!fastingStartTime}
-            className='h-15 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
+            className='w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold'
           >
-            <UtensilsCrossed className='h-5 w-5 mr-2' />
+            <UtensilsCrossed className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
             Începe Pauza
           </Button>
 
           {/* Stop Fasting Button */}
           <Button
-            data-testid='stopButton'
+            data-testid='stopFastingButton'
             disabled={!fastingStartTime}
             onClick={stopFasting}
-            className='h-15 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
+            className='w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold'
           >
-            <X className='h-5 w-5 mr-2' />
-            Oprește Pauza
+            <X className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
+            Incep sa mananc
           </Button>
         </div>
 

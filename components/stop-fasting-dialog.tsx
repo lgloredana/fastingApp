@@ -130,11 +130,11 @@ export function StopFastingDialog({
         >
           <div className='flex items-center gap-4'>
             <UtensilsCrossed className='!h-12 !w-12 flex-shrink-0' />
-            <span className='hidden sm:inline'>Oprește Pauza Alimentara</span>
+            <span className='hidden sm:inline'>Incep sa mananc</span>
             <span className='sm:hidden flex flex-col text-center leading-tight'>
-              <span>Oprește</span>
-              <span>Pauza</span>
-              <span>Alimentara</span>
+              <span>Incep</span>
+              <span>sa</span>
+              <span>mananc</span>
             </span>
           </div>
         </Button>
