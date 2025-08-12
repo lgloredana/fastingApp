@@ -569,6 +569,29 @@ export default function FastingTracker() {
               Fără Mâncare – Monitor
             </h1>
           </div>
+
+          {/* Current Phase Quick Summary */}
+          {fastingStartTime && (
+            <div className='mt-3 px-4'>
+              <div className='inline-flex items-center gap-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-800 dark:text-gray-200 px-4 py-2 rounded-xl shadow-md border border-gray-200 dark:border-gray-600'>
+                <div
+                  className='w-3 h-3 rounded-full animate-pulse'
+                  style={{ backgroundColor: currentPhase.color }}
+                />
+                <div className='text-center'>
+                  <span className='text-xs text-gray-600 dark:text-gray-400 block'>
+                    Faza curentă
+                  </span>
+                  <span className='text-sm font-semibold'>
+                    {currentPhase.title.split(':')[0]}
+                  </span>
+                </div>
+                <div className='text-xs text-gray-500 dark:text-gray-400'>
+                  {Math.floor(elapsedTime / (1000 * 60 * 60))}h
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action Buttons Row */}
@@ -596,11 +619,6 @@ export default function FastingTracker() {
           </Button>
         </div>
 
-        {/* User Switcher */}
-        <div className='mx-4 mb-4'>
-          <UserSwitcher onUserChange={handleUserChange} />
-        </div>
-
         {/* Cards Container with smaller gap */}
         <div className='space-y-2 mx-4 mb-6'>
           {/* Health Alert Card */}
@@ -612,7 +630,7 @@ export default function FastingTracker() {
               variant='emerald'
               className='shadow-lg'
               enableVoiceReading={true}
-              voiceText='Informații importante despre pauzele alimentare. Pauzele alimentare sunt benefice atunci când sunt adaptate corpului tău. Pauza clasică de peste noapte are în jur de 12 ore și este, de regulă, sigură pentru majoritatea oamenilor. Orice pauză mai lungă de 12 ore poate aduce beneficii suplimentare, dar și riscuri, în funcție de starea de sănătate și nevoile tale. Pe toată durata pauzei este esențial să consumi lichide: apă simplă, apă cu o felie de fruct, ceai neîndulcit, cafea simplă fără zahăr sau lapte. În plus, este important să ai o alimentație echilibrată în ferestrele de mâncare: include legume, surse de proteine și carbohidrați complecși în cantități moderate. Ascultă-ți corpul, oprește pauza dacă apar simptome neplăcute și nu te expune înfometării. Dacă ai probleme medicale sau iei tratamente, consultă medicul înainte de a prelungi pauza.'
+              voiceText='Informații importante despre pauzele alimentare. Pauzele alimentare sunt benefice atunci când sunt adaptate corpului tău. Pauza clasică de peste noapte are în jur de 12 ore și este, de regulă, sigură pentru majoritatea oamenilor. Orice pauză mai lungă de 12 ore poate aduce beneficii suplimentare, dar și riscuri, în funcție de starea de sănătate și nevoile tale. Pe toată durata pauzei este esențial să consumi lichide: apă simplă, apă cu o felie de fruct, ceai neîndulcit, cafea simplă fără zahar sau lapte. În plus, este important să ai o alimentație echilibrată în ferestrele de mâncare: include legume, surse de proteine și carbohidrați complecși în cantități moderate. Ascultă-ți corpul, oprește pauza dacă apar simptome neplăcute și nu te expune înfometării. Dacă ai probleme medicale sau iei tratamente, consultă medicul înainte de a prelungi pauza.'
             >
               <p>
                 <strong>
@@ -867,6 +885,11 @@ export default function FastingTracker() {
               )}
             </div>
           </InfoContainer>
+        </div>
+
+        {/* User Switcher */}
+        <div className='mx-4 mb-4'>
+          <UserSwitcher onUserChange={handleUserChange} />
         </div>
 
         {/* Main Content Grid */}
