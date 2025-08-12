@@ -536,6 +536,10 @@ export default function FastingTracker() {
     }
   }, []);
 
+  const handleStopFasting = () => {
+    stopFasting();
+  };
+
   // Prevent hydration mismatch by not rendering time-sensitive content until mounted
   if (!mounted) {
     return (
@@ -565,6 +569,30 @@ export default function FastingTracker() {
               Monitorul de Pauza Alimentara
             </h1>
           </div>
+        </div>
+
+        {/* Action Buttons Row */}
+        <div className='flex flex-wrap items-center justify-center gap-3 w-full mx-auto mb-4'>
+          {/* Start Fasting Button */}
+          <Button
+            onClick={startFasting}
+            disabled={!!fastingStartTime}
+            className='bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
+          >
+            <UtensilsCrossed className='h-5 w-5 mr-2' />
+            Începe Pauza
+          </Button>
+
+          {/* Stop Fasting Button */}
+          <Button
+            data-testid='stopButton'
+            disabled={!fastingStartTime}
+            onClick={stopFasting}
+            className='bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
+          >
+            <X className='h-5 w-5 mr-2' />
+            Oprește Pauza
+          </Button>
         </div>
 
         {/* User Switcher */}
