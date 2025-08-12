@@ -566,21 +566,21 @@ export default function FastingTracker() {
           <div className='flex items-center justify-center gap-2 w-full py-1 px-4 bg-light-green-200'>
             <Stethoscope className='h-8 w-8 text-light-green-800' />
             <h1 className='text-xl font-semibold text-light-green-800'>
-              Monitorul de Pauza Alimentara
+              Fără Mâncare – Monitor
             </h1>
           </div>
         </div>
 
         {/* Action Buttons Row */}
-        <div className='grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-3 w-full mx-auto mb-4 px-4'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 lg:flex-wrap items-center justify-center gap-3 w-full mx-auto mb-4 px-4'>
           {/* Start Fasting Button */}
           <Button
             data-testid='startFastingButton'
             onClick={startFasting}
             disabled={!!fastingStartTime}
-            className='w-full h-16 sm:h-20 md:h-24 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 text-base sm:text-lg md:text-xl lg:text-2xl font-bold'
+            className='w-full h-16 sm:h-10 md:h-20 lg:h-12 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-3 sm:px-4 md:px-6 lg:px-4 py-3 sm:py-4 md:py-6 lg:py-3 text-sm sm:text-base md:text-lg lg:text-base font-bold'
           >
-            <Stethoscope className='!h-10 !w-10 sm:!h-12 sm:!w-12 md:!h-16 md:!w-16 mr-4 flex-shrink-0' />
+            <Stethoscope className='!h-6 !w-6 sm:!h-8 sm:!w-8 md:!h-12 md:!w-12 lg:!h-5 lg:!w-5 mr-2 sm:mr-3 md:mr-4 lg:mr-2 flex-shrink-0' />
             Gata cu mâncarea
           </Button>
 
@@ -589,9 +589,9 @@ export default function FastingTracker() {
             data-testid='stopFastingButton'
             disabled={!fastingStartTime}
             onClick={stopFasting}
-            className='w-full h-16 sm:h-20 md:h-24 bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 text-base sm:text-lg md:text-xl lg:text-2xl font-bold'
+            className='w-full h-16 sm:h-10 md:h-20 lg:h-12 bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-3 sm:px-4 md:px-6 lg:px-4 py-3 sm:py-4 md:py-6 lg:py-3 text-sm sm:text-base md:text-lg lg:text-base font-bold'
           >
-            <UtensilsCrossed className='!h-10 !w-10 sm:!h-12 sm:!w-12 md:!h-16 md:!w-16 mr-4 flex-shrink-0' />
+            <UtensilsCrossed className='!h-6 !w-6 sm:!h-8 sm:!w-8 md:!h-12 md:!w-12 lg:!h-5 lg:!w-5 mr-2 sm:mr-3 md:mr-4 lg:mr-2 flex-shrink-0' />
             Încep să mănânc
           </Button>
         </div>
