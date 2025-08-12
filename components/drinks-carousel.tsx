@@ -24,9 +24,19 @@ const drinkImages: DrinkImage[] = [
     caption: 'Băuturi permise în timpul pauzei alimentare',
   },
   {
+    src: '/migdale.png',
+    alt: 'Migdale',
+    caption: 'Migdale',
+  },
+  {
     src: '/castraveti.png',
     alt: 'Castraveți și legume',
     caption: 'Legume și opțiuni sănătoase',
+  },
+  {
+    src: '/ardeiGras2.png',
+    alt: 'Ardei gras',
+    caption: 'Ardei gras',
   },
   {
     src: '/rosii.png',
@@ -34,9 +44,29 @@ const drinkImages: DrinkImage[] = [
     caption: 'Alimente recomandate în perioada de alimentare',
   },
   {
+    src: '/branza.png',
+    alt: 'Brânză',
+    caption: 'Brânză',
+  },
+  {
+    src: '/ceapaVerde.png',
+    alt: 'Ceapă verde',
+    caption: 'Ceapă verde',
+  },
+  {
+    src: '/ardeiGras2.png',
+    alt: 'Ardei gras',
+    caption: 'Ardei gras',
+  },
+  {
+    src: '/fasole.png',
+    alt: 'Fasole',
+    caption: 'Alimente recomandate în perioada de alimentare',
+  },
+  {
     src: '/morcov.png',
-    alt: 'Morcovi',
-    caption: 'Morcovi',
+    alt: 'Morcov',
+    caption: 'Morcov',
   },
   {
     src: '/salata.png',
@@ -84,6 +114,22 @@ const drinkImages: DrinkImage[] = [
     alt: 'Pui',
     caption: 'Pui',
   },
+  {
+    src: '/nuci.png',
+    alt: 'Nuci',
+    caption: 'Nuci',
+  },
+  //chia
+  {
+    src: '/chia.png',
+    alt: 'Chia',
+    caption: 'Chia',
+  },
+  {
+    src: '/oua.png',
+    alt: 'Ouă',
+    caption: 'Ouă',
+  },
 ];
 
 export function DrinksCarousel() {
@@ -128,7 +174,7 @@ export function DrinksCarousel() {
   return (
     <div className='w-full mb-4'>
       <div
-        className='relative w-full h-96 sm:h-[28rem] md:h-[32rem] lg:h-[36rem] xl:h-[40rem] overflow-hidden rounded-lg shadow-lg bg-gray-200'
+        className='relative w-full h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] overflow-hidden rounded-lg shadow-lg bg-gray-200'
         style={{ touchAction: 'manipulation' }}
       >
         <Carousel
@@ -150,15 +196,15 @@ export function DrinksCarousel() {
             {drinkImages.map((image, index) => (
               <CarouselItem key={index} className='h-full'>
                 <div
-                  className='relative h-full w-full bg-gray-100 min-h-[24rem] sm:min-h-[28rem] md:min-h-[32rem] lg:min-h-[36rem] xl:min-h-[40rem]'
+                  className='relative h-full w-full bg-gray-100 min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem]'
                   style={{ touchAction: 'pan-y pan-x' }}
                 >
                   <Image
                     src={getImageSrc(image.src)}
                     alt={image.alt}
                     fill
-                    className='object-cover object-bottom sm:object-bottom md:object-bottom'
-                    sizes='(max-width: 1700px) 100vw, 100vw'
+                    className='object-contain sm:object-cover md:object-cover lg:object-cover object-center'
+                    sizes='(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw'
                     priority={index === 0}
                   />
 
