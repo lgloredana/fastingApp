@@ -620,7 +620,7 @@ export default function FastingTracker() {
         </div>
 
         {/* Cards Container with smaller gap */}
-        <div className='space-y-2 mx-4 mb-6'>
+        <div className='space-y-2 mx-4 mb-2'>
           {/* Health Alert Card */}
           <div data-testid='healthAlertCard'>
             <InfoContainer
@@ -888,7 +888,7 @@ export default function FastingTracker() {
         </div>
 
         {/* User Switcher */}
-        <div className='mx-4 mb-4'>
+        <div className='mx-4 mb-2'>
           <UserSwitcher onUserChange={handleUserChange} />
         </div>
 
