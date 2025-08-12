@@ -577,7 +577,7 @@ export default function FastingTracker() {
           <Button
             onClick={startFasting}
             disabled={!!fastingStartTime}
-            className='bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
+            className='h-15 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
           >
             <UtensilsCrossed className='h-5 w-5 mr-2' />
             Începe Pauza
@@ -588,7 +588,7 @@ export default function FastingTracker() {
             data-testid='stopButton'
             disabled={!fastingStartTime}
             onClick={stopFasting}
-            className='bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
+            className='h-15 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3'
           >
             <X className='h-5 w-5 mr-2' />
             Oprește Pauza
