@@ -580,8 +580,8 @@ export default function FastingTracker() {
             disabled={!!fastingStartTime}
             className='w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold'
           >
-            <UtensilsCrossed className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
-            Începe Pauza
+            <Stethoscope className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
+            Gata cu mâncarea
           </Button>
 
           {/* Stop Fasting Button */}
@@ -591,8 +591,8 @@ export default function FastingTracker() {
             onClick={stopFasting}
             className='w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold'
           >
-            <X className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
-            Incep sa mananc
+            <UtensilsCrossed className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
+            Încep să mănânc
           </Button>
         </div>
 
@@ -1114,12 +1114,12 @@ export default function FastingTracker() {
                       <div className='flex items-center gap-4'>
                         <Stethoscope className='!h-12 !w-12 flex-shrink-0' />
                         <span className='hidden sm:inline'>
-                          Începe Pauza Alimentara
+                          Gata cu mâncarea
                         </span>
                         <span className='sm:hidden flex flex-col text-center leading-tight'>
-                          <span>Începe</span>
-                          <span>Pauza</span>
-                          <span>Alimentara</span>
+                          <span>Gata</span>
+                          <span>cu</span>
+                          <span>mâncarea</span>
                         </span>
                       </div>
                     </Button>

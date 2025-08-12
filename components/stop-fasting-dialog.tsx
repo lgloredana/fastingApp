@@ -130,11 +130,11 @@ export function StopFastingDialog({
         >
           <div className='flex items-center gap-4'>
             <UtensilsCrossed className='!h-12 !w-12 flex-shrink-0' />
-            <span className='hidden sm:inline'>Incep sa mananc</span>
+            <span className='hidden sm:inline'>Încep să mănânc</span>
             <span className='sm:hidden flex flex-col text-center leading-tight'>
-              <span>Incep</span>
-              <span>sa</span>
-              <span>mananc</span>
+              <span>Încep</span>
+              <span>să</span>
+              <span>mănânc</span>
             </span>
           </div>
         </Button>
@@ -148,9 +148,7 @@ export function StopFastingDialog({
             }}
           >
             <AlertTriangle className='h-5 w-5 mt-0.5 flex-shrink-0' />
-            <span className='break-words hyphens-auto'>
-              Oprești Sesiunea de Pauza Alimentara?
-            </span>
+            <span className='break-words hyphens-auto'>Încep să mănânci?</span>
           </DialogTitle>
           <DialogDescription className='text-sm sm:text-base text-wrap leading-relaxed'>
             Ești sigur că vrei să oprești această perioadă de pauza alimentara?
