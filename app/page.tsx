@@ -578,9 +578,9 @@ export default function FastingTracker() {
             data-testid='startFastingButton'
             onClick={startFasting}
             disabled={!!fastingStartTime}
-            className='w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold'
+            className='w-full h-16 sm:h-20 md:h-24 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 text-base sm:text-lg md:text-xl lg:text-2xl font-bold'
           >
-            <Stethoscope className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
+            <Stethoscope className='!h-10 !w-10 sm:!h-12 sm:!w-12 md:!h-16 md:!w-16 mr-4 flex-shrink-0' />
             Gata cu mâncarea
           </Button>
 
@@ -589,9 +589,9 @@ export default function FastingTracker() {
             data-testid='stopFastingButton'
             disabled={!fastingStartTime}
             onClick={stopFasting}
-            className='w-full h-12 sm:h-14 md:h-16 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold'
+            className='w-full h-16 sm:h-20 md:h-24 bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 text-base sm:text-lg md:text-xl lg:text-2xl font-bold'
           >
-            <UtensilsCrossed className='h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-2' />
+            <UtensilsCrossed className='!h-10 !w-10 sm:!h-12 sm:!w-12 md:!h-16 md:!w-16 mr-4 flex-shrink-0' />
             Încep să mănânc
           </Button>
         </div>
