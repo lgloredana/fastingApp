@@ -1,22 +1,22 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import Link from 'next/link';
-import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 
 const IndiceGlicemicPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-light-green-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 p-4 sm:p-6 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">
             Cand mananci: atenție la indicele glicemic (IG)
           </h1>
         </div>
 
         <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-gray-800 dark:text-white">
+            <CardTitle className="text-2xl font-bold text-gray-800 dark:text-black">
               SCOP: Să eviți vârfurile de glicemie imediat după ce începi să mănânci din nou.
             </CardTitle>
           </CardHeader>
@@ -66,7 +66,7 @@ const IndiceGlicemicPage = () => {
 
         <div className="mt-8 text-center">
           <Link href="/secretele-fastingului">
-            <button className="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+            <button className="bg-white/20 hover:bg-white/30 text-black font-bold py-2 px-4 rounded-lg transition-colors border-2 border-white">
               Înapoi la Secretele Fastingului
             </button>
           </Link>
