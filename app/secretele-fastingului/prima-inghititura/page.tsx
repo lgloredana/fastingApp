@@ -70,7 +70,7 @@ const PrimaInghitituraPage = () => {
 
         <div className="mt-8 text-center">
           <Link href="/secretele-fastingului">
-            <button className="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+            <button className="bg-white/20 hover:bg-white/30 text-black font-bold py-2 px-4 rounded-lg transition-colors border-2 border-white">
               Înapoi la Secretele Fastingului
             </button>
           </Link>
