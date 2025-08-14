@@ -8,14 +8,14 @@ const PrimaMasaPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-light-green-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 p-4 sm:p-6 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">
             PRIMA MASĂ după ce NU am mâncat – ce pun în farfurie
           </h1>
         </div>
 
         <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-gray-800 dark:text-white">
+            <CardTitle className="text-2xl font-bold text-gray-800 dark:text-black">
               Alegeri alimentare inteligente
             </CardTitle>
           </CardHeader>
