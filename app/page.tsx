@@ -32,6 +32,7 @@ import {
   Bell,
   BellOff,
   Menu,
+  BookOpen,
 } from 'lucide-react';
 import { TimerDisplay } from '@/components/timer-display';
 import {
@@ -762,6 +763,39 @@ export default function FastingTracker() {
                     </h3>
                   </div>
                   <div className='text-purple-200'>
+                    <svg
+                      className='h-4 w-4'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M9 5l7 7-7 7'
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </button>
+
+              {/* Fasting Secrets Card - Direct Navigation */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push('/secretele-fastingului');
+                }}
+                className='w-full text-left shadow-lg bg-gradient-to-r from-teal-500 to-teal-600 text-white cursor-pointer hover:from-teal-600 hover:to-teal-700 transition-all duration-200 transform hover:scale-[1.02] rounded-xl overflow-hidden p-4'
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <BookOpen className='h-6 w-6 text-white flex-shrink-0' />
+                    <h3 className='text-lg font-bold'>
+                      Secretele unui fasting reușit
+                    </h3>
+                  </div>
+                  <div className='text-teal-200'>
                     <svg
                       className='h-4 w-4'
                       fill='none'
