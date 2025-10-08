@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import Image from "next/image";
 import {
   Carousel,
   CarouselContent,
@@ -10,6 +8,8 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
 
 interface DrinkImage {
   src: string;
@@ -131,13 +131,6 @@ export function DrinksCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
 
-  const getImageSrc = (src: string) => {
-    const fullSrc = `${
-      process.env.NODE_ENV === "production" ? "/fastingApp" : ""
-    }${src}`;
-    return fullSrc;
-  };
-
   const onSelect = useCallback(() => {
     if (!api) return;
     setCurrentIndex(api.selectedScrollSnap());
@@ -163,18 +156,18 @@ export function DrinksCarousel() {
       if (!api) return;
       api.scrollTo(index);
     },
-    [api]
+    [api],
   );
 
   return (
-    <div className="w-full mb-4">
+    <div className="mb-4 w-full">
       <div
-        className="relative w-full h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] overflow-hidden rounded-lg shadow-lg bg-gray-200"
+        className="relative h-80 w-full overflow-hidden rounded-lg bg-gray-200 shadow-lg sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem]"
         style={{ touchAction: "manipulation" }}
       >
         <Carousel
           setApi={setApi}
-          className="w-full h-full"
+          className="h-full w-full"
           opts={{
             align: "start",
             loop: true,
@@ -185,26 +178,26 @@ export function DrinksCarousel() {
           }}
         >
           <CarouselContent
-            className="h-full flex"
+            className="flex h-full"
             style={{ touchAction: "pan-y pan-x" }}
           >
             {drinkImages.map((image, index) => (
               <CarouselItem key={index} className="h-full">
                 <div
-                  className="relative h-full w-full bg-gray-100 min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem]"
+                  className="relative h-full min-h-[20rem] w-full bg-gray-100 sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem]"
                   style={{ touchAction: "pan-y pan-x" }}
                 >
                   <Image
-                    src={getImageSrc(image.src)}
+                    src={image.src}
                     alt={image.alt}
                     fill
-                    className="object-contain sm:object-cover md:object-cover lg:object-cover object-center"
+                    className="object-contain object-center sm:object-cover md:object-cover lg:object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
                     priority={index === 0}
                   />
 
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 z-10">
-                    <p className="text-white text-sm font-medium text-center">
+                  <div className="absolute right-0 bottom-0 left-0 z-10 bg-gradient-to-t from-black/50 to-transparent p-2">
+                    <p className="text-center text-sm font-medium text-white">
                       {image.caption}
                     </p>
                   </div>
@@ -214,17 +207,17 @@ export function DrinksCarousel() {
           </CarouselContent>
 
           {/* Navigation arrows */}
-          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-black border-white/20" />
-          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-black border-white/20" />
+          <CarouselPrevious className="absolute top-1/2 left-2 z-20 -translate-y-1/2 border-white/20 bg-white/80 text-black hover:bg-white" />
+          <CarouselNext className="absolute top-1/2 right-2 z-20 -translate-y-1/2 border-white/20 bg-white/80 text-black hover:bg-white" />
 
           {/* Dots indicator */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+          <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 space-x-2">
             {drinkImages.map((_, index) => (
               <button
                 key={index}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                className={`h-3 w-3 rounded-full transition-all duration-200 ${
                   index === currentIndex
-                    ? "bg-white scale-125"
+                    ? "scale-125 bg-white"
                     : "bg-white/50 hover:bg-white/75"
                 }`}
                 onClick={() => scrollTo(index)}
